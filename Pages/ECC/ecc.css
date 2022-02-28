@@ -5,4 +5,6 @@
     width: 500px;
     /* The width is the width of the web page */
   }
-  
+#loginSection {
+  display: inline-block;
+}

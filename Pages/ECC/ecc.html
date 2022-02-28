@@ -3,6 +3,7 @@
 
 <head>
     <script src="ecc.js"></script>
+    <script src="login.js"></script>
     <link rel="stylesheet" type="text/css" href="ecc.css" />
 </head>
 
@@ -10,12 +11,18 @@
 
     <h1>ECC interface</h1>
     <p>Not yet implemented</p>
+    <div id="loginSection">
+        <p>Login:</p>
+        <input type="text" id="login"></input>
+        <button type="submit" onclick="login()">Login</button>
+    </div>
+
     <h3>Map</h3>
     <div id="map">
-
         <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuaBC03nHrW5mWu1hPomE_eX7qLgScauQ&callback=initMap&libraries=&v=weekly"
-            async></script>
+            async>
+            </script>
     </div>
     <form action="../../index.html">
         <button type="submit">Back to index</button>
