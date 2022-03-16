@@ -1,1 +1,0 @@
-login.removeChild(login.children[i]);
