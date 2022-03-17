@@ -15,7 +15,7 @@ const validSuffixes = ["html",
 function host(){
     const http = require("http");
     const fs = require('fs').promises;
-    const host = '87.56.98.100';
+    const host = '192.168.1.72';
     const port = 8000;
     const requestListener = function (req, res) {
         const temp = req.url.toString().split('?');
