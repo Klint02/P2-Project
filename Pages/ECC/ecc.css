@@ -1,11 +1,7 @@
 #map {
-    height: 400px !important;
+    height: 400px;
     width: 500px;
   }
 #test {
   height: 50px;
-}
-
-body {
-  background: pink;
 }
