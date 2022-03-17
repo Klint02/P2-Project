@@ -1,3 +1,4 @@
+const local = false; 
 host();
 
 const validSites = ["/index.html",
@@ -15,7 +16,11 @@ const validSuffixes = ["html",
 function host(){
     const http = require("http");
     const fs = require('fs').promises;
-    const host = '192.168.1.72';
+    let host = '192.168.1.72';
+    if(local){
+        host = 'localhost'; 
+    }
+    
     const port = 8000;
     const requestListener = function (req, res) {
         const temp = req.url.toString().split('?');
