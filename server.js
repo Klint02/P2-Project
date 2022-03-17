@@ -15,7 +15,7 @@ const validSuffixes = ["html",
 function host(){
     const http = require("http");
     const fs = require('fs').promises;
-    const host = 'eripio.xyz';
+    const host = '87.56.98.100';
     const port = 8000;
     const requestListener = function (req, res) {
         const temp = req.url.toString().split('?');
