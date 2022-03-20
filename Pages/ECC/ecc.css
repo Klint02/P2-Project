@@ -1,8 +1,4 @@
 #map {
-    height: 700px;
-    width: 1500px;
+    height: 60vh;
+    width: 90%;
   }
-
-body {
-  background-color: pink;
-}

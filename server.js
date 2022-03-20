@@ -1,4 +1,4 @@
-const local = false; 
+const local = true; 
 host();
 
 const validSites = ["/index.html",
@@ -43,7 +43,7 @@ function host(){
                     res.end(contents);
                 })
                 .catch(err => {
-                    console.log("Page does not exist in file system");
+                    console.log("Page does not exist in file system: " + file);
                     res.writeHead(500);
                     res.end(err);
                     return;
@@ -75,7 +75,12 @@ function host(){
 }
 
 function getContentType(fileType){
-    const temp = "text/" + fileType;
-    console.log(temp);
+    let temp = "text/";
+    if(fileType == "js"){
+        temp += "javascript";
+    } else {
+        temp += fileType;
+    }
+    console.log("temp: " + temp);
     return temp;
 }

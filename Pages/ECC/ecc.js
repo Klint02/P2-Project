@@ -21,10 +21,5 @@ function initMap() {
             map: map,
         });
     }
-    
-    const marker = new google.maps.Marker({
-        position: toby,
-        map: map,
-    });
 }
 
