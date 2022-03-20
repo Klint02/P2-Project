@@ -1,4 +1,4 @@
-const local = true; 
+const local = false; 
 host();
 
 const validSites = ["/index.html",
