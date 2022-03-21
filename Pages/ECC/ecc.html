@@ -2,19 +2,23 @@
 <html>
 
 <head>
-    <script src="ecc.js"></script>
+    <meta charset="utf8">
+    
     <link rel="stylesheet" href="ecc.css" />
 </head>
 
 <body>
 
     <h1>ECC interface</h1>
-    <p>Not yet fully implemented</p>
-    <form>
+    <p id="loginText">Please log in</p>
+    <div id = "logoutPlaceholder">
+    </div>
+    <form id="loginForm">
         <label>Username:</label>
-        <input type="text" id="usernameInput">
+        <input type="text" name="uname" required><br>
         <label>Password:</label>
-        <input type="text" id="passwordInput">
+        <input type="password" name="psw" required><br>
+        <input type="submit" id="inputButton" value="Login"></button>
     </form>
     <h3>Map</h3>
     <div id="map" >
@@ -26,5 +30,6 @@
     <form action="/">
         <button type="submit">Back to index</button>
     </form>
+    <script src="ecc.js"></script>
 </body>
 </html>
