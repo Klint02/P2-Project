@@ -72,13 +72,10 @@ function host(){
         
         //Essential host stuff
         if(validSites.contains(file) && validSuffixes.contains(fileType)){
-            console.log(file);
             file = file.substring(1);
             let cookie = "";
-            console.log(file);
             if(file == "Pages/ECC/ecc.html"){
                 cookie = checkLogin(args);
-                console.log(cookie);
             }
             fs.readFile(file)
                 .then(contents => {
