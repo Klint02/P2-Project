@@ -26,7 +26,7 @@ class event{
 
 //Change to true and enter details in the new operator line ONLY RUN THE SERVER ONCE WITH THIS SET TO TRUE
 if(0) {
-    const obj = new operator("Thomas", "1234");
+    const obj = new operator("Tobias", "hejsa");
     exportObject(operatorPath, obj);
 }
 if(0) {

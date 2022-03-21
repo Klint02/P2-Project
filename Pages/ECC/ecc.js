@@ -25,7 +25,7 @@ function initMap() {
 if(document.cookie != ""){
     document.getElementById("loginForm").remove();
     document.getElementById("loginText").innerText = "Logged in";
-    document.getElementById("logoutPlaceholder").innerHTML = "<button onclick=\"location.href = 'www.youtube.com';\" id=logoutbtn>Logout</button>";
+    document.getElementById("logoutPlaceholder").innerHTML = "<button id=logoutbtn>Logout</button>";
 }
 document.getElementById("logoutbtn").addEventListener("click", function (event) {
     location.href = "ecc.html";
