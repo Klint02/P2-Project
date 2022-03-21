@@ -16,7 +16,7 @@ const validSuffixes = ["html",
 function host(){
     const http = require("http");
     const fs = require('fs').promises;
-    let host = '192.168.1.72';
+    let host = '192.168.0.111';
     if(local){
         host = 'localhost'; 
     }
@@ -84,3 +84,4 @@ function getContentType(fileType){
     console.log("temp: " + temp);
     return temp;
 }
+
