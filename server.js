@@ -5,7 +5,6 @@ host();
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const operatorPath = "ServerData/operators.json";
-const eventPath = "ServerData/events.json";
 class operator {
     constructor(uname, psw){
         this.uname = uname;
@@ -14,13 +13,12 @@ class operator {
     }
 }
 class event{
-    constructor(lat, lng, type, adInfo, operator, tlfnr){
+    constructor(lat, lng, type, adInfo, operator){
         this.lat = lat;
         this.lng = lng;
         this.type = type;
         this.adInfo = adInfo;
         this.operator = operator;
-        this.tlfnr = tlfnr;
         //this.address =
     }
 }
@@ -32,14 +30,13 @@ if(0) {
     exportObject(operatorPath, obj);
 }
 if(0) {
-    const obj = new event("57.05270767455275", "9.913094102327587", "Fire", "Alle døde", "ffe4305b-83a1-4274-896d-458c672aca0e","40959636");
-    exportObject(eventPath, obj);
+    const obj = new event("");
+    exportObject(operatorPath, obj);
 }
 
 
 // Sites and files that are currently available to view and use. MAKE SURE THERE FILES EXIST
 const validSites = ["/index.html",
-                    "/Pages/ECC/send_sse.php",
                     "/Pages/ECC/ecc.html",
                     "/Pages/ECC/ecc.js",
                     "/Pages/ECC/ecc.css",
@@ -49,8 +46,7 @@ const validSites = ["/index.html",
 const validSuffixes = ["html",
                         "js",
                         "mjs",
-                        "css",
-                        "php"
+                        "css"
 ];
 
 //Main funtion for hosting the server
@@ -79,16 +75,29 @@ function host(){
             console.log(file);
             file = file.substring(1);
             let cookie = "";
-            console.log(file);class event{
-                constructor(lat, lng, type, adInfo, operator){
-                    this.lat = lat;
-                    this.lng = lng;
-                    this.type = type;
-                    this.adInfo = adInfo;
-                    this.operator = operator;
-                    //this.address =
-                }
+            console.log(file);
+            if(file == "Pages/ECC/ecc.html"){
+                cookie = checkLogin(args);
+                console.log(cookie);
             }
+            fs.readFile(file)
+                .then(contents => {
+                    res.setHeader("Content-Type", getMIMEType(fileType));
+                    if(cookie != ""){
+                        res.setHeader("set-cookie", ["uuid=" + cookie]);
+                    }
+                    res.writeHead(200);
+                    res.end(contents);
+                })
+                .catch(err => {
+                    console.log("Page does not exist in file system: " + file);
+                    res.writeHead(500);
+                    res.end(err);
+                    return;
+            });
+
+            
+        } else {
             console.log("Page not found in validSites: \"" + file + "\"");
             res.writeHead(404);
             res.end("Page not found: " + file);
