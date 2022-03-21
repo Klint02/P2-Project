@@ -1,10 +1,11 @@
-const local = false; 
+const local = true; 
 host();
 
 const validSites = ["/index.html",
                     "/Pages/ECC/ecc.html",
                     "/Pages/ECC/ecc.js",
                     "/Pages/ECC/ecc.css",
+                    "/Pages/Caller/caller.js",
                     "/Pages/Caller/caller.html"
                 ];
 const validSuffixes = ["html",
