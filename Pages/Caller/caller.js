@@ -24,9 +24,9 @@ function handleSubmit(event) {
 
   const situation = data.get('situation');
 
-  console.log({name});
+  console.log({name, address, situation});
   console.log("test");
 }
 
-const form = document.querySelector('idk');
-form.addEventListener('submit', handleSubmit());
+const form = document.querySelector('form');
+form.addEventListener('submit', handleSubmit);

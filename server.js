@@ -1,4 +1,4 @@
-const local = true; 
+const local = false; 
 host();
 
 const validSites = ["/index.html",
@@ -17,7 +17,7 @@ const validSuffixes = ["html",
 function host(){
     const http = require("http");
     const fs = require('fs').promises;
-    let host = '192.168.0.111';
+    let host = '192.168.1.72';
     if(local){
         host = 'localhost'; 
     }
