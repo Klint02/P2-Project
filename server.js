@@ -1,5 +1,5 @@
 // Decides whether the server is run locally
-const local = true; 
+const local = false; 
 
 host();
 const { v4: uuidv4 } = require('uuid');
