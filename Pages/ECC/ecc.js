@@ -22,4 +22,23 @@ function initMap() {
         });
     }
 }
+if(document.cookie != ""){
+    document.getElementById("loginForm").remove();
+    document.getElementById("loginText").innerText = "Logged in";
+    document.getElementById("logoutPlaceholder").innerHTML = "<button id=logoutbtn>Logout</button>";
+}
+document.getElementById("logoutbtn").addEventListener("click", function (event) {
+    location.href = "ecc.html";
+    document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+});
 
+class event{
+    constructor(lat, lng, type, adInfo, operator){
+        this.lat = lat;
+        this.lng = lng;
+        this.type = type;
+        this.adInfo = adInfo;
+        this.operator = operator;
+        //this.address =
+    }
+}
