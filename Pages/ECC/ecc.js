@@ -12,17 +12,17 @@ function initMap() {
         zoom: 12,
         center: markers[2],
     });
-    
+
     mapMarkers = [];
 
-    for(let i = 0; i < markers.length; i++){
+    for (let i = 0; i < markers.length; i++) {
         new google.maps.Marker({
             position: markers[i],
             map: map,
         });
     }
 }
-if(document.cookie != ""){
+if (document.cookie != "uuid=") {
     document.getElementById("loginForm").remove();
     document.getElementById("loginText").innerText = "Logged in";
     document.getElementById("logoutPlaceholder").innerHTML = "<button id=logoutbtn>Logout</button>";
@@ -32,8 +32,8 @@ document.getElementById("logoutbtn").addEventListener("click", function (event) 
     document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 });
 
-class event{
-    constructor(lat, lng, type, adInfo, operator){
+class event {
+    constructor(lat, lng, type, adInfo, operator) {
         this.lat = lat;
         this.lng = lng;
         this.type = type;
@@ -42,3 +42,4 @@ class event{
         //this.address =
     }
 }
+

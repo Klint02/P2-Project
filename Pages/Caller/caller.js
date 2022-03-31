@@ -15,7 +15,6 @@ AMLSelectIndex();
 console.log(callerArrIndex);
 
 function handleSubmit(event) {
-
   const data = new FormData(event.target);
 
   const name = data.get('name');
@@ -24,9 +23,16 @@ function handleSubmit(event) {
 
   const situation = data.get('situation');
 
-  console.log({name, address, situation});
-  console.log("test");
+  console.log("data" + data);
+  console.log(address, name, situation);
+  console.log("test2");
+  
+  amlTree(address, name, situation);
 }
 
 const form = document.querySelector('form');
-form.addEventListener('submit', handleSubmit);
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  handleSubmit(event);
+  });
+

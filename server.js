@@ -1,19 +1,19 @@
 // Decides whether the server is run locally
-const local = false; 
+const local = true;
 
 host();
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const operatorPath = "ServerData/operators.json";
 class operator {
-    constructor(uname, psw){
+    constructor(uname, psw) {
         this.uname = uname;
         this.psw = psw;
         this.id = uuidv4();
     }
 }
-class event{
-    constructor(lat, lng, type, adInfo, operator){
+class event {
+    constructor(lat, lng, type, adInfo, operator) {
         this.lat = lat;
         this.lng = lng;
         this.type = type;
@@ -25,11 +25,11 @@ class event{
 
 
 //Change to true and enter details in the new operator line ONLY RUN THE SERVER ONCE WITH THIS SET TO TRUE
-if(0) {
+if (0) {
     const obj = new operator("Tobias", "hejsa");
     exportObject(operatorPath, obj);
 }
-if(0) {
+if (0) {
     const obj = new event("");
     exportObject(operatorPath, obj);
 }
@@ -37,27 +37,27 @@ if(0) {
 
 // Sites and files that are currently available to view and use. MAKE SURE THERE FILES EXIST
 const validSites = ["/index.html",
-                    "/Pages/ECC/ecc.html",
-                    "/Pages/ECC/ecc.js",
-                    "/Pages/ECC/ecc.css",
-                    "/Pages/Caller/caller.js",
-                    "/Pages/ECC/login.js",
-                    "/Pages/Caller/caller.html"
-                ];
+    "/Pages/ECC/ecc.html",
+    "/Pages/ECC/ecc.js",
+    "/Pages/ECC/ecc.css",
+    "/Pages/Caller/caller.js",
+    "/Pages/ECC/login.js",
+    "/Pages/Caller/caller.html"
+];
 const validSuffixes = ["html",
-                        "js",
-                        "mjs",
-                        "css"
+    "js",
+    "mjs",
+    "css"
 ];
 
 //Main funtion for hosting the server
-function host(){
+function host() {
     //HTTP essential stuff
     const http = require("http");
     const fs = require('fs').promises;
     let host = '192.168.1.72';
-    if(local){
-        host = 'localhost'; 
+    if (local) {
+        host = 'localhost';
     }
     const port = 8000;
 
@@ -66,22 +66,22 @@ function host(){
         const temp = req.url.toString().split('?');
         let args = getArgs(temp);
         let file = temp[0];
-        if(file == "/"){
+        if (file == "/") {
             file = "/index.html"
         }
         const fileType = file.split('.')[1];
-        
+
         //Essential host stuff
-        if(validSites.contains(file) && validSuffixes.contains(fileType)){
+        if (validSites.contains(file) && validSuffixes.contains(fileType)) {
             file = file.substring(1);
             let cookie = "";
-            if(file == "Pages/ECC/ecc.html"){
+            if (file == "Pages/ECC/ecc.html") {
                 cookie = checkLogin(args);
             }
             fs.readFile(file)
                 .then(contents => {
                     res.setHeader("Content-Type", getMIMEType(fileType));
-                    if(cookie != ""){
+                    if (cookie != "") {
                         res.setHeader("set-cookie", ["uuid=" + cookie]);
                     }
                     res.writeHead(200);
@@ -92,9 +92,9 @@ function host(){
                     res.writeHead(500);
                     res.end(err);
                     return;
-            });
+                });
 
-            
+
         } else {
             console.log("Page not found in validSites: \"" + file + "\"");
             res.writeHead(404);
@@ -104,10 +104,10 @@ function host(){
     };
 
     Array.prototype.contains = function (tester) {
-        for(let i = 0; i < this.length; i++) { 
-            if(this[i] == tester){
+        for (let i = 0; i < this.length; i++) {
+            if (this[i] == tester) {
                 return true;
-            }        
+            }
         };
         return false;
     }
@@ -119,13 +119,13 @@ function host(){
 }
 
 // Determines the MIME type of a file according to its file extension
-function getMIMEType(fileType){
+function getMIMEType(fileType) {
     let temp = "text/";
-    if(fileType == "js"){
+    if (fileType == "js") {
         temp += "javascript";
-    } else if(fileType == "php") {
+    } else if (fileType == "php") {
         temp += "event-stream";
-    }else {
+    } else {
         temp += fileType;
     }
     return temp;
@@ -133,9 +133,9 @@ function getMIMEType(fileType){
 
 
 //takes raw arguments and returns them neatly as an object
-function getArgs(argsRaw){
+function getArgs(argsRaw) {
     let args = {}
-    if(argsRaw.length > 1) {
+    if (argsRaw.length > 1) {
         argsRaw[1].split('&').forEach(element => {
             args[element.split('=')[0]] = element.split('=')[1];
         });
@@ -144,35 +144,5 @@ function getArgs(argsRaw){
 }
 
 
-//Writes an object to disk
-function exportObject(path, object){
-    let arr = [];
-    let temp = importObject(path);
-    if(temp != ""){
-        arr = temp;
-    }
-    arr.push(object);
-    
-    fs.writeFileSync(path, JSON.stringify(arr), {encoding: "utf8"});
-}
 
-//Reads an object from disk
-function importObject(path){
-    let temp = fs.readFileSync(path, "utf8");
-    if(temp != ""){
-        return JSON.parse(temp);
-    }
-    return "";
-}
-
-//Checks login info
-function checkLogin(args){
-    const logins = importObject(operatorPath);
-    for(let i = 0; i < logins.length; i++){
-        if(logins[i]["uname"] == args["uname"] && logins[i]["psw"] == args["psw"]){
-            return logins[i]["id"];
-        }
-    }
-    return "";
-}
 
