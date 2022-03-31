@@ -75,10 +75,20 @@ function getHandler(req, res) {
         case "Pages/ECC/ecc.html":
             res.setHeader("set-cookie", ["uuid=" + checkLogin(args)]);
             break;
+        /*    
+        case "Pages/Caller/caller.html":
+            callerPage(args);
+            break;
+        */
     }
     responseCompiler(req, res);
 }
+/*
+function callerPage(args) {
+    console.log(args); 
 
+}
+*/
 function responseCompiler(req, res) {
     fileResponse(req.url, res);
 }
