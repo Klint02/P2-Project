@@ -22,12 +22,13 @@ function handleSubmit(event) {
   const address = data.get('address');
 
   const situation = data.get('situation');
-
-  console.log("data" + data);
-  console.log(address, name, situation);
-  console.log("test2");
   
-  amlTree(address, name, situation);
+  console.log(address, name, situation);
+  amlTree(name, address, situation);
+
+ 
+
+ 
 }
 
 const form = document.querySelector('form');
@@ -35,4 +36,21 @@ form.addEventListener('submit', (event) => {
   event.preventDefault();
   handleSubmit(event);
   });
+
+function amlTree(name, address, situation) {
+  if (name.length === 0){
+    console.log();
+    name = "unknown caller";
+  }
+  if (address === ''){
+    address = addressArr[addressArrIndex];
+  }
+  phoneNumber = phoneArr[phoneArrIndex];
+  if (situation === ''){
+    situation = 'unknown situation';
+  }
+  console.log(address, name, situation, phoneNumber);
+  //return(name, address, situation, phoneNumber); 
+  //
+}
 
