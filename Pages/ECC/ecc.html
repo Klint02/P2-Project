@@ -2,23 +2,36 @@
 <html>
 
 <head>
-    <script src="ecc.js"></script>
+    <meta charset="utf8">
+
     <link rel="stylesheet" href="ecc.css" />
 </head>
 
 <body>
 
     <h1>ECC interface</h1>
-    <p>Not yet fully implemented</p>
+    <p id="loginText">Please log in</p>
+    <div id="logoutPlaceholder">
+    </div>
+    <form id="loginForm" method="get">
+        <label>Username:</label>
+        <input type="text" name="uname" id="uname" required><br>
+        <label>Password:</label>
+        <input type="password" name="psw" ud="psw" required><br>
+        <input type="submit" id="inputButton" value="Login"></button>
+    </form>
     <h3>Map</h3>
-    <div id="map" >
+    <div id="map">
 
         <script
             src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBuaBC03nHrW5mWu1hPomE_eX7qLgScauQ&callback=initMap&libraries=&v=weekly'
             async></script>
     </div>
-    <form action="/">
+    <form action="../index.html">
         <button type="submit">Back to index</button>
     </form>
+
+    <script src="ecc.js"></script>
 </body>
+
 </html>
