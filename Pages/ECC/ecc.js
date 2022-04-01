@@ -148,11 +148,11 @@ if (document.cookie != "uuid=") {
     document.getElementById("loginForm").remove();
     document.getElementById("loginText").innerText = "Logged in";
     document.getElementById("logoutPlaceholder").innerHTML = "<button id=logoutbtn>Logout</button>";
+    document.getElementById("logoutbtn").addEventListener("click", function (event) {
+        location.href = "ecc.html";
+        document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+    });
 }
-document.getElementById("logoutbtn").addEventListener("click", function (event) {
-    location.href = "ecc.html";
-    document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-});
 
 class event {
     constructor(lat, lng, type, adInfo, operator) {
