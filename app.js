@@ -1,4 +1,4 @@
-const online = false;
+const online = true;
 
 const http = require('http');
 const fs = require("fs");
@@ -6,7 +6,7 @@ const url = require("url");
 const { v4: uuidv4 } = require('uuid');
 const operatorPath = "ServerData/operators.json";
 let hostname;
-online ? hostname = 'onlinehost' : hostname = 'localhost';
+online ? hostname = '192.168.1.72' : hostname = 'localhost';
 const port = 8000;
 
 class operator {
