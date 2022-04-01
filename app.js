@@ -63,14 +63,13 @@ function processReq(req, res) {
 }
 
 function postHandler(req, res) {
-    console.log(req.body);
+    //console.log(req.body);
     //console.log(req.headers);
 }
 
 function getHandler(req, res) {
     const splitUrl = req.url.split('?');
     const args = getArgs(splitUrl[1]);
-    console.log(args);
     switch (req.url.split('?')[0]) {
         case "Pages/ECC/ecc.html":
             res.setHeader("set-cookie", ["uuid=" + checkLogin(args)]);
@@ -97,6 +96,7 @@ function fileResponse(url, res) {
     const path = url.split('?')[0];
     const fileName = path.split('/')[path.split('/').length - 1];
     fs.readFile(path, (err, data) => {
+
         if (err) {
             console.error(err);
             errorResponse(res, 404, String(err));
@@ -133,7 +133,6 @@ function getArgs(argsRaw) {
     let args = {};
     if (argsRaw == undefined) return args;
     if (argsRaw.length > 1) {
-        console.log("parsing");
         argsRaw.split('&').forEach(element => {
             args[element.split('=')[0]] = element.split('=')[1];
         });
@@ -166,9 +165,7 @@ function importObject(path) {
 function checkLogin(args) {
     const logins = importObject(operatorPath);
     for (let i = 0; i < logins.length; i++) {
-        console.log(logins[i]["uname"] + " : " + args["uname"]);
         if (logins[i]["uname"] == args["uname"] && logins[i]["psw"] == args["psw"]) {
-            console.log("succ2");
             return logins[i]["id"];
         }
     }
