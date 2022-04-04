@@ -1,3 +1,4 @@
+let markerArray = [];
 function initMap() {
     const markers = [
         { lat: 57.05270767455275, lng: 9.913094102327587 },
@@ -122,6 +123,8 @@ function addmarker(popup_header, LngLat, markertype, mapname, report_info) {
         </div>`);
         infowindow.open(mapname, marker);
     });
+    markerArray.push(marker);
+    deleteMarkerAfterTimer();
 
 };
 
@@ -140,7 +143,7 @@ function add_geo_marker(popup_header, address, mapname, report_info) {
             alert('Geocode was not successful for the following reason: ' + status);
         }
     });
-
+    deleteMarkerAfterTimer();
 }
 
 //If a uuid is found remove the login screen and replace with a login success thingy
@@ -168,3 +171,21 @@ class event {
     }
 }
 
+
+function deleteToby(marker) {
+
+    markerArray[marker].setMap(null);
+    console.log("toby was deleted");
+};
+
+function deleteMarkerAfterTimer() {
+    let i = markerArray.length - 1;
+    console.log("i will now delete toby");
+    // await sleep(20000);
+    setTimeout(deleteToby(0), 30000)
+    console.log("i think toby was deleted");
+
+    // deleteToby(0);
+};
+
+// const sleep = ms => new Promise(r => setTimeout(r, ms));
