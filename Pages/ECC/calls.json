@@ -1,0 +1,42 @@
+[
+  {
+    "id": "caller1",    
+    "name":"Patrick",
+    "address":"Sigrid Undsets Vej 234b, 9220 Aalborg",
+    "whatIs":"situation",
+    "whenIs":"09:45:50",
+    "phoneNumber":"40302321",
+    "AMLLocation":"long:lat",
+    "howManyPeople":"6",
+    "answered": false,
+    "answering": false,
+    "useful":"yes"
+  },
+  {
+    "id": "caller2",
+    "name":"Tai",
+    "address":"Borgergade 4, 9000 Aalborg",
+    "whatIs":"situation",
+    "whenIs":"09:45:50",
+    "phoneNumber":"40302321",
+    "AMLLocation":"long:lat",
+    "howManyPeople":"6",
+    "answered": false,
+    "answering": false,
+    "useful":"yes"
+  },
+  {
+    "id": "caller3",
+    "name":"Tobias",
+    "address":"Borgergade 8, 9000 Aalborg",
+    "whatIs":"situation",
+    "whenIs":"09:45:50",
+    "phoneNumber":"40302321",
+    "AMLLocation":"long:lat",
+    "howManyPeople":"6",
+    "answered": false,
+    "answering": false,
+    "useful":"yes"
+  }
+]
+

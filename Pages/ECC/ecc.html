@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="utf8">
-
     <link rel="stylesheet" href="ecc.css" />
 </head>
 
@@ -14,6 +13,11 @@
         }
     </style>
     <h1>ECC interface</h1>
+    <div id="calls">
+        <button id="new_call" onClick="get_calls()">Næste opkald</button>
+        <button id="emergency_handled">Plot emergency</button>
+        <p id="call_text"></p>
+    </div>
     <p id="loginText">Please log in</p>
     <div id="logoutPlaceholder" class="horizontal">
     </div>
@@ -41,7 +45,7 @@
         <button type="submit">Back to index</button>
     </form>
 
-    <script src="ecc.js"></script>
+    <script src="scripts/ecc.js"></script>
 </body>
 
 </html>

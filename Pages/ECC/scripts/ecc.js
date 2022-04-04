@@ -1,3 +1,6 @@
+let emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
+let caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
+
 function initMap() {
     const markers = [
         { lat: 57.05270767455275, lng: 9.913094102327587 },
@@ -17,11 +20,11 @@ function initMap() {
     });
 
     // The marker, positioned at "toby"
-    addmarker('Tobias', toby, 0, map, 'Her bor Tobias');
+    addmarker('Tobias', toby, caller_marker, map, 'Her bor Tobias');
 
     //input name of the file and the name of the map you want the marker plottet on
     readfile_and_plot('report', map);//reads a file, centers the map on the address found in the file and plots a marker.
-
+    get_calls();
     // mapMarkers = [];
 
     // for (let i = 0; i < markers.length; i++) {
@@ -30,6 +33,37 @@ function initMap() {
     //         map: map,
     //     });
     // }
+}
+
+let new_call = document.getElementById("new_call")
+let emergency_handled = document.getElementById("emergency_handled")
+
+function get_calls() {
+    fetch('calls.json')
+        .then(response => response.json())
+        .then(calls => {
+            console.log(calls)
+            // Check through all calls
+            for (let i = 0; i < calls.length; i++) {
+                // If call is unanswered
+                if (calls[i].answered === false && calls[i].answering === false) {
+                    // Get the first unanswered call
+                    console.log(calls[i].id);
+                    calls[i].answering = true;
+                    // Creates HTML with information
+                    let call_text = document.getElementById('call_text');
+                    call_text.innerHTML = `Id: ${calls[i].id} <br>
+                    Navn: ${calls[i].name} <br>
+                    Addresse: ${calls[i].address} <br>
+                    Situation: ${calls[i].whatIs} <br>
+                    Tidspunkt: ${calls[i].whenIs} <br>`;
+
+                    // Post data
+                    
+                    i = calls.length;
+                }
+            }
+        })
 }
 
 function find_address(search_text) {
@@ -98,7 +132,7 @@ function plopmarker(address, popup_header, mapname, report_info_to_display) {
         // Centers the map to the location of the address
         mapname.setCenter(address);
         // Adds marker at the address
-        addmarker(popup_header, address, 0, mapname, report_info_to_display);
+        addmarker(popup_header, address, emergency_marker, mapname, report_info_to_display);
     };
 }
 
@@ -108,6 +142,7 @@ function addmarker(popup_header, LngLat, markertype, mapname, report_info) {
     //dont yet know how to add custom markers, but insert here
     var marker = new google.maps.Marker({
         map: mapname,
+        icon: markertype,
         position: LngLat //results of .this = geocoder.geocode function
     });
     google.maps.event.addListener(marker, 'click', function () {
@@ -134,7 +169,7 @@ function add_geo_marker(popup_header, address, mapname, report_info) {
             // Centers the map to the location of the address
             mapname.setCenter(results[0].geometry.location);
             // Inserts marker on the LAT and LNG of the adress
-            addmarker(popup_header, results[0].geometry.location, 0, mapname, report_info);
+            addmarker(popup_header, results[0].geometry.location, emergency_marker, mapname, report_info);
             // If the address is invalid or any other error
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
