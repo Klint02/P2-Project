@@ -143,16 +143,19 @@ function add_geo_marker(popup_header, address, mapname, report_info) {
 
 }
 
-
+//If a uuid is found remove the login screen and replace with a login success thingy
+//and a logout button that expires the cookie
 if (document.cookie != "uuid=") {
     document.getElementById("loginForm").remove();
-    document.getElementById("loginText").innerText = "Logged in";
-    document.getElementById("logoutPlaceholder").innerHTML = "<button id=logoutbtn>Logout</button>";
+    //document.getElementById("loginText").innerText = "Logged in";
+    let loginPlaceholder = document.getElementById("logoutPlaceholder");
+    //loginPlaceholder.style.display = "inline-block";
+    loginPlaceholder.innerHTML = '<p>Logged in</p><button id=logoutbtn>Logout</button>';
+    document.getElementById("logoutbtn").addEventListener("click", function (event) {
+        location.href = "ecc.html";
+        document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+    });
 }
-document.getElementById("logoutbtn").addEventListener("click", function (event) {
-    location.href = "ecc.html";
-    document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-});
 
 class event {
     constructor(lat, lng, type, adInfo, operator) {
