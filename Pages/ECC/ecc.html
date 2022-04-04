@@ -8,10 +8,14 @@
 </head>
 
 <body>
-
+    <style>
+        h1 {
+            text-align: center;
+        }
+    </style>
     <h1>ECC interface</h1>
     <p id="loginText">Please log in</p>
-    <div id="logoutPlaceholder">
+    <div id="logoutPlaceholder" class="horizontal">
     </div>
     <form id="loginForm" method="get">
         <label>Username:</label>
@@ -21,17 +25,23 @@
         <input type="submit" id="inputButton" value="Login"></button>
     </form>
     <h3>Map</h3>
-    <script src="ecc.js"></script>
+
     <div id="map">
         <script
             src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBuaBC03nHrW5mWu1hPomE_eX7qLgScauQ&callback=initMap&libraries=&v=weekly'
             async defer></script>
     </div>
+    <div>
+        <form method="get" class="nodefault">
+            <textarea id="reportInput" name="report"></textarea>
+            <input type="submit">
+        </form>
+    </div>
     <form action="../index.html">
         <button type="submit">Back to index</button>
     </form>
 
-
+    <script src="ecc.js"></script>
 </body>
 
 </html>
