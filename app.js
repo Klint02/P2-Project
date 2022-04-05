@@ -62,6 +62,7 @@ function processReq(req, res) {
     //Depending on http method used, different handlers handle the request. If an
     //unexpected method type appears we attempt to respond with a default file 
     //response
+    console.log("GOT: " + req.method + " " +req.url);
     switch (req.method) {
         case 'POST':
             postHandler(req, res);
@@ -77,8 +78,20 @@ function processReq(req, res) {
 }
 //TODO: implement a post handler
 function postHandler(req, res) {
-    //console.log(req.body);
-    //console.log(req.headers);
+    console.log(req.url)
+    switch (req.url) {
+        case "postest":
+            //sets a cookie to a uuid if login is successfull
+            let body = '';
+            req.on('data', chunk => {
+                body += chunk.toString(); // convert Buffer to string
+            });
+            req.on('end', () => {
+                console.log(body);
+                res.end('ok');
+            });
+            break;
+    }
 }
 
 //Handles http requests of method type GET

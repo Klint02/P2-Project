@@ -59,11 +59,28 @@ function get_calls() {
                     Tidspunkt: ${calls[i].whenIs} <br>`;
 
                     // Post data
-                    
+                    fetch('/postest', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: `${calls[i].answering = true}`,
+                    });
+
                     i = calls.length;
                 }
             }
         })
+}
+
+async function post_data() {
+    fetch('/postest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: "test",
+    });
 }
 
 function find_address(search_text) {
