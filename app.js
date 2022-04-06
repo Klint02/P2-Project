@@ -78,9 +78,8 @@ function processReq(req, res) {
 }
 //TODO: implement a post handler
 function postHandler(req, res) {
-    console.log(req.url)
     switch (req.url) {
-        case "postest":
+        case "change_answering":
             //sets a cookie to a uuid if login is successfull
             let body = '';
             req.on('data', chunk => {
@@ -88,7 +87,28 @@ function postHandler(req, res) {
             });
             req.on('end', () => {
                 console.log(body);
-                res.end('ok');
+                const obj = JSON.parse(body);
+                let content = JSON.parse(fs.readFileSync('Pages/ECC/calls.json', 'utf8'));
+
+                content[obj.to_change].answering = obj.value
+                fs.writeFileSync('Pages/ECC/calls.json', JSON.stringify(content, null, 4));
+                
+                //res.end('ok');
+            });
+        case "emergency_accepted":
+            let emergency_accepted_body = '';
+            req.on('data', chunk => {
+                emergency_accepted_body += chunk.toString(); // convert Buffer to string
+            });
+            req.on('end', () => {
+                console.log(emergency_accepted_body);
+                // const obj = JSON.parse(emergency_accepted_body);
+                // let content = JSON.parse(fs.readFileSync('Pages/ECC/calls.json', 'utf8'));
+
+                // content[obj.to_change].answering = obj.value
+                // fs.writeFileSync('Pages/ECC/calls.json', JSON.stringify(content, null, 4));
+                
+                //res.end('ok');
             });
             break;
     }

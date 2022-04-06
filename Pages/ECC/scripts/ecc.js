@@ -59,12 +59,12 @@ function get_calls() {
                     Tidspunkt: ${calls[i].whenIs} <br>`;
 
                     // Post data
-                    fetch('/postest', {
+                    fetch('/change_answering', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json;charset=utf-8'
                         },
-                        body: `${calls[i].answering = true}`,
+                        body: `{"to_change": ${i}, "value": true}`,
                     });
 
                     i = calls.length;
@@ -74,12 +74,12 @@ function get_calls() {
 }
 
 async function post_data() {
-    fetch('/postest', {
+    fetch('/emergency_accepted', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body: "test",
+      body: `{"test": true}`,
     });
 }
 
