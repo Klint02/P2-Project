@@ -1,6 +1,6 @@
 //if server is running on Nicklas' server set this to true,
 //if run locally set to false
-const online = true;
+const online = false;
 
 const http = require('http');
 const fs = require("fs");
@@ -64,6 +64,7 @@ function processReq(req, res) {
     //Depending on http method used, different handlers handle the request. If an
     //unexpected method type appears we attempt to respond with a default file 
     //response
+    console.log("GOT: " + req.method + " " +req.url);
     switch (req.method) {
         case 'POST':
             postHandler(req, res);
@@ -80,23 +81,51 @@ function processReq(req, res) {
 
 //TODO: implement your POST requests here
 function postHandler(req, res) {
-    // DEBUG: Shows which url was posted to the server
-    // console.log(req.url)
-    
+    let body = '';
+    let d = new Date()
+    let path = "ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" +  d.getMonth() + "-" +  d.getDate() + ".json";
     switch (req.url) {
+        case "change_answering":
+            //sets a cookie to a uuid if login is successfull
+            
+            req.on('data', chunk => {
+                body += chunk.toString(); // convert Buffer to string
+            });
+            req.on('end', () => {
+                console.log(body);
+                const obj = JSON.parse(body);
+                let content = JSON.parse(fs.readFileSync(path, 'utf8'));
+
+                content[obj.to_change].answering = obj.value
+                fs.writeFileSync(path, JSON.stringify(content, null, 4));
+                
+            });
+        case "emergency_accepted":
+            let emergency_accepted_body = '';
+            req.on('data', chunk => {
+                emergency_accepted_body += chunk.toString(); // convert Buffer to string
+            });
+            req.on('end', () => {
+                console.log(emergency_accepted_body);
+                const obj = JSON.parse(emergency_accepted_body);
+                let content = JSON.parse(fs.readFileSync(path, 'utf8'));
+
+                content[obj.to_change].answered = obj.value;
+                fs.writeFileSync(path, JSON.stringify(content, null, 4));
+                
+            });
+            break;
         case "callerobj":
             // Assigns the data given from the post request to the body variable 
-            let body = '';
             req.on('data', chunk => {
                 body += chunk.toString(); // convert Buffer to string
                 
             });
             req.on('end', () => {
                 // Creates a date object 'd' the fs.writeFileSync uses to name it's documents by date
-                // and writes the stringified json to its respective json document in the ServerData/CallerDB/caller-year-month-day.json
-                let d = new Date()
+                // and writes the stringified json to its respective json document in the ServerData/CallerDB/caller-year-month-day.
                 let caller = JSON.parse(body);
-                let path = "ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" +  d.getMonth() + "-" +  d.getDate() + ".json";
+               
                 
 
                 if (fs.existsSync(path)) {
