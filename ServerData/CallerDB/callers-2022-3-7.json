@@ -1,0 +1,18 @@
+[
+    {
+        "name": "unknown caller",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 12132922,
+        "timeset": "7.4.2022 10.49.17",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "unknown injuries",
+        "answered": false,
+        "answering": false,
+        "useful": true,
+        "id": "059cac2e-78b9-4fda-ac41-d3bc268922a9"
+    }
+]

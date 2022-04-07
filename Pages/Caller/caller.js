@@ -1,4 +1,7 @@
-
+// caller.js v1.0
+// FUNCTIONALITY: Creates a caller object and sends it via a POST request to a server
+// Created by Group A221a software semester 2 2022
+// Responsible: Nicklas Christensen
 
 // General test generator for callers
 // implement form based test (DONE)
@@ -20,7 +23,6 @@ function handleSubmit(event) {
 
   const injuries = data.get('injuries');
   
-  
   infoPlacer(name, situation, address, number, injuries);
 }
 
@@ -35,25 +37,26 @@ form.addEventListener('submit', (event) => {
 
 // Reads info from variables and determines whether there is a need for generating placeholders or not
 function infoPlacer(name, situation, address, number, injuries) {
-  let addressArr = ["57.017145, 9.987593", "57.052578, 9.911738", "57.046832, 9.913825"];
-  let addressArrIndex
+  let addressArr = [{ lat: 57.017145, lng: 9.987593}, { lat: 57.052578, lng: 9.911738}, { lat: 57.046832, lng: 9.913825}];
+  let addressArrIndex, formZeroLen = 0, numberMAX = 99999999, numberMIN = 10000000;
+  
   addressArrIndex = (Math.floor(Math.random() * addressArr.length));
+  console.log(addressArrIndex);
 
-
-  if (name.length === 0){
+  if (name.length === formZeroLen){
     name = "unknown caller";
   }
-  if (situation.length === 0) {
+  if (situation.length === formZeroLen) {
     situation = "unknown situation";
   }
-  if (address.length === 0){
+  if (address.length === formZeroLen){
     address = "Unknown address"
   }
-  if (number.length === 0) {
-    let tempNumber = Math.floor(Math.random() * 99999999);
-    tempNumber < 10000000 ? number = 10000000 : number = tempNumber;
+  if (number.length === formZeroLen) {
+    let tempNumber = Math.floor(Math.random() * numberMAX);
+    tempNumber < numberMIN ? number = tempNumber + 10000000: number = tempNumber;
   }
-  if (injuries.length === 0) {
+  if (injuries.length === formZeroLen) {
     injuries = "unknown injuries";
   }
 
@@ -71,49 +74,20 @@ function infoPlacer(name, situation, address, number, injuries) {
     useful: true
   }
 
-
+  // Converts the object to a JSON string for the POST request
   let caller = JSON.stringify(callObj)
-  
-  
-
-  sendJSON(callObj);
-
+  sendJSON(caller);
 }
-/*
-function sendJSON(caller){
-    
-  // Creating a XHR object
-  let xhr = new XMLHttpRequest();
-  let url = "Pages/Caller/caller.html";
 
-  // open a connection
-  xhr.open("POST", url, true);
-
-  // Set the request header i.e. which type of content you are sending
-  xhr.setRequestHeader("Content-Type", "application/json");
-
-  // Create a state change callback
-  xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-
-          // Print received data from server
-          result.innerHTML = this.responseText;
-
-      }
-  };
-  console.log("test");
-  // Sending data with the request
-  xhr.send(caller);
-}
-*/
-/*
+// Creates a POST request with the caller object
+// Used for caller queue and other
+// Stored in ServerData/CallerDB/
 async function sendJSON(caller) {
-// request options
-const response = await fetch('Pages/Caller/caller', {
-  method: 'POST',
-  body: JSON.stringify(caller)
-});
-const responseText = await response.text();
-console.log(responseText); // logs 'OK'
+    let response = await fetch('/callerobj', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: caller,
+    });
 }
-*/
