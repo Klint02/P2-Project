@@ -1,6 +1,6 @@
 //if server is running on Nicklas' server set this to true,
 //if run locally set to false
-const online = false;
+const online = true;
 
 const http = require('http');
 const fs = require("fs");
@@ -78,7 +78,7 @@ function processReq(req, res) {
     }
 }
 
-//TODO: implement your POST requests here 
+//TODO: implement your POST requests here
 function postHandler(req, res) {
     // DEBUG: Shows which url was posted to the server
     // console.log(req.url)
@@ -98,7 +98,7 @@ function postHandler(req, res) {
                 let caller = JSON.parse(body);
                 let path = "ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" +  d.getMonth() + "-" +  d.getDate() + ".json";
                 
-                
+
                 if (fs.existsSync(path)) {
                     addCaller(path, caller);
                     
