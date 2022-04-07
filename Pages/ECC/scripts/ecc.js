@@ -1,6 +1,8 @@
 let emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
 let caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
 
+let map;
+
 function initMap() {
     const markers = [
         { lat: 57.05270767455275, lng: 9.913094102327587 },
@@ -14,7 +16,7 @@ function initMap() {
 
 
     // The map, centered at Uluru
-    const map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById("map"), {
         zoom: 12,
         center: markers[2],
     });
@@ -24,7 +26,6 @@ function initMap() {
 
     //input name of the file and the name of the map you want the marker plottet on
     readfile_and_plot('report', map);//reads a file, centers the map on the address found in the file and plots a marker.
-    get_calls();
     // mapMarkers = [];
 
     // for (let i = 0; i < markers.length; i++) {
@@ -35,9 +36,15 @@ function initMap() {
     // }
 }
 
-let new_call = document.getElementById("new_call")
-let emergency_handled = document.getElementById("emergency_handled")
-
+let object_to_change;
+document.querySelector('#new_call').addEventListener('click', function(event) {
+    event.preventDefault();
+    get_calls();
+  });
+document.querySelector('#emergency_handled').addEventListener('click', function(event) {
+    event.preventDefault();
+    post_data(map);
+});
 function get_calls() {
     fetch('calls.json')
         .then(response => response.json())
@@ -50,6 +57,7 @@ function get_calls() {
                     // Get the first unanswered call
                     console.log(calls[i].id);
                     calls[i].answering = true;
+                    object_to_change = i;
                     // Creates HTML with information
                     let call_text = document.getElementById('call_text');
                     call_text.innerHTML = `Id: ${calls[i].id} <br>
@@ -64,7 +72,7 @@ function get_calls() {
                         headers: {
                             'Content-Type': 'application/json;charset=utf-8'
                         },
-                        body: `{"to_change": ${i}, "value": true}`,
+                        body: `{"to_change": ${object_to_change}, "value": true}`,
                     });
 
                     i = calls.length;
@@ -73,14 +81,32 @@ function get_calls() {
         })
 }
 
-async function post_data() {
+async function post_data(mapname) {
+    console.log(object_to_change);
+    fetch('calls.json')
+        .then(response => response.json())
+        .then(calls => {
+            let info_to_display = `Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].address}<br>Time: ${calls[object_to_change].timeset}<br>`;
+            if (calls[object_to_change].address == "Unknown address") {
+                addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display);
+            } else if (calls[object_to_change].address != "Unknown address"){
+                add_geo_marker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display);
+            }
+            addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, caller_marker, mapname,info_to_display);
+
+            // Creates HTML with information
+            let call_text = document.getElementById('call_text');
+            call_text.innerHTML = `Tag næste opkald`;
+            
+        });
     fetch('/emergency_accepted', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
-      body: `{"test": true}`,
+      body: `{"to_change": ${object_to_change}, "value": true}`,
     });
+    
 }
 
 function find_address(search_text) {
@@ -113,7 +139,6 @@ function readfile_and_plot(filename, mapname) {
         .then(response => response.text()) //returns the promise as a string (text)
         .then(report_info => {  // after the promise:
             // Do something with your data (report_info = content of 'filename.txt')
-            console.log(report_info);
             //report_info = reportsemantics(report_info)
             let popup_header = report_info.split(/\n|: /)[1].toUpperCase();//searches for the first linebreak or ":"
             let report_info_to_display = reportsemantics(report_info); // set it to a string so it doesn't parse as undefined
@@ -133,8 +158,6 @@ function reportsemantics(reportstring) {
 
     // Take the split data and add a <br> to every end so HTML makes a new line
     for (let i = 0; i < split_report_info.length; i++) {
-        console.log(i);
-        console.log(report_info_to_display);
         report_info_to_display += split_report_info[i] + "<br>";
     }
     return report_info_to_display;

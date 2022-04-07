@@ -93,7 +93,6 @@ function postHandler(req, res) {
                 content[obj.to_change].answering = obj.value
                 fs.writeFileSync('Pages/ECC/calls.json', JSON.stringify(content, null, 4));
                 
-                //res.end('ok');
             });
         case "emergency_accepted":
             let emergency_accepted_body = '';
@@ -102,16 +101,16 @@ function postHandler(req, res) {
             });
             req.on('end', () => {
                 console.log(emergency_accepted_body);
-                // const obj = JSON.parse(emergency_accepted_body);
-                // let content = JSON.parse(fs.readFileSync('Pages/ECC/calls.json', 'utf8'));
+                const obj = JSON.parse(emergency_accepted_body);
+                let content = JSON.parse(fs.readFileSync('Pages/ECC/calls.json', 'utf8'));
 
-                // content[obj.to_change].answering = obj.value
-                // fs.writeFileSync('Pages/ECC/calls.json', JSON.stringify(content, null, 4));
+                content[obj.to_change].answered = obj.value;
+                fs.writeFileSync('Pages/ECC/calls.json', JSON.stringify(content, null, 4));
                 
-                //res.end('ok');
             });
             break;
     }
+    res.end('ok');
 }
 
 //Handles http requests of method type GET
