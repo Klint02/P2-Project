@@ -1,6 +1,6 @@
 //if server is running on Nicklas' server set this to true,
 //if run locally set to false
-const online = false;
+const online = true;
 
 const http = require('http');
 const fs = require("fs");
@@ -85,13 +85,15 @@ function postHandler(req, res) {
     let d = new Date()
     let path = "ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" +  d.getMonth() + "-" +  d.getDate() + ".json";
     switch (req.url) {
-        case "change_answering":ll
+        case "change_answering":
             // Prints body
             req.on('data', chunk => {
                 body += chunk.toString(); // convert Buffer to string
             });
             req.on('end', () => {
-                console.log(body);
+                // DEBUG: 
+                // console.log(body);
+                
                 // Make body an object
                 const obj = JSON.parse(body);
                 // Get the content in the json file and change the answering variable and write the file
@@ -106,7 +108,9 @@ function postHandler(req, res) {
                 body += chunk.toString(); // convert Buffer to string
             });
             req.on('end', () => {
-                console.log(body);
+                // DEBUG:
+                // console.log(body);
+                
                 // Make body into an object
                 const obj = JSON.parse(body);
                 // Get the content in the json file and change the answered variable and write the file
