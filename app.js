@@ -85,31 +85,32 @@ function postHandler(req, res) {
     let d = new Date()
     let path = "ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" +  d.getMonth() + "-" +  d.getDate() + ".json";
     switch (req.url) {
-        case "change_answering":
-            //sets a cookie to a uuid if login is successfull
-            
+        case "change_answering":ll
+            // Prints body
             req.on('data', chunk => {
                 body += chunk.toString(); // convert Buffer to string
             });
             req.on('end', () => {
                 console.log(body);
+                // Make body an object
                 const obj = JSON.parse(body);
+                // Get the content in the json file and change the answering variable and write the file
                 let content = JSON.parse(fs.readFileSync(path, 'utf8'));
-
                 content[obj.to_change].answering = obj.value
                 fs.writeFileSync(path, JSON.stringify(content, null, 4));
                 
             });
         case "emergency_accepted":
-            let emergency_accepted_body = '';
+            // Prints body
             req.on('data', chunk => {
-                emergency_accepted_body += chunk.toString(); // convert Buffer to string
+                body += chunk.toString(); // convert Buffer to string
             });
             req.on('end', () => {
-                console.log(emergency_accepted_body);
-                const obj = JSON.parse(emergency_accepted_body);
+                console.log(body);
+                // Make body into an object
+                const obj = JSON.parse(body);
+                // Get the content in the json file and change the answered variable and write the file
                 let content = JSON.parse(fs.readFileSync(path, 'utf8'));
-
                 content[obj.to_change].answered = obj.value;
                 fs.writeFileSync(path, JSON.stringify(content, null, 4));
                 
@@ -126,8 +127,6 @@ function postHandler(req, res) {
                 // and writes the stringified json to its respective json document in the ServerData/CallerDB/caller-year-month-day.
                 let caller = JSON.parse(body);
                
-                
-
                 if (fs.existsSync(path)) {
                     addCaller(path, caller);
                     

@@ -58,7 +58,6 @@ function get_calls() {
                 if (calls[i].answered === false && calls[i].answering === false) {
                     // Get the first unanswered call
                     console.log(calls[i].id);
-                    calls[i].answering = true;
                     object_to_change = i;
                     // Creates HTML with information
                     let call_text = document.getElementById('call_text');
@@ -83,17 +82,19 @@ function get_calls() {
         })
 }
 
-async function post_data(mapname) {
-    console.log(object_to_change);
+async function post_data(mapname) {;
     fetch(path)
         .then(response => response.json())
         .then(calls => {
-            let info_to_display = `Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].address}<br>Time: ${calls[object_to_change].timeset}<br>`;
+            // Information to display in box
+            let info_to_display = `Id: ${calls[object_to_change].id} <br>Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].address}<br>Time: ${calls[object_to_change].timeset}<br>Description: ${calls[object_to_change].description}`;
+            // Checks if address is provided or if there is need of use of only lat:lng for place of emergency
             if (calls[object_to_change].address == "Unknown address") {
                 addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display);
             } else if (calls[object_to_change].address != "Unknown address"){
                 add_geo_marker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display);
             }
+            // Adds marker wher caller is calling from
             addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, caller_marker, mapname,info_to_display);
 
             // Creates HTML with information
@@ -101,6 +102,7 @@ async function post_data(mapname) {
             call_text.innerHTML = `Tag næste opkald`;
             
         });
+    // Post data
     fetch('/emergency_accepted', {
       method: 'POST',
       headers: {
