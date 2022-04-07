@@ -19,11 +19,11 @@ function handleSubmit(event) {
   
   const address = data.get('address');
 
-  const number = data.get('number');
-
   const injuries = data.get('injuries');
+
+  const description = data.get('description');
   
-  infoPlacer(name, situation, address, number, injuries);
+  infoPlacer(name, situation, address, injuries, description);
 }
 
 
@@ -36,9 +36,11 @@ form.addEventListener('submit', (event) => {
 
 
 // Reads info from variables and determines whether there is a need for generating placeholders or not
-function infoPlacer(name, situation, address, number, injuries) {
+function infoPlacer(name, situation, address, injuries, description) {
   let addressArr = [{ lat: 57.017145, lng: 9.987593}, { lat: 57.052578, lng: 9.911738}, { lat: 57.046832, lng: 9.913825}];
   let addressArrIndex, formZeroLen = 0, numberMAX = 99999999, numberMIN = 10000000;
+  let tempNumber = Math.floor(Math.random() * numberMAX);
+  tempNumber < numberMIN ? number = tempNumber + 10000000: number = tempNumber;
   
   addressArrIndex = (Math.floor(Math.random() * addressArr.length));
   console.log(addressArrIndex);
@@ -52,14 +54,14 @@ function infoPlacer(name, situation, address, number, injuries) {
   if (address.length === formZeroLen){
     address = "Unknown address"
   }
-  if (number.length === formZeroLen) {
-    let tempNumber = Math.floor(Math.random() * numberMAX);
-    tempNumber < numberMIN ? number = tempNumber + 10000000: number = tempNumber;
-  }
+
   if (injuries.length === formZeroLen) {
     injuries = "unknown injuries";
   }
 
+  if (description.length === formZeroLen) {
+    description = "No description provided";
+  }
   // Assigns the info values to an object
   let callObj = {
     name: name, 
@@ -71,12 +73,14 @@ function infoPlacer(name, situation, address, number, injuries) {
     injuries: injuries, 
     answered: false, 
     answering: false, 
-    useful: true
+    useful: true,
+    description: description
   }
 
   // Converts the object to a JSON string for the POST request
   let caller = JSON.stringify(callObj)
   sendJSON(caller);
+  clearForm();
 }
 
 // Creates a POST request with the caller object
@@ -90,4 +94,12 @@ async function sendJSON(caller) {
       },
       body: caller,
     });
+}
+
+function clearForm(){
+            document.getElementById('name').value='';
+            document.getElementById('situation').value='';
+            document.getElementById('address').value='';
+            document.getElementById('injuries').value='';
+            document.getElementById('description').value='';
 }

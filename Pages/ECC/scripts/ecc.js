@@ -1,3 +1,10 @@
+let emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
+let caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
+let d = new Date()
+let path = "../../ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" +  d.getMonth() + "-" +  d.getDate() + ".json";
+
+let map;
+
 function initMap() {
     const markers = [
         { lat: 57.05270767455275, lng: 9.913094102327587 },
@@ -11,17 +18,16 @@ function initMap() {
 
 
     // The map, centered at Uluru
-    const map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById("map"), {
         zoom: 12,
         center: markers[2],
     });
 
     // The marker, positioned at "toby"
-    addmarker('Tobias', toby, 0, map, 'Her bor Tobias');
+    addmarker('Tobias', toby, caller_marker, map, 'Her bor Tobias');
 
     //input name of the file and the name of the map you want the marker plottet on
     readfile_and_plot('report', map);//reads a file, centers the map on the address found in the file and plots a marker.
-
     // mapMarkers = [];
 
     // for (let i = 0; i < markers.length; i++) {
@@ -30,6 +36,81 @@ function initMap() {
     //         map: map,
     //     });
     // }
+}
+
+let object_to_change;
+document.querySelector('#new_call').addEventListener('click', function(event) {
+    event.preventDefault();
+    get_calls();
+  });
+document.querySelector('#emergency_handled').addEventListener('click', function(event) {
+    event.preventDefault();
+    post_data(map);
+});
+function get_calls() {
+    fetch(path)
+        .then(response => response.json())
+        .then(calls => {
+            console.log(calls)
+            // Check through all calls
+            for (let i = 0; i < calls.length; i++) {
+                // If call is unanswered
+                if (calls[i].answered === false && calls[i].answering === false) {
+                    // Get the first unanswered call
+                    console.log(calls[i].id);
+                    object_to_change = i;
+                    // Creates HTML with information
+                    let call_text = document.getElementById('call_text');
+                    call_text.innerHTML = `Id: ${calls[i].id} <br>
+                    Navn: ${calls[i].name} <br>
+                    Addresse: ${calls[i].address} <br>
+                    Situation: ${calls[i].whatIs} <br>
+                    Tidspunkt: ${calls[i].whenIs} <br>`;
+
+                    // Post data
+                    fetch('/change_answering', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: `{"to_change": ${object_to_change}, "value": true}`,
+                    });
+
+                    i = calls.length;
+                }
+            }
+        })
+}
+
+async function post_data(mapname) {;
+    fetch(path)
+        .then(response => response.json())
+        .then(calls => {
+            // Information to display in box
+            let info_to_display = `Id: ${calls[object_to_change].id} <br>Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].address}<br>Time: ${calls[object_to_change].timeset}<br>Description: ${calls[object_to_change].description}`;
+            // Checks if address is provided or if there is need of use of only lat:lng for place of emergency
+            if (calls[object_to_change].address == "Unknown address") {
+                addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display);
+            } else if (calls[object_to_change].address != "Unknown address"){
+                add_geo_marker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display);
+            }
+            // Adds marker wher caller is calling from
+            addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, caller_marker, mapname,info_to_display);
+
+            // Creates HTML with information
+            let call_text = document.getElementById('call_text');
+            call_text.innerHTML = `Tag næste opkald`;
+            
+        });
+    // Post data
+    fetch('/emergency_accepted', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: `{"to_change": ${object_to_change}, "value": true}`,
+    });
+    
 }
 
 function find_address(search_text) {
@@ -62,7 +143,6 @@ function readfile_and_plot(filename, mapname) {
         .then(response => response.text()) //returns the promise as a string (text)
         .then(report_info => {  // after the promise:
             // Do something with your data (report_info = content of 'filename.txt')
-            console.log(report_info);
             //report_info = reportsemantics(report_info)
             let popup_header = report_info.split(/\n|: /)[1].toUpperCase();//searches for the first linebreak or ":"
             let report_info_to_display = reportsemantics(report_info); // set it to a string so it doesn't parse as undefined
@@ -82,8 +162,6 @@ function reportsemantics(reportstring) {
 
     // Take the split data and add a <br> to every end so HTML makes a new line
     for (let i = 0; i < split_report_info.length; i++) {
-        console.log(i);
-        console.log(report_info_to_display);
         report_info_to_display += split_report_info[i] + "<br>";
     }
     return report_info_to_display;
@@ -98,7 +176,7 @@ function plopmarker(address, popup_header, mapname, report_info_to_display) {
         // Centers the map to the location of the address
         mapname.setCenter(address);
         // Adds marker at the address
-        addmarker(popup_header, address, 0, mapname, report_info_to_display);
+        addmarker(popup_header, address, emergency_marker, mapname, report_info_to_display);
     };
 }
 
@@ -108,6 +186,7 @@ function addmarker(popup_header, LngLat, markertype, mapname, report_info) {
     //dont yet know how to add custom markers, but insert here
     var marker = new google.maps.Marker({
         map: mapname,
+        icon: markertype,
         position: LngLat //results of .this = geocoder.geocode function
     });
     google.maps.event.addListener(marker, 'click', function () {
@@ -134,7 +213,7 @@ function add_geo_marker(popup_header, address, mapname, report_info) {
             // Centers the map to the location of the address
             mapname.setCenter(results[0].geometry.location);
             // Inserts marker on the LAT and LNG of the adress
-            addmarker(popup_header, results[0].geometry.location, 0, mapname, report_info);
+            addmarker(popup_header, results[0].geometry.location, emergency_marker, mapname, report_info);
             // If the address is invalid or any other error
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
