@@ -1,6 +1,6 @@
 //if server is running on Nicklas' server set this to true,
 //if run locally set to false
-const online = true;
+const online = false;
 
 const http = require('http');
 const fs = require("fs");
@@ -104,15 +104,16 @@ function postHandler(req, res) {
             });
         case "emergency_accepted":
             // Prints body
+            let body_emergency_accepted = '';
             req.on('data', chunk => {
-                body += chunk.toString(); // convert Buffer to string
+                body_emergency_accepted += chunk.toString(); // convert Buffer to string
             });
             req.on('end', () => {
                 // DEBUG:
                 // console.log(body);
                 
                 // Make body into an object
-                const obj = JSON.parse(body);
+                const obj = JSON.parse(body_emergency_accepted);
                 // Get the content in the json file and change the answered variable and write the file
                 let content = JSON.parse(fs.readFileSync(path, 'utf8'));
                 content[obj.to_change].answered = obj.value;

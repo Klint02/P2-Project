@@ -1,0 +1,70 @@
+[
+    {
+        "name": "Patrick Gravengaard",
+        "address": "Sigrid Undsets Vej 234B, 9220 Aalborg",
+        "situation": "Spørg dig selv",
+        "number": 91097624,
+        "timeset": "7.4.2022 13.37.10",
+        "AMLLocation": {
+            "lat": 57.052578,
+            "lng": 9.911738
+        },
+        "injuries": "5",
+        "answered": false,
+        "answering": true,
+        "useful": true,
+        "description": "sad",
+        "id": "a0d12e67-d90e-4393-a592-b6499deab803"
+    },
+    {
+        "name": "Patrick Gravengaard",
+        "address": "Sigrid Undsets Vej 234B, 9220 Aalborg",
+        "situation": "Spørg dig selv",
+        "number": 38205962,
+        "timeset": "7.4.2022 13.39.33",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "5",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "asdsadasdsadasdsadasdsadasdsadasdsadasdsadasdsad",
+        "id": "a9dba433-88d4-47c9-b8bf-ba274655a256"
+    },
+    {
+        "name": "Patrick",
+        "address": "Sigrid Undsets Vej 234B, 9220 Aalborg",
+        "situation": "Spørg dig selv",
+        "number": 11721500,
+        "timeset": "7.4.2022 13.43.14",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "5",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "asdsadasdsadasdsadasdsadasdsadasdsadasdsadasdsad",
+        "id": "0a648a8e-5fd9-46ce-9098-7488a90688bd"
+    },
+    {
+        "name": "PatrickPLG",
+        "address": "Unknown address",
+        "situation": "Spørg dig selv",
+        "number": 45202867,
+        "timeset": "7.4.2022 13.43.21",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "5",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "asdsadasdsadasdsadasdsadasdsadasdsadasdsadasdsad",
+        "id": "2a30f4b1-c10a-4ff3-b3de-b0fb9c68c795"
+    }
+]
