@@ -66,5 +66,379 @@
         "useful": true,
         "description": "asdsadasdsadasdsadasdsadasdsadasdsadasdsadasdsad",
         "id": "2a30f4b1-c10a-4ff3-b3de-b0fb9c68c795"
+    },
+    {
+        "name": "unknown caller",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 51347523,
+        "timeset": "7.4.2022 16.12.04",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "384e78c4-cf8f-45d0-9bd1-213199a03826"
+    },
+    {
+        "name": "unknown caller",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 66546554,
+        "timeset": "7.4.2022 16.19.50",
+        "AMLLocation": {
+            "lat": 57.052578,
+            "lng": 9.911738
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "33efacb7-368e-4093-8868-24590a711901"
+    },
+    {
+        "name": "unknown caller",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 49621062,
+        "timeset": "7.4.2022 16.19.52",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "68d2f01d-a7c1-4a87-8798-e7fa2aacb918"
+    },
+    {
+        "name": "Patrick",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 12734370,
+        "timeset": "7.4.2022 16.20.16",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "ac02b04c-9146-4acb-8105-631d8e99aa38"
+    },
+    {
+        "name": "Patrick Gravengaard",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 88518752,
+        "timeset": "7.4.2022 16.20.18",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "d600c31e-46f8-48a8-b61e-f49e90599a0a"
+    },
+    {
+        "name": "unknown caller",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 72106636,
+        "timeset": "7.4.2022 16.23.02",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "41f42698-1cdd-4fc4-b371-978d19cf32d2"
+    },
+    {
+        "name": "Patrick Gravengaard",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 15897593,
+        "timeset": "7.4.2022 16.23.04",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "ec9b3e70-1782-438f-ba86-8fbb339c0806"
+    },
+    {
+        "name": "unknown caller",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 37545351,
+        "timeset": "7.4.2022 16.25.04",
+        "AMLLocation": {
+            "lat": 57.052578,
+            "lng": 9.911738
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "c451f881-24d9-4201-915e-61a3abb9101d"
+    },
+    {
+        "name": "unknown caller",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 15748902,
+        "timeset": "7.4.2022 16.25.04",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "8154b47a-cce9-44e8-acd3-8cc7c617df44"
+    },
+    {
+        "name": "unknown caller",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 15368009,
+        "timeset": "7.4.2022 16.25.04",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "bf15200b-dfcd-42ea-8d4f-e925f6e92cab"
+    },
+    {
+        "name": "unknown caller",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 80291472,
+        "timeset": "7.4.2022 16.25.06",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "caee8dec-31ed-4ed1-bddc-fa05ac9e0749"
+    },
+    {
+        "name": "unknown caller",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 71393689,
+        "timeset": "7.4.2022 16.25.06",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "ea4bdd5f-2d76-4f57-a9b6-e51e7947695f"
+    },
+    {
+        "name": "unknown caller",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 22450605,
+        "timeset": "7.4.2022 16.25.06",
+        "AMLLocation": {
+            "lat": 57.052578,
+            "lng": 9.911738
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "f2c8482d-a005-4d24-a7d3-f4bb31f80507"
+    },
+    {
+        "name": "Patrick",
+        "address": "Sigrid Undsets Vej 234B, 9220 Aalborg",
+        "situation": "Spørg dig selv",
+        "number": 33959980,
+        "timeset": "7.4.2022 16.26.39",
+        "AMLLocation": {
+            "lat": 57.052578,
+            "lng": 9.911738
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "8a3153e5-45f9-436c-bf38-1340256d7d63"
+    },
+    {
+        "name": "test",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 16615438,
+        "timeset": "7.4.2022 16.26.42",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "fa338eaf-3be6-4a70-95b8-860977cd55e8"
+    },
+    {
+        "name": "yep",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 12576281,
+        "timeset": "7.4.2022 16.26.44",
+        "AMLLocation": {
+            "lat": 57.052578,
+            "lng": 9.911738
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "0a84cf1f-ab54-4651-8daa-7cf783dc0979"
+    },
+    {
+        "name": "Patrick",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 31034596,
+        "timeset": "7.4.2022 16.27.07",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "9a773c77-15dc-4293-9cc5-57b497036f1b"
+    },
+    {
+        "name": "unknown caller",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 81868854,
+        "timeset": "7.4.2022 16.27.07",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "e0e3a3df-0a08-4266-8def-68c8bc960b69"
+    },
+    {
+        "name": "Patrick Gravengaard",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 22939499,
+        "timeset": "7.4.2022 16.27.09",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "db5e3147-6e8d-43c9-b049-c26727981320"
+    },
+    {
+        "name": "yep",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 48036864,
+        "timeset": "7.4.2022 16.27.10",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "5d9b93a4-2d5a-4019-b27b-4a3ccda71aa2"
+    },
+    {
+        "name": "Patrick Gravengaard",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 30334975,
+        "timeset": "7.4.2022 16.27.12",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "unknown injuries",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "d330da5f-8ce5-4030-b015-82dcf88b0262"
+    },
+    {
+        "name": "Patrick",
+        "address": "Sigrid Undsets Vej 234B, 9220 Aalborg",
+        "situation": "Spørg dig selv",
+        "number": 70483374,
+        "timeset": "7.4.2022 16.27.27",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "5",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "asdsadasdsadasdsadasdsadasdsadasdsadasdsadasdsad",
+        "id": "013adbb4-cbd7-47e4-97a5-8f0334a35529"
     }
 ]

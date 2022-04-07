@@ -39,6 +39,7 @@ function initMap() {
 }
 
 let object_to_change;
+
 document.querySelector('#new_call').addEventListener('click', function(event) {
     event.preventDefault();
     get_calls();
@@ -47,43 +48,62 @@ document.querySelector('#emergency_handled').addEventListener('click', function(
     event.preventDefault();
     post_data(map);
 });
+
 function get_calls() {
+    let queue = 0;
     fetch(path)
         .then(response => response.json())
         .then(calls => {
-            console.log(calls)
+            // Get the number of calls in queue
+            for (let i = 0; i < calls.length; i++) {
+                if (calls[i].answered == false && calls[i].answering == false) {
+                    queue++;
+                }
+            }
+            console.log(queue);
             // Check through all calls
             for (let i = 0; i < calls.length; i++) {
-                // If call is unanswered
-                if (calls[i].answered === false && calls[i].answering === false) {
-                    // Get the first unanswered call
-                    console.log(calls[i].id);
-                    object_to_change = i;
+                if (queue === 0) {
                     // Creates HTML with information
                     let call_text = document.getElementById('call_text');
-                    call_text.innerHTML = `Id: ${calls[i].id} <br>
-                    Navn: ${calls[i].name} <br>
-                    Addresse: ${calls[i].address} <br>
-                    Situation: ${calls[i].whatIs} <br>
-                    Tidspunkt: ${calls[i].whenIs} <br>`;
+                    call_text.innerHTML = `Der er ikke flere opkald`;
+                } else {
+                    // If call is unanswered
+                    if (calls[i].answered === false && calls[i].answering === false) {
+                        // Get the first unanswered call
+                        console.log(calls[i].id);
+                        object_to_change = i;
+                        // Creates HTML with information
+                        let call_text = document.getElementById('call_text');
+                        call_text.innerHTML = `Id: ${calls[i].id} <br>
+                        Navn: ${calls[i].name} <br>
+                        Addresse: ${calls[i].address} <br>
+                        Situation: ${calls[i].whatIs} <br>
+                        Tidspunkt: ${calls[i].whenIs} <br>`;
 
-                    // Post data
-                    fetch('/change_answering', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json;charset=utf-8'
-                        },
-                        body: `{"to_change": ${object_to_change}, "value": true}`,
-                    });
+                        // Post data
+                        fetch('/change_answering', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json;charset=utf-8'
+                            },
+                            body: `{"to_change": ${object_to_change}, "value": true}`,
+                        });
 
-                    i = calls.length;
+                        i = calls.length;
+                    }
                 }
             }
         })
 }
 
-async function post_data(mapname) {;
-    fetch(path)
+async function post_data(mapname) {
+    if (object_to_change === undefined) {
+        // Creates HTML with information
+        let call_text = document.getElementById('call_text');
+        call_text.innerHTML = `Du skal først tage et opkald`;
+    } else {
+        fetch(path)
         .then(response => response.json())
         .then(calls => {
             // Information to display in box
@@ -102,14 +122,15 @@ async function post_data(mapname) {;
             call_text.innerHTML = `Tag næste opkald`;
             
         });
-    // Post data
-    fetch('/emergency_accepted', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: `{"to_change": ${object_to_change}, "value": true}`,
-    });
+        // Post data
+        fetch('/emergency_accepted', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: `{"to_change": ${object_to_change}, "value": true}`,
+        });
+    }
     
 }
 
