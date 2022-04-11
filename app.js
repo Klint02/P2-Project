@@ -6,6 +6,7 @@ const http = require('http');
 const fs = require("fs");
 const url = require("url");
 const { v4: uuidv4 } = require('uuid');
+const { rejects } = require('assert');
 const operatorPath = "ServerData/operators.json";
 let hostname;
 online ? hostname = '192.168.1.72' : hostname = 'localhost';
@@ -79,6 +80,19 @@ function processReq(req, res) {
     }
 }
 
+function getPostData(req) {
+    return new Promise((resolve, reject) => {
+        body = ""
+        req.on('data', chunk => {
+            body += chunk.toString(); // convert Buffer to string
+        });
+        req.on('end', () => {
+            if (body == "") reject("Empty post request");
+            resolve(JSON.parse(body));
+        });
+    });
+}
+
 //TODO: implement your POST requests here
 function postHandler(req, res) {
     let body = '';
@@ -86,40 +100,22 @@ function postHandler(req, res) {
     let path = "ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
     switch (req.url) {
         case "change_answering":
-            // Prints body
-            req.on('data', chunk => {
-                body += chunk.toString(); // convert Buffer to string
-            });
-            req.on('end', () => {
-                // DEBUG: 
-                // console.log(body);
-
-                // Make body an object
-                const obj = JSON.parse(body);
-                // Get the content in the json file and change the answering variable and write the file
+            // Get the content in the json file and change the answering variable and write the file
+            getPostData(req).then(obj => {
                 let content = JSON.parse(fs.readFileSync(path, 'utf8'));
                 content[obj.to_change].answering = obj.value
                 fs.writeFileSync(path, JSON.stringify(content, null, 4));
-
+            }).catch(err => {
+                console.log(err);
+                errorResponse("Request failed" + err);
             });
+
         case "emergency_accepted":
-            // Prints body
-            let body_emergency_accepted = '';
-            req.on('data', chunk => {
-                body_emergency_accepted += chunk.toString(); // convert Buffer to string
-            });
-            req.on('end', () => {
-                // DEBUG:
-                // console.log(body);
-
-                // Make body into an object
-                const obj = JSON.parse(body_emergency_accepted);
-                // Get the content in the json file and change the answered variable and write the file
-                let content = JSON.parse(fs.readFileSync(path, 'utf8'));
-                content[obj.to_change].answered = obj.value;
-                fs.writeFileSync(path, JSON.stringify(content, null, 4));
-
-            });
+            const obj = getPostData(req);
+            // Get the content in the json file and change the answered variable and write the file
+            let content = JSON.parse(fs.readFileSync(path, 'utf8'));
+            content[obj.to_change].answered = obj.value;
+            fs.writeFileSync(path, JSON.stringify(content, null, 4));
             break;
         case "callerobj":
             // Assigns the data given from the post request to the body variable 
@@ -161,11 +157,8 @@ function postHandler(req, res) {
 // Function used to add a caller to DATE.json file
 // Gives each caller a random UUID
 function addCaller(path, caller) {
-    let content = JSON.parse(fs.readFileSync(path, 'utf8'));
-
     caller.id = uuidv4();
-    content.push(caller);
-    fs.writeFileSync(path, JSON.stringify(content, null, 4));
+    exportObjectPush(path, caller);
 }
 
 //Handles http requests of method type GET
@@ -271,6 +264,7 @@ function getArgs(argsRaw) {
 //Merges an object of type JSON with a object on the disk of type JSON
 //Think of it like the Array.push() function but for objects on the
 //disk
+//Not used. TODO: Remove
 function exportObjectPush(path, object) {
     let obj = [];
     //We import the file first to so we can add to it
@@ -281,7 +275,7 @@ function exportObjectPush(path, object) {
     //add the object to the end/start of the object
     obj.push(object);
     //Write the object to the disk
-    fs.writeFileSync(path, JSON.stringify(arr), { encoding: "utf8" });
+    fs.writeFileSync(path, JSON.stringify(obj), { encoding: "utf8" });
 }
 
 //Reads an object from disk
