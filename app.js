@@ -7,6 +7,7 @@ const fs = require("fs");
 const url = require("url");
 const { v4: uuidv4 } = require('uuid');
 const { rejects } = require('assert');
+const { addAbortSignal } = require('stream');
 const operatorPath = "ServerData/operators.json";
 let hostname;
 online ? hostname = '192.168.1.72' : hostname = 'localhost';
@@ -79,7 +80,7 @@ function processReq(req, res) {
 
     }
 }
-
+//Returns promise that retrieves post data in chunks
 function getPostData(req) {
     return new Promise((resolve, reject) => {
         body = ""
@@ -92,62 +93,36 @@ function getPostData(req) {
         });
     });
 }
+//TODO: Find better name and better description
+//Changes some data. idk man
 
-//TODO: implement your POST requests here
+
 function postHandler(req, res) {
     let body = '';
     let d = new Date()
     let path = "ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
     switch (req.url) {
         case "change_answering":
+        case "emergency_accepted":
             // Get the content in the json file and change the answering variable and write the file
             getPostData(req).then(obj => {
-                let content = JSON.parse(fs.readFileSync(path, 'utf8'));
+                let content = importObject(path);
                 content[obj.to_change].answering = obj.value
-                fs.writeFileSync(path, JSON.stringify(content, null, 4));
+                exportObject(path, content);
             }).catch(err => {
                 console.log(err);
                 errorResponse("Request failed" + err);
             });
-
-        case "emergency_accepted":
-            const obj = getPostData(req);
-            // Get the content in the json file and change the answered variable and write the file
-            let content = JSON.parse(fs.readFileSync(path, 'utf8'));
-            content[obj.to_change].answered = obj.value;
-            fs.writeFileSync(path, JSON.stringify(content, null, 4));
             break;
         case "callerobj":
-            // Assigns the data given from the post request to the body variable 
-            req.on('data', chunk => {
-                body += chunk.toString(); // convert Buffer to string
-
-            });
-            req.on('end', () => {
-                // Creates a date object 'd' the fs.writeFileSync uses to name it's documents by date
-                // and writes the stringified json to its respective json document in the ServerData/CallerDB/caller-year-month-day.
-                let caller = JSON.parse(body);
-
-                if (fs.existsSync(path)) {
-                    addCaller(path, caller);
-
-                } else {
-                    // If the file does not exist, it will instead create one that is ready for json object input
-                    fs.writeFileSync(path, '[]',
-                        {
-                            // General document metadata format so it gets created right
-                            encoding: "utf8",
-                            flag: "a+",
-                            mode: 0o666
-                        });
-                    addCaller(path, caller);
-                }
-                // DEBUG: Shows the information stored in the body variable and caller object
-                // console.log(body);
-                // console.log(caller);
-
+            // Creates a date object 'd' the fs.writeFileSync uses to name it's documents by date
+            // and writes the stringified json to its respective json document in the ServerData/CallerDB/caller-year-month-day.
+            getPostData(req).then(caller => {
+                // If the file does not exist, it will instead create one that is ready for json object input
+                if (!fs.existsSync(path)) exportObject(path, '[]');
+                addCaller(path, caller);
                 res.end('ok');
-            });
+            })
             break;
     }
     //Continues response
@@ -264,7 +239,6 @@ function getArgs(argsRaw) {
 //Merges an object of type JSON with a object on the disk of type JSON
 //Think of it like the Array.push() function but for objects on the
 //disk
-//Not used. TODO: Remove
 function exportObjectPush(path, object) {
     let obj = [];
     //We import the file first to so we can add to it
@@ -275,7 +249,16 @@ function exportObjectPush(path, object) {
     //add the object to the end/start of the object
     obj.push(object);
     //Write the object to the disk
-    fs.writeFileSync(path, JSON.stringify(obj), { encoding: "utf8" });
+    exportObject(path, object);
+}
+
+//Exports an object to disk
+function exportObject(path, object) {
+    fs.writeFileSync(path, JSON.stringify(object), {
+        encoding: "utf8",
+        flag: "a+",
+        mode: 0o666
+    });
 }
 
 //Reads an object from disk
