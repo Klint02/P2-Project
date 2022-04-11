@@ -1,0 +1,17 @@
+{
+    "name": "asdf",
+    "address": "asd",
+    "situation": "fgh",
+    "number": 12053601,
+    "timeset": "12.4.2022 00.30.41",
+    "AMLLocation": {
+        "lat": 57.052578,
+        "lng": 9.911738
+    },
+    "injuries": "fgh",
+    "answered": false,
+    "answering": false,
+    "useful": true,
+    "description": "ghj",
+    "id": "af792df0-2a42-4658-8951-eabda2b91b4d"
+}

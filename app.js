@@ -66,7 +66,7 @@ function processReq(req, res) {
     //Depending on http method used, different handlers handle the request. If an
     //unexpected method type appears we attempt to respond with a default file 
     //response
-    console.log("GOT: " + req.method + " " + req.url);
+    console.log("Request: " + req.method + " " + req.url);
     switch (req.method) {
         case 'POST':
             postHandler(req, res);
@@ -101,9 +101,7 @@ function postHandler(req, res) {
     let path = "ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
     switch (req.url) {
         case "change_answering":
-            console.log("1");
         case "emergency_accepted":
-            console.log("2");
             //TODO: could potentially be moved to it's own function, but I couldn't be bothered
             // Get the content in the json file and change the answering variable and write the file
             getPostData(req).then(obj => {
@@ -146,7 +144,6 @@ function getHandler(req, res) {
     //Depending on the requested page GET requests need to be handled differently
     switch (splitUrl[0]) {
         case "Pages/ECC/ecc.html":
-            console.log("here");
             if (args.length > 0 || args["uname"] == undefined) break;
             //sets a cookie to a uuid if login is successfull
             res.setHeader("set-cookie", ["uuid=" + checkLogin(args) + ";secure"]);
@@ -241,33 +238,43 @@ function getArgs(argsRaw) {
 //Think of it like the Array.push() function but for objects on the
 //disk
 function exportObjectPush(path, object) {
-    let obj = [];
     //We import the file first to so we can add to it
-    let temp = importObject(path);
-    if (temp != "") {
-        obj = temp;
-    }
-    //add the object to the end/start of the object
-    obj.push(object);
-    //Write the object to the disk
+    let obj = [];
+    temp = importObject(path);
+    if (temp != "") obj = temp;
+    console.log("Writing" + temp);
+    obj[obj.length] = object;
     exportObject(path, object);
+    //add the object to the end/start of the object
+
+    //Write the object to the disk
+
 }
 
 //Exports an object to disk
 function exportObject(path, object) {
-    fs.writeFileSync(path, JSON.stringify(object), {
+    // fs.writeFileSync(path, JSON.stringify(object), {
+    //     encoding: "utf8",
+    //     flag: "a+",
+    //     mode: 0o666,
+    // });
+    fs.writeFileSync(path, JSON.stringify(object, {
         encoding: "utf8",
         flag: "a+",
-        mode: 0o666
-    });
+        mode: 0o666,
+    }, 4));
 }
 
 //Reads an object from disk
 function importObject(path) {
     //read a file synchronously should be changed to read asynchronously, but time
-    let temp = fs.readFileSync(path, "utf8");
+    let temp;
+    try {
+        temp = fs.readFileSync(path, 'utf8');
+    } catch {
+        errorResponse("File not found: " + path);
+    }
     if (temp != "") {
-        //Parse the JSON object and return it
         return JSON.parse(temp);
     }
     return "";

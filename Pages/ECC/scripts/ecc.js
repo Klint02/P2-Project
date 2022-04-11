@@ -47,6 +47,7 @@ function get_calls() {
         .then(calls => {
             // Get the number of calls in queue
             for (let i = 0; i < calls.length; i++) {
+                console.log("calls" + calls[i]);
                 if (calls[i].answered == false && calls[i].answering == false) {
                     queue++;
                 }
