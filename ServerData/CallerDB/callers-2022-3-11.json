@@ -1,0 +1,36 @@
+[
+    {
+        "name": "Thomas Nykjær",
+        "address": "Brandevej 10, Aalborg",
+        "situation": "Fire",
+        "number": 86889722,
+        "timeset": "11.4.2022 12.21.13",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "at least 1",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "aaaaa",
+        "id": "74ec2335-4b69-44ee-922e-17499180b702"
+    },
+    {
+        "name": "Tai",
+        "address": "Unknown address",
+        "situation": "unknown situation",
+        "number": 87815313,
+        "timeset": "11.4.2022 12.22.46",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "1",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "description": "No description provided",
+        "id": "f660fab2-bc9f-411e-a0e9-1458ef68129a"
+    }
+]
