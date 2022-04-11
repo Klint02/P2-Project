@@ -93,8 +93,6 @@ function getPostData(req) {
         });
     });
 }
-//TODO: Find better name and better description
-//Changes some data. idk man
 
 
 function postHandler(req, res) {
@@ -103,7 +101,10 @@ function postHandler(req, res) {
     let path = "ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
     switch (req.url) {
         case "change_answering":
+            console.log("1");
         case "emergency_accepted":
+            console.log("2");
+            //TODO: could potentially be moved to it's own function, but I couldn't be bothered
             // Get the content in the json file and change the answering variable and write the file
             getPostData(req).then(obj => {
                 let content = importObject(path);
@@ -111,10 +112,11 @@ function postHandler(req, res) {
                 exportObject(path, content);
             }).catch(err => {
                 console.log(err);
-                errorResponse("Request failed" + err);
+                errorResponse("Request failed: " + err);
             });
             break;
         case "callerobj":
+            //TODO: could potentially be moved to it's own function, but I couldn't be bothered
             // Creates a date object 'd' the fs.writeFileSync uses to name it's documents by date
             // and writes the stringified json to its respective json document in the ServerData/CallerDB/caller-year-month-day.
             getPostData(req).then(caller => {
@@ -125,8 +127,6 @@ function postHandler(req, res) {
             })
             break;
     }
-    //Continues response
-    //responseCompiler(req, res);
 }
 
 // Function used to add a caller to DATE.json file
@@ -144,8 +144,9 @@ function getHandler(req, res) {
     //puts arguments in object args
     const args = getArgs(splitUrl[1]);
     //Depending on the requested page GET requests need to be handled differently
-    switch (req.url.split('?')[0]) {
+    switch (splitUrl[0]) {
         case "Pages/ECC/ecc.html":
+            console.log("here");
             if (args.length > 0 || args["uname"] == undefined) break;
             //sets a cookie to a uuid if login is successfull
             res.setHeader("set-cookie", ["uuid=" + checkLogin(args) + ";secure"]);
