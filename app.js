@@ -8,6 +8,7 @@ const url = require("url");
 const { v4: uuidv4 } = require('uuid');
 const { rejects } = require('assert');
 const { addAbortSignal } = require('stream');
+const { isArray } = require('util');
 const operatorPath = "ServerData/operators.json";
 let hostname;
 online ? hostname = '192.168.1.72' : hostname = 'localhost';
@@ -51,7 +52,7 @@ function requestHandler(req, res) {
         processReq(req, res);
     } catch (err) {
         console.log("Internal Error: " + err);
-        errorResponse(res, 500, "");
+        return errorResponse(res, 500, "Internal Error" + err);
     }
 }
 
@@ -96,7 +97,6 @@ function getPostData(req) {
 
 
 function postHandler(req, res) {
-    let body = '';
     let d = new Date()
     let path = "ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
     switch (req.url) {
@@ -105,12 +105,12 @@ function postHandler(req, res) {
             //TODO: could potentially be moved to it's own function, but I couldn't be bothered
             // Get the content in the json file and change the answering variable and write the file
             getPostData(req).then(obj => {
-                let content = importObject(path);
+                let content = importObject(path, res);
                 content[obj.to_change].answering = obj.value
-                exportObject(path, content);
+                exportObject(path, content, res);
             }).catch(err => {
                 console.log(err);
-                errorResponse("Request failed: " + err);
+                return errorResponse(res, 500, "Internal Error: Request failed: " + err);
             });
             break;
         case "callerobj":
@@ -119,9 +119,9 @@ function postHandler(req, res) {
             // and writes the stringified json to its respective json document in the ServerData/CallerDB/caller-year-month-day.
             getPostData(req).then(caller => {
                 // If the file does not exist, it will instead create one that is ready for json object input
-                if (!fs.existsSync(path)) exportObject(path, '[]');
-                addCaller(path, caller);
-                res.end('ok');
+                if (!fs.existsSync(path)) exportObject(path, '[]', res);
+                //Check if an error has occured, if it hasn't: End. To prevent writing to ended stream
+                if (!addCaller(path, caller, res)) res.end('ok');
             })
             break;
     }
@@ -129,9 +129,9 @@ function postHandler(req, res) {
 
 // Function used to add a caller to DATE.json file
 // Gives each caller a random UUID
-function addCaller(path, caller) {
+function addCaller(path, caller, res) {
     caller.id = uuidv4();
-    exportObjectPush(path, caller);
+    return exportObjectPush(path, caller, res);
 }
 
 //Handles http requests of method type GET
@@ -171,8 +171,8 @@ function fileResponse(url, res) {
         //In case of an error we assume the requested file does not exist
         //and respond with a 404 http code
         if (err) {
-            console.error(err);
-            errorResponse(res, 404, String(err));
+            console.error("404: Not Found: " + err);
+            return errorResponse(res, 404, "404: Not Found: " + err);
         } else {
             //everything has now been handled correctly and we can repond
             //with a http 200 code
@@ -210,12 +210,14 @@ function determineMimeType(fileName) {
 
 //Responds with an error
 function errorResponse(res, code, reason) {
+    console.log(reason);
     res.statusCode = code;
     //Set type to "text/txt" because.... that's the simplest i guess
     res.setHeader('Content-Type', 'text/txt');
     //Write reason to user
     res.write(reason);
     res.end("\n");
+    return reason
 }
 
 //Gets arguments from a request of method GET and puts them in a neat
@@ -237,54 +239,61 @@ function getArgs(argsRaw) {
 //Merges an object of type JSON with a object on the disk of type JSON
 //Think of it like the Array.push() function but for objects on the
 //disk
-function exportObjectPush(path, object) {
-    //We import the file first to so we can add to it
-    let obj = [];
-    temp = importObject(path);
-    if (temp != "") obj = temp;
-    console.log("Writing" + temp);
-    obj[obj.length] = object;
-    exportObject(path, object);
-    //add the object to the end/start of the object
+function exportObjectPush(path, object, res) {
+    let arr = [];
+    //We import the file first so we can add an object to it
+    temp = importObject(path, res);
+
+    //Check to see if imported array is not empty
+    if (temp != "") {
+        arr = temp;
+        //Check to make sure imported data is of type: array
+        if (!Array.isArray(temp)) return errorResponse(res, 500, "Internal Error: Imported object is not Array Path to object, path: " + path);
+    }
+    //add the object to the end/start of the array
+    arr.push(object);
 
     //Write the object to the disk
+    return exportObject(path, arr, res);
 
 }
 
 //Exports an object to disk
 function exportObject(path, object) {
-    // fs.writeFileSync(path, JSON.stringify(object), {
-    //     encoding: "utf8",
-    //     flag: "a+",
-    //     mode: 0o666,
-    // });
-    fs.writeFileSync(path, JSON.stringify(object, {
-        encoding: "utf8",
-        flag: "a+",
-        mode: 0o666,
-    }, 4));
+    try {
+        fs.writeFileSync(path, JSON.stringify(object, {
+            //Just metadata stuffs
+            encoding: "utf8",
+            flag: "a+",
+            mode: 0o666,
+        }, 4));
+        //The "4" adds lines in the file so the printed object is readable to humans
+    } catch {
+        return errorResponse(res, 500, "Internal Error: Could not write to disk, Path: " + path);
+    }
 }
 
 //Reads an object from disk
-function importObject(path) {
-    //read a file synchronously should be changed to read asynchronously, but time
-    let temp;
+function importObject(path, res) {
+    //read a file synchronously, should probs be changed to read asynchronously
+    //but deadlines
+    let temp = "";
     try {
         temp = fs.readFileSync(path, 'utf8');
+        if (temp != "") {
+            return JSON.parse(temp);
+        }
+        return "";
     } catch {
-        errorResponse("File not found: " + path);
+        return errorResponse(res, 500, "Internal Error: Data file not found: " + path);
     }
-    if (temp != "") {
-        return JSON.parse(temp);
-    }
-    return "";
 }
 
 //Checks login info
 function checkLogin(args) {
     //Import valid logins obviously the object should be encrypted but this is fine
     //for a prototype
-    const logins = importObject(operatorPath);
+    const logins = importObject(operatorPath, res);
     //Goes through logins to see if one mathes
     for (let i = 0; i < logins.length; i++) {
         if (logins[i]["uname"] == args["uname"] && logins[i]["psw"] == args["psw"]) {
