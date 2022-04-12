@@ -47,12 +47,10 @@ function get_calls() {
         .then(calls => {
             // Get the number of calls in queue
             for (let i = 0; i < calls.length; i++) {
-                console.log("calls" + calls[i]);
                 if (calls[i].answered == false && calls[i].answering == false) {
                     queue++;
                 }
             }
-            console.log(queue);
             // Check through all calls
             for (let i = 0; i < calls.length; i++) {
                 if (queue === 0) {
@@ -63,7 +61,7 @@ function get_calls() {
                     // If call is unanswered
                     if (calls[i].answered === false && calls[i].answering === false) {
                         // Get the first unanswered call
-                        console.log(calls[i].id);
+                        //console.log(calls[i].id);
                         object_to_change = i;
                         // Creates HTML with information
                         let call_text = document.getElementById('call_text');

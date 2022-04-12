@@ -245,17 +245,14 @@ function exportObjectPush(path, object, res) {
     temp = importObject(path, res);
 
     //Check to see if imported array is not empty
-    if (temp != "") {
-        arr = temp;
-        //Check to make sure imported data is of type: array
-        if (!Array.isArray(temp)) return errorResponse(res, 500, "Internal Error: Imported object is not Array Path to object, path: " + path);
-    }
+    if (temp != "" && temp != "[]") arr = temp;
+    //Check to make sure imported data is of type: array
+    if (!Array.isArray(arr)) return errorResponse(res, 500, "Internal Error: Imported object is not Array, Path to object: " + path);
     //add the object to the end/start of the array
     arr.push(object);
 
     //Write the object to the disk
     return exportObject(path, arr, res);
-
 }
 
 //Exports an object to disk
