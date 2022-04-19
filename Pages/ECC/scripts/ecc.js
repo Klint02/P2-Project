@@ -1,7 +1,7 @@
 let emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
 let caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
 let d = new Date()
-let path = "../../ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" +  d.getMonth() + "-" +  d.getDate() + ".json";
+let path = "../../ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
 
 let map;
 
@@ -39,78 +39,89 @@ function initMap() {
 }
 
 let object_to_change;
-document.querySelector('#new_call').addEventListener('click', function(event) {
-    event.preventDefault();
-    get_calls();
-  });
-document.querySelector('#emergency_handled').addEventListener('click', function(event) {
-    event.preventDefault();
-    post_data(map);
-});
+
 function get_calls() {
+    let queue = 0;
     fetch(path)
         .then(response => response.json())
         .then(calls => {
-            console.log(calls)
+            // Get the number of calls in queue
+            for (let i = 0; i < calls.length; i++) {
+                if (calls[i].answered == false && calls[i].answering == false) {
+                    queue++;
+                }
+            }
             // Check through all calls
             for (let i = 0; i < calls.length; i++) {
-                // If call is unanswered
-                if (calls[i].answered === false && calls[i].answering === false) {
-                    // Get the first unanswered call
-                    console.log(calls[i].id);
-                    object_to_change = i;
+                if (queue === 0) {
                     // Creates HTML with information
                     let call_text = document.getElementById('call_text');
-                    call_text.innerHTML = `Id: ${calls[i].id} <br>
-                    Navn: ${calls[i].name} <br>
-                    Addresse: ${calls[i].address} <br>
-                    Situation: ${calls[i].whatIs} <br>
-                    Tidspunkt: ${calls[i].whenIs} <br>`;
+                    call_text.innerHTML = `Der er ikke flere opkald`;
+                } else {
+                    // If call is unanswered
+                    if (calls[i].answered === false && calls[i].answering === false) {
+                        // Get the first unanswered call
+                        //console.log(calls[i].id);
+                        object_to_change = i;
+                        // Creates HTML with information
+                        let call_text = document.getElementById('call_text');
+                        call_text.innerHTML = `Id: ${calls[i].id} <br>
+                        Navn: ${calls[i].name} <br>
+                        Addresse: ${calls[i].address} <br>
+                        Situation: ${calls[i].whatIs} <br>
+                        Tidspunkt: ${calls[i].whenIs} <br>`;
 
-                    // Post data
-                    fetch('/change_answering', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json;charset=utf-8'
-                        },
-                        body: `{"to_change": ${object_to_change}, "value": true}`,
-                    });
+                        // Post data
+                        fetch('/change_answering', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json;charset=utf-8'
+                            },
+                            body: `{"to_change": ${object_to_change}, "value": true}`,
+                        });
 
-                    i = calls.length;
+                        i = calls.length;
+                    }
                 }
             }
         })
 }
 
-async function post_data(mapname) {;
-    fetch(path)
-        .then(response => response.json())
-        .then(calls => {
-            // Information to display in box
-            let info_to_display = `Id: ${calls[object_to_change].id} <br>Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].address}<br>Time: ${calls[object_to_change].timeset}<br>Description: ${calls[object_to_change].description}`;
-            // Checks if address is provided or if there is need of use of only lat:lng for place of emergency
-            if (calls[object_to_change].address == "Unknown address") {
-                addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display);
-            } else if (calls[object_to_change].address != "Unknown address"){
-                add_geo_marker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display);
-            }
-            // Adds marker wher caller is calling from
-            addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, caller_marker, mapname,info_to_display);
+async function post_data(mapname) {
+    if (object_to_change === undefined) {
+        // Creates HTML with information
+        let call_text = document.getElementById('call_text');
+        call_text.innerHTML = `Du skal først tage et opkald`;
+    } else {
+        fetch(path)
+            .then(response => response.json())
+            .then(calls => {
+                // Information to display in box
+                let info_to_display = `Id: ${calls[object_to_change].id} <br>Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].address}<br>Time: ${calls[object_to_change].timeset}<br>Description: ${calls[object_to_change].description}`;
+                // Checks if address is provided or if there is need of use of only lat:lng for place of emergency
+                if (calls[object_to_change].address == "Unknown address") {
+                    addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display);
+                } else if (calls[object_to_change].address != "Unknown address") {
+                    add_geo_marker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display);
+                }
+                // Adds marker wher caller is calling from
+                addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, caller_marker, mapname, info_to_display);
 
-            // Creates HTML with information
-            let call_text = document.getElementById('call_text');
-            call_text.innerHTML = `Tag næste opkald`;
-            
+                // Creates HTML with information
+                let call_text = document.getElementById('call_text');
+                call_text.innerHTML = `Tag næste opkald`;
+
+            });
+        // Post data
+        fetch('/emergency_accepted', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: `{"to_change": ${object_to_change}, "value": true}`,
         });
-    // Post data
-    fetch('/emergency_accepted', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: `{"to_change": ${object_to_change}, "value": true}`,
-    });
-    
+    }
+
 }
 
 function find_address(search_text) {
@@ -164,6 +175,11 @@ function reportsemantics(reportstring) {
     for (let i = 0; i < split_report_info.length; i++) {
         report_info_to_display += split_report_info[i] + "<br>";
     }
+    /* TODO: decide foreach or for?
+    split_report_info.forEach(element => {
+        report_info_to_display += element + "<br>";
+    });
+    */
     return report_info_to_display;
 
 }
@@ -224,15 +240,24 @@ function add_geo_marker(popup_header, address, mapname, report_info) {
 
 //If a uuid is found remove the login screen and replace with a login success thingy
 //and a logout button that expires the cookie
-if (document.cookie != "uuid=") {
+/*For the if statement, was changed because it now doesn't work: document.cookie != "uuid="*/
+if (document.cookie != "") {
     document.getElementById("loginForm").remove();
     //document.getElementById("loginText").innerText = "Logged in";
     let loginPlaceholder = document.getElementById("logoutPlaceholder");
     //loginPlaceholder.style.display = "inline-block";
-    loginPlaceholder.innerHTML = '<p>Logged in</p><button id=logoutbtn>Logout</button>';
+    loginPlaceholder.innerHTML = '<div id="calls"><button id="new_call">Næste opkald</button><button id="emergency_handled">Plot emergency</button><p id="call_text"></p></div><p>Logged in</p><button id=logoutbtn>Logout</button>';
     document.getElementById("logoutbtn").addEventListener("click", function (event) {
         location.href = "ecc.html";
         document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+    });
+    document.querySelector('#new_call').addEventListener('click', function (event) {
+        event.preventDefault();
+        get_calls();
+    });
+    document.querySelector('#emergency_handled').addEventListener('click', function (event) {
+        event.preventDefault();
+        post_data(map);
     });
 }
 
@@ -247,3 +272,6 @@ class event {
     }
 }
 
+document.querySelector(".nodefault").addEventListener("click", function (event) {
+    event.preventDefault();
+});

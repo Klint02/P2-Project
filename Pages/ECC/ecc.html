@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf8">
     <link rel="stylesheet" href="ecc.css" />
+    <title>EEC interface</title>
 </head>
 
 <body>
@@ -13,12 +14,6 @@
         }
     </style>
     <h1>ECC interface</h1>
-    <div id="calls">
-        <button id="new_call">Næste opkald</button>
-        <button id="emergency_handled">Plot emergency</button>
-        <p id="call_text"></p>
-    </div>
-    <p id="loginText">Please log in</p>
     <div id="logoutPlaceholder" class="horizontal">
     </div>
     <form id="loginForm" method="get">
@@ -35,12 +30,12 @@
             src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBuaBC03nHrW5mWu1hPomE_eX7qLgScauQ&callback=initMap&libraries=&v=weekly'
             async defer></script>
     </div>
-    <div>
+    <!-- <div>
         <form method="get" class="nodefault">
             <textarea id="reportInput" name="report"></textarea>
             <input type="submit">
         </form>
-    </div>
+    </div> -->
     <form action="../index.html">
         <button type="submit">Back to index</button>
     </form>
