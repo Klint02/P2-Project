@@ -24,7 +24,7 @@ class operator {
 }
 //An event/accident/yougetit
 class event {
-    constructor(lat, lng, type, adInfo, operator) {
+    constructor(lat, lng, type, adInfo, operator, address) {
         this.lat = lat;
         this.lng = lng;
         this.type = type;
