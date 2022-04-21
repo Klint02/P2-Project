@@ -241,9 +241,7 @@ function addmarker(popup_header, LngLat, markertype, mapname, report_info, uniqu
 };
 
 var delMarker = function (marker) {
-    
     if (confirm('are you sure you want to delete the marker?') == true) {
-    
         marker.setMap(null);
         let markerID = String(marker.id);
         fetch('/emergency_handled', {
