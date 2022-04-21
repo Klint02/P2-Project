@@ -16,13 +16,13 @@ function handleSubmit(event) {
   const name = data.get('name');
 
   const situation = data.get('situation');
-  
+
   const address = data.get('address');
 
   const injuries = data.get('injuries');
 
   const description = data.get('description');
-  
+
   infoPlacer(name, situation, address, injuries, description);
 }
 
@@ -32,26 +32,26 @@ const form = document.querySelector('form');
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   handleSubmit(event);
-  });
+});
 
 
 // Reads info from variables and determines whether there is a need for generating placeholders or not
 function infoPlacer(name, situation, address, injuries, description) {
-  let addressArr = [{ lat: 57.017145, lng: 9.987593}, { lat: 57.052578, lng: 9.911738}, { lat: 57.046832, lng: 9.913825}];
+  let addressArr = [{ lat: 57.017145, lng: 9.987593 }, { lat: 57.052578, lng: 9.911738 }, { lat: 57.046832, lng: 9.913825 }];
   let addressArrIndex, formZeroLen = 0, numberMAX = 99999999, numberMIN = 10000000;
   let tempNumber = Math.floor(Math.random() * numberMAX);
-  tempNumber < numberMIN ? number = tempNumber + 10000000: number = tempNumber;
-  
-  addressArrIndex = (Math.floor(Math.random() * addressArr.length));
-  console.log(addressArrIndex);
+  tempNumber < numberMIN ? number = tempNumber + 10000000 : number = tempNumber;
 
-  if (name.length === formZeroLen){
+  addressArrIndex = (Math.floor(Math.random() * addressArr.length));
+  //console.log(addressArrIndex);
+
+  if (name.length === formZeroLen) {
     name = "unknown caller";
   }
   if (situation.length === formZeroLen) {
     situation = "unknown situation";
   }
-  if (address.length === formZeroLen){
+  if (address.length === formZeroLen) {
     address = "Unknown address"
   }
 
@@ -64,15 +64,15 @@ function infoPlacer(name, situation, address, injuries, description) {
   }
   // Assigns the info values to an object
   let callObj = {
-    name: name, 
-    address: address, 
-    situation: situation,  
+    name: name,
+    address: address,
+    situation: situation,
     number: number,
-    timeset: new Date().toLocaleString("da-DK", {timeZone: "Europe/Copenhagen"}),
-    AMLLocation: addressArr[addressArrIndex], 
-    injuries: injuries, 
-    answered: false, 
-    answering: false, 
+    timeset: new Date().toLocaleString("da-DK", { timeZone: "Europe/Copenhagen" }),
+    AMLLocation: addressArr[addressArrIndex],
+    injuries: injuries,
+    answered: false,
+    answering: false,
     useful: true,
     description: description
   }
@@ -87,19 +87,19 @@ function infoPlacer(name, situation, address, injuries, description) {
 // Used for caller queue and other
 // Stored in ServerData/CallerDB/
 async function sendJSON(caller) {
-    let response = await fetch('/callerobj', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: caller,
-    });
+  let response = await fetch('/callerobj', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: caller,
+  });
 }
 
-function clearForm(){
-            document.getElementById('name').value='';
-            document.getElementById('situation').value='';
-            document.getElementById('address').value='';
-            document.getElementById('injuries').value='';
-            document.getElementById('description').value='';
+function clearForm() {
+  document.getElementById('name').value = '';
+  document.getElementById('situation').value = '';
+  document.getElementById('address').value = '';
+  document.getElementById('injuries').value = '';
+  document.getElementById('description').value = '';
 }
