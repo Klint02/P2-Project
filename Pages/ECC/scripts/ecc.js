@@ -271,7 +271,10 @@ class event {
         //this.address =
     }
 }
-
-document.querySelector(".nodefault").addEventListener("click", function (event) {
-    event.preventDefault();
-});
+try {
+    document.querySelector(".nodefault").addEventListener("click", function (event) {
+        event.preventDefault();
+    });
+} catch {
+    console.log("No \"no Defaults\"")
+}

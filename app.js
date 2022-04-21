@@ -1,6 +1,6 @@
 //if server is running on Nicklas' server set this to true,
 //if run locally set to false
-const online = true;
+const online = false;
 
 const http = require('http');
 const fs = require("fs");
@@ -24,7 +24,7 @@ class operator {
 }
 //An event/accident/yougetit
 class event {
-    constructor(lat, lng, type, adInfo, operator) {
+    constructor(lat, lng, type, adInfo, operator, address) {
         this.lat = lat;
         this.lng = lng;
         this.type = type;
