@@ -1,6 +1,6 @@
 //if server is running on Nicklas' server set this to true,
 //if run locally set to false
-const online = true;
+const online = false;
 
 const http = require('http');
 const fs = require("fs");
@@ -101,12 +101,39 @@ function postHandler(req, res) {
     let path = "ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
     switch (req.url) {
         case "change_answering":
-        case "emergency_accepted":
             //TODO: could potentially be moved to it's own function, but I couldn't be bothered
             // Get the content in the json file and change the answering variable and write the file
             getPostData(req).then(obj => {
                 let content = importObject(path, res);
                 content[obj.to_change].answering = obj.value
+                exportObject(path, content, res);
+            }).catch(err => {
+                console.log(err);
+                return errorResponse(res, 500, "Internal Error: Request failed: " + err);
+            });
+            break;
+        case "emergency_accepted":
+            //TODO: could potentially be moved to it's own function, but I couldn't be bothered
+            // Get the content in the json file and change the answering variable and write the file
+            getPostData(req).then(obj => {
+                let content = importObject(path, res);
+                content[obj.to_change].answered = obj.value
+                content[obj.to_change].active = obj.value
+                exportObject(path, content, res);
+            }).catch(err => {
+                console.log(err);
+                return errorResponse(res, 500, "Internal Error: Request failed: " + err);
+            });
+            break;
+        case "emergency_handled":
+            getPostData(req).then(obj => {
+                let content = importObject(path, res);
+                // Find the place where the id match
+                for (let i = 0; i < content.length; i++) {
+                    if (content[i].id == obj.to_change) {
+                        content[i].active = obj.value;
+                    }
+                }
                 exportObject(path, content, res);
             }).catch(err => {
                 console.log(err);

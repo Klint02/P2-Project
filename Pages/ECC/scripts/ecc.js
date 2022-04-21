@@ -2,8 +2,12 @@ let emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
 let caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
 let d = new Date()
 let path = "../../ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
-
+let markers = [];
 let map;
+
+function uniqueID() {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
 
 function initMap() {
     const markers = [
@@ -13,21 +17,15 @@ function initMap() {
         { lat: 57.017410295776145, lng: 9.972801777699798 }
     ]
 
-    // The location of Aalborghus Kollegium (address of tobias)
-    const toby = { lat: 57.02459288026477, lng: 9.944473552234317 };
-
-
     // The map, centered at Uluru
     map = new google.maps.Map(document.getElementById("map"), {
         zoom: 12,
         center: markers[2],
     });
 
-    // The marker, positioned at "toby"
-    addmarker('Tobias', toby, caller_marker, map, 'Her bor Tobias');
-
+    get_current_emergencies(map);
     //input name of the file and the name of the map you want the marker plottet on
-    readfile_and_plot('report', map);//reads a file, centers the map on the address found in the file and plots a marker.
+    //readfile_and_plot('report', map);//reads a file, centers the map on the address found in the file and plots a marker.
     // mapMarkers = [];
 
     // for (let i = 0; i < markers.length; i++) {
@@ -38,9 +36,28 @@ function initMap() {
     // }
 }
 
+function get_current_emergencies(mapname) {
+    fetch(path)
+        .then(response => response.json())
+        .then(calls => {
+            for (let i = 0; i < calls.length; i++) {
+                if (calls[i].answered === true & calls[i].active === true) {
+                    console.log(calls[i].name);
+                    // Information to display in box
+                    let info_to_display = `Id: ${calls[i].id} <br>Navn: ${calls[i].name}<br>Tlf: ${calls[i].number}<br>Addresse: ${calls[i].address}<br>Time: ${calls[i].timeset}<br>Description: ${calls[i].description}`;
+                    if (calls[i].address == "Unknown address") {
+                        addmarker(calls[i].situation, calls[i].AMLLocation, emergency_marker, mapname, info_to_display, calls[i].id); //AMLLocation burde være adresslocation (long/lat for address)
+                    } else if (calls[i].address != "Unknown address") {
+                        add_geo_marker(calls[i].situation, calls[i].address, mapname, info_to_display, calls[i].id);
+                    }
+                }
+            }
+        });
+}
+
 let object_to_change;
 
-function get_calls() {
+function get_calls(mapname) {
     let queue = 0;
     fetch(path)
         .then(response => response.json())
@@ -70,6 +87,10 @@ function get_calls() {
                         Addresse: ${calls[i].address} <br>
                         Situation: ${calls[i].whatIs} <br>
                         Tidspunkt: ${calls[i].whenIs} <br>`;
+                        
+                        // Adds marker wher caller is calling from
+                        add_caller_marker(calls[object_to_change].AMLLocation, caller_marker, mapname);
+
 
                         // Post data
                         fetch('/change_answering', {
@@ -100,13 +121,11 @@ async function post_data(mapname) {
                 let info_to_display = `Id: ${calls[object_to_change].id} <br>Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].address}<br>Time: ${calls[object_to_change].timeset}<br>Description: ${calls[object_to_change].description}`;
                 // Checks if address is provided or if there is need of use of only lat:lng for place of emergency
                 if (calls[object_to_change].address == "Unknown address") {
-                    addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display);
+                    addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, calls[object_to_change].id);
                 } else if (calls[object_to_change].address != "Unknown address") {
-                    add_geo_marker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display);
+                    add_geo_marker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display, calls[object_to_change].id);
                 }
-                // Adds marker wher caller is calling from
-                addmarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, caller_marker, mapname, info_to_display);
-
+                
                 // Creates HTML with information
                 let call_text = document.getElementById('call_text');
                 call_text.innerHTML = `Tag næste opkald`;
@@ -197,12 +216,13 @@ function plopmarker(address, popup_header, mapname, report_info_to_display) {
 }
 
 //input the marker name so we can add more info to the marker and add an event listener later
-function addmarker(popup_header, LngLat, markertype, mapname, report_info) {
+function addmarker(popup_header, LngLat, markertype, mapname, report_info, uniqueID) {
     const infowindow = new google.maps.InfoWindow();
     //dont yet know how to add custom markers, but insert here
     var marker = new google.maps.Marker({
         map: mapname,
         icon: markertype,
+        id: uniqueID,
         position: LngLat //results of .this = geocoder.geocode function
     });
     google.maps.event.addListener(marker, 'click', function () {
@@ -217,10 +237,42 @@ function addmarker(popup_header, LngLat, markertype, mapname, report_info) {
         </div>`);
         infowindow.open(mapname, marker);
     });
-
+    google.maps.event.addListener(marker, "rightclick", function (point) {delMarker(marker)});
 };
 
-function add_geo_marker(popup_header, address, mapname, report_info) {
+var delMarker = function (marker) {
+    
+    if (confirm('are you sure you want to delete the marker?') == true) {
+    
+        marker.setMap(null);
+        let markerID = String(marker.id);
+        fetch('/emergency_handled', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: `{"to_change": "${markerID}", "value": false}`,
+        });
+    }
+    
+}
+
+
+function add_caller_marker(LngLat, markertype, mapname) {
+    var marker = new google.maps.Marker({
+        map: mapname,
+        icon: markertype,
+        position: LngLat //results of .this = geocoder.geocode function
+    });
+    const infowindow = new google.maps.InfoWindow()
+    google.maps.event.addListener(marker, 'click', function () {
+        infowindow.close(); // Close previously opened infowindow
+        infowindow.setContent(`<h1 id="firstHeading" class="firstHeading">Current caller</h1>`);
+        infowindow.open(mapname, marker);
+    });
+}
+
+function add_geo_marker(popup_header, address, mapname, report_info, uniqueID) {
     // Creates new geocoder which allows us to convert a standard adress to LAT and LNG
     let geocoder = new google.maps.Geocoder();
     // geocode is an api, which Converts the "standard" address to LAT and LNG
@@ -229,7 +281,10 @@ function add_geo_marker(popup_header, address, mapname, report_info) {
             // Centers the map to the location of the address
             mapname.setCenter(results[0].geometry.location);
             // Inserts marker on the LAT and LNG of the adress
-            addmarker(popup_header, results[0].geometry.location, emergency_marker, mapname, report_info);
+
+            console.log(results[0].geometry.location.lat());
+            console.log(results[0].geometry.location.lng());
+            addmarker(popup_header, results[0].geometry.location, emergency_marker, mapname, report_info, uniqueID);
             // If the address is invalid or any other error
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
@@ -253,7 +308,7 @@ if (document.cookie != "") {
     });
     document.querySelector('#new_call').addEventListener('click', function (event) {
         event.preventDefault();
-        get_calls();
+        get_calls(map);
     });
     document.querySelector('#emergency_handled').addEventListener('click', function (event) {
         event.preventDefault();
