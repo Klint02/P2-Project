@@ -1,6 +1,6 @@
 //if server is running on Nicklas' server set this to true,
 //if run locally set to false
-const online = true;
+const online = false;
 
 const http = require('http');
 const fs = require("fs");
@@ -146,7 +146,7 @@ function getHandler(req, res) {
         case "Pages/ECC/ecc.html":
             if (args.length > 0 || args["uname"] == undefined) break;
             //sets a cookie to a uuid if login is successfull
-            res.setHeader("set-cookie", ["uuid=" + checkLogin(args) + ";secure"]);
+            res.setHeader("set-cookie", ["uuid=" + checkLogin(args, res) + ";secure"]);
             break;
     }
     //Continues response
@@ -287,7 +287,7 @@ function importObject(path, res) {
 }
 
 //Checks login info
-function checkLogin(args) {
+function checkLogin(args, res) {
     //Import valid logins obviously the object should be encrypted but this is fine
     //for a prototype
     const logins = importObject(operatorPath, res);
