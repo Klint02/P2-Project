@@ -1,7 +1,7 @@
 let emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
 let caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
 let d = new Date()
-let path = "../../ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
+let path = "../../Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
 
 let map;
 
@@ -67,9 +67,9 @@ function get_calls() {
                         let call_text = document.getElementById('call_text');
                         call_text.innerHTML = `Id: ${calls[i].id} <br>
                         Navn: ${calls[i].name} <br>
-                        Addresse: ${calls[i].address} <br>
-                        Situation: ${calls[i].whatIs} <br>
-                        Tidspunkt: ${calls[i].whenIs} <br>`;
+                        Addresse: ${calls[i].location.address} <br>
+                        Situation: ${calls[i].situation} <br>
+                        Tidspunkt: ${calls[i].timeset} <br>`;
 
                         // Post data
                         fetch('/change_answering', {
