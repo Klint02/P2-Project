@@ -53,7 +53,6 @@ export function fileResponse(url, res) {
     //Last part of the path split is the name of the file
     const fileName = path.split('/')[path.split('/').length - 1];
     //Reads file from disk
-    console.log(path);
     fs.readFile(path, (err, data) => {
         //In case of an error we assume the requested file does not exist
         //and respond with a 404 http code
