@@ -1,6 +1,6 @@
 //if server is running on Nicklas' server set this to true,
 //if run locally set to false
-const online = false;
+const online = true;
 
 import * as http from 'http';
 import * as fs from 'fs';
