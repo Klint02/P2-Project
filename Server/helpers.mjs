@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { errorResponse } from "./responseHandlers.mjs";
+import * as fs from 'fs';
 
 //MIME type is an identifyer to help the browser understand what to do with
 //a given file
@@ -38,13 +39,14 @@ export function getArgs(argsRaw) {
     return args;
 }
 
-//Merges an object of type JSON with a object on the disk of type JSON
+//Merges an object of timportObjectype JSON with a object on the disk of type JSON
 //Think of it like the Array.push() function but for objects on the
 //disk
 export function exportObjectPush(path, object, res) {
     let arr = [];
     //We import the file first so we can add an object to it
     let temp = importObject(path, res);
+    if (temp == 1) return 1;
 
     //Check to see if imported array is not empty
     if (temp != "" && temp != "[]") arr = temp;
@@ -58,7 +60,7 @@ export function exportObjectPush(path, object, res) {
 }
 
 //Exports an object to disk
-export function exportObject(path, object) {
+export function exportObject(path, object, res) {
     try {
         fs.writeFileSync(path, JSON.stringify(object, {
             //Just metadata stuffs
@@ -67,6 +69,7 @@ export function exportObject(path, object) {
             mode: 0o666,
         }, 4));
         //The "4" adds lines in the file so the printed object is readable to humans
+        return 0;
     } catch {
         return errorResponse(res, 500, "Internal Error: Could not write to disk, Path: " + path);
     }
@@ -82,9 +85,9 @@ export function importObject(path, res) {
         if (temp != "") {
             return JSON.parse(temp);
         }
-        return "";
-    } catch {
         return errorResponse(res, 500, "Internal Error: Data file not found: " + path);
+    } catch (err) {
+        return errorResponse(res, 500, "Internal Error: Reading file failed " + path + "  :  Cought error: " + err);
     }
 }
 
@@ -106,5 +109,6 @@ export function getPostData(req) {
 // Gives each caller a random UUID
 export function addCaller(path, caller, res) {
     caller.id = uuidv4();
-    return exportObjectPush(path, caller, res);
+    if (exportObjectPush(path, caller, res) == 1) return 1;
+    return 0;
 }

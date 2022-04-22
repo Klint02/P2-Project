@@ -4,6 +4,7 @@ import { page_ecc } from "./Pages/ecc.mjs";
 import { determineMimeType, addCaller } from "./helpers.mjs";
 import { getArgs } from "./helpers.mjs";
 import * as fs from 'fs';
+import { operator } from "./classes.mjs";
 
 export function postHandler(req, res) {
     let d = new Date()
@@ -11,18 +12,16 @@ export function postHandler(req, res) {
     switch (req.url) {
         case "change_answering":
         case "emergency_accepted":
-            page_emergency_accepted(req, res, path);
-            break;
+            return page_emergency_accepted(req, res, path);
         case "callerobj":
-            page_callerobj(req, res, path);
-            break;
+            return page_callerobj(req, res, path);
     }
 }
 
 
 
 //Handles http requests of method type GET
-export function getHandler(req, res) {
+export function getHandler(req, res, operatorPath) {
     //Split the url at "?" as first part is the path to the page and after is
     //arguments
     const splitUrl = req.url.split('?');
@@ -31,7 +30,7 @@ export function getHandler(req, res) {
     //Depending on the requested page GET requests need to be handled differently
     switch (splitUrl[0]) {
         case "Pages/ECC/ecc.html":
-            page_ecc(args, res)
+            if (page_ecc(args, res, operatorPath) == 1) return 1;
             break;
     }
     //Continues response
@@ -54,11 +53,11 @@ export function fileResponse(url, res) {
     //Last part of the path split is the name of the file
     const fileName = path.split('/')[path.split('/').length - 1];
     //Reads file from disk
+    console.log(path);
     fs.readFile(path, (err, data) => {
         //In case of an error we assume the requested file does not exist
         //and respond with a 404 http code
         if (err) {
-            console.error("404: Not Found: " + err);
             return errorResponse(res, 404, "404: Not Found: " + err);
         } else {
             //everything has now been handled correctly and we can repond
@@ -84,5 +83,5 @@ export function errorResponse(res, code, reason) {
     //Write reason to user
     res.write(reason);
     res.end("\n");
-    return reason
+    return 1;
 }

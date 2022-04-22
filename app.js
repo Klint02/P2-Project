@@ -12,6 +12,7 @@ import * as url from 'url';
 //const { addAbortSignal } = require('stream');
 //const { isArray } = require('util');
 const operatorPath = "Server/ServerData/operators.json";
+
 let hostname;
 online ? hostname = '192.168.1.72' : hostname = 'localhost';
 const port = 8000;
@@ -33,15 +34,14 @@ server.listen(port, hostname, () => {
 //Process a request, if it failes respond with error 500
 function requestHandler(req, res) {
     try {
-        processReq(req, res);
+        processReq(req, res, operatorPath);
     } catch (err) {
-        console.log("Internal Error: " + err);
-        return errorResponse(res, 500, "Internal Error" + err);
+        errorResponse(res, 500, "Internal Error" + err);
     }
 }
 
 //Function to process a request, can fail hence the function requestHandler
-function processReq(req, res) {
+function processReq(req, res, operatorPath) {
     //Remove the first "/" as we do not use absolute paths
     req.url = req.url.substring(1);
     //The webpages initial page is simply "/" which was just removed so it's
@@ -54,13 +54,11 @@ function processReq(req, res) {
     console.log("Request: " + req.method + " " + req.url);
     switch (req.method) {
         case 'POST':
-            postHandler(req, res);
-            break;
+            return postHandler(req, res);
         case 'GET':
-            getHandler(req, res);
-            break;
+            return getHandler(req, res, operatorPath);
         default:
-            fileResponse(req.url, res);
+            return fileResponse(req.url, res);
 
 
     }

@@ -60,6 +60,8 @@ function get_calls() {
                 } else {
                     // If call is unanswered
                     if (calls[i].answered === false && calls[i].answering === false) {
+                        console.log("asdadasdasdadadasd");
+                        console.log(calls[i]);
                         // Get the first unanswered call
                         //console.log(calls[i].id);
                         object_to_change = i;
@@ -67,9 +69,9 @@ function get_calls() {
                         let call_text = document.getElementById('call_text');
                         call_text.innerHTML = `Id: ${calls[i].id} <br>
                         Navn: ${calls[i].name} <br>
-                        Addresse: ${calls[i].address} <br>
-                        Situation: ${calls[i].whatIs} <br>
-                        Tidspunkt: ${calls[i].whenIs} <br>`;
+                        Addresse: ${calls[i].location.address} <br>
+                        Situation: ${calls[i].situation} <br>
+                        Tidspunkt: ${calls[i].timeset} <br>`;
 
                         // Post data
                         fetch('/change_answering', {
