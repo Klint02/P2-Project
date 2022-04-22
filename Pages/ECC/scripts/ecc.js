@@ -60,8 +60,6 @@ function get_calls() {
                 } else {
                     // If call is unanswered
                     if (calls[i].answered === false && calls[i].answering === false) {
-                        console.log("asdadasdasdadadasd");
-                        console.log(calls[i]);
                         // Get the first unanswered call
                         //console.log(calls[i].id);
                         object_to_change = i;

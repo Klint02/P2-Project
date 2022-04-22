@@ -51,7 +51,7 @@ function processReq(req, res, operatorPath) {
     //Depending on http method used, different handlers handle the request. If an
     //unexpected method type appears we attempt to respond with a default file 
     //response
-    console.log("Request: " + req.method + " " + req.url);
+    //console.log("Request: " + req.method + " " + req.url);
     switch (req.method) {
         case 'POST':
             return postHandler(req, res);
