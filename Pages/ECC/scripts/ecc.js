@@ -87,7 +87,7 @@ function get_calls(mapname) {
                         Addresse: ${calls[i].address} <br>
                         Situation: ${calls[i].whatIs} <br>
                         Tidspunkt: ${calls[i].whenIs} <br>`;
-                        
+
                         // Adds marker wher caller is calling from
                         add_caller_marker(calls[object_to_change].AMLLocation, caller_marker, mapname);
 
@@ -125,7 +125,7 @@ async function post_data(mapname) {
                 } else if (calls[object_to_change].address != "Unknown address") {
                     add_geo_marker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display, calls[object_to_change].id);
                 }
-                
+
                 // Creates HTML with information
                 let call_text = document.getElementById('call_text');
                 call_text.innerHTML = `Tag næste opkald`;
@@ -237,13 +237,13 @@ function addmarker(popup_header, LngLat, markertype, mapname, report_info, uniqu
         </div>`);
         infowindow.open(mapname, marker);
     });
-    google.maps.event.addListener(marker, "rightclick", function (point) {delMarker(marker)});
+    google.maps.event.addListener(marker, "rightclick", function (point) { delMarker(marker) });
 };
 
 var delMarker = function (marker) {
     if (confirm('are you sure you want to delete the marker?') == true) {
         marker.setMap(null);
-        let markerID = String(marker.id);
+        let markerID = String(marker.id);// this is a comment
         fetch('/emergency_handled', {
             method: 'POST',
             headers: {
@@ -252,7 +252,7 @@ var delMarker = function (marker) {
             body: `{"to_change": "${markerID}", "value": false}`,
         });
     }
-    
+
 }
 
 
