@@ -48,7 +48,6 @@ function getCalls(mapname, path) {
                             },
                             body: `{"to_change": ${object_to_change}, "value": true}`,
                         });
-
                         i = calls.length;
                     }
                 }
@@ -61,7 +60,7 @@ async function postData(mapname) {
         // Creates HTML with information
         let call_text = document.getElementById('call_text');
         call_text.innerHTML = `Du skal først tage et opkald`;
-    } else {
+    } else {//else  if we know what object to change:
         fetch(path)
             .then(response => response.json())
             .then(calls => {
