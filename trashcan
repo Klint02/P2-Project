@@ -1,0 +1,83 @@
+//legacy code
+
+
+////////////////////////////////////////////////////////////////
+// Ecc.js
+function find_address(search_text) {
+    //let addressRegex = /([a-zA-Z]+ )+[0-9/a-zA-Z*/\,]+ [A-Z]\w+ [0-9]\w*/g;
+    ///[[a-zA-Z]+: [+-]?[0-9]+\.?[0-9]*|\.[0-9]+, [a-zA-Z]+: [[+-]?[0-9]+\.?[0-9]*|\.[0-9]+]|([a-zA-Z]+ )+[0-9a-zA-Z*\,]+ [A-Z]\w+ [0-9]\w*/g
+
+    //creates a match format we can compare against:
+    //                  lat: || lng:  *decimal numbers*         OR        adress   +     numbers or address------------|
+    let addressRegex = /[lat|lng]+: [+-]?[0-9]+\.?[0-9]*|\.[0-9]|([a-zA-Z]+ )+[0-9a-zA-Z*\,]+ [A-Z]\w+ [0-9]\w*/g
+    let found_address = [];
+
+
+    //matches the contents of search_text  with the file format addressRegex.
+    found_address = search_text.match(addressRegex); // found_address = the full address, either as text or long/lat
+
+    // If the length of the adress array is 2 ()
+    if (found_address.length == 2) {
+        let lat_output = Number(found_address[0].split(" ")[1]);
+        let lng_output = Number(found_address[1].split(" ")[1]);
+        let latlng_output = { lat: lat_output, lng: lng_output };
+
+        return latlng_output;
+    } else {
+        return found_address.toString();
+    }
+}
+
+function readfile_and_plot(filename, mapname) {
+    fetch(filename + '.txt') // opens a file with name: "filename.txt"
+        .then(response => response.text()) //returns the promise as a string (text)
+        .then(report_info => {  // after the promise:
+            // Do something with your data (report_info = content of 'filename.txt')
+            //report_info = reportsemantics(report_info)
+            let popup_header = report_info.split(/\n|: /)[1].toUpperCase();//searches for the first linebreak or ":"
+            let report_info_to_display = reportsemantics(report_info); // set it to a string so it doesn't parse as undefined
+
+
+
+            // Finds the address in the file input
+            var address = find_address(report_info);
+
+            plopmarker(address, popup_header, mapname, report_info_to_display);
+        });
+}
+// Adds linebreaks to the loaded report string. without it, the popup displays the info in one long string with no <br> or \n
+function reportsemantics(reportstring) {
+    let split_report_info = reportstring.split('\n'); // Splits the string when there is a new line
+    let report_info_to_display = ""; // set it to a string so it doesn't parse as undefined
+
+    // Take the split data and add a <br> to every end so HTML makes a new line
+    for (let i = 0; i < split_report_info.length; i++) {
+        report_info_to_display += split_report_info[i] + "<br>";
+    }
+    /* TODO: decide foreach or for?
+    split_report_info.forEach(element => {
+        report_info_to_display += element + "<br>";
+    });
+    */
+    return report_info_to_display;
+
+}
+function plopmarker(address, popup_header, mapname, report_info_to_display) {
+    // If the data in address is a string (a normal address, example: Tagens vej 12)
+    if (typeof address === 'string' || address instanceof String) {
+        add_geo_marker(popup_header, address, mapname, report_info_to_display);
+        // If the data in address is anything else - in our case an object ( { lat: 0000, lng: 0000 } )
+    } else {
+        // Centers the map to the location of the address
+        mapname.setCenter(address);
+        // Adds marker at the address
+        addmarker(popup_header, address, emergency_marker, mapname, report_info_to_display);
+    };
+}
+
+
+function delayDelete(marker, milliSecondsDelay) {
+    // let i = secondsDelay * 1000 //convert to milliseconds
+     setTimeout(delMarker(marker), milliSecondsDelay);//wait i seconds, then run delMarker
+ };
+///////////////////////////////////////////////////////////////
