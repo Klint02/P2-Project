@@ -20,5 +20,49 @@
         "active": false,
         "description": "No description provided",
         "id": "72c094c8-069d-49e3-88dc-af2c4c8f84d2"
+    },
+    {
+        "name": "Thomas",
+        "location": {
+            "address": "Unknown address",
+            "lat": "",
+            "lng": ""
+        },
+        "situation": "I'm dying",
+        "number": 25877934,
+        "timeset": "25.4.2022 12.30.29",
+        "AMLLocation": {
+            "lat": 57.017145,
+            "lng": 9.987593
+        },
+        "injuries": "unknown injuries",
+        "answered": false,
+        "answering": false,
+        "useful": true,
+        "active": false,
+        "description": "No description provided",
+        "id": "ad826876-92eb-4ec3-ab36-1fcd58ee72f4"
+    },
+    {
+        "name": "Thomas",
+        "location": {
+            "address": "Sigrid Undsets Vej 210B",
+            "lat": "test",
+            "lng": "test"
+        },
+        "situation": "Dying",
+        "number": 28708056,
+        "timeset": "25.4.2022 12.30.48",
+        "AMLLocation": {
+            "lat": 57.052578,
+            "lng": 9.911738
+        },
+        "injuries": "12",
+        "answered": false,
+        "answering": false,
+        "useful": true,
+        "active": false,
+        "description": "I just wanna die, let me die",
+        "id": "480e4e22-24f1-46c1-87cb-3d89edf81cb5"
     }
 ]

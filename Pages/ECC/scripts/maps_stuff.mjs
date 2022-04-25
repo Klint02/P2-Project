@@ -90,7 +90,7 @@ function delPerson(markerID) {
     find_specefic_marker.setMap(null);
 }
 
-function add_geo_marker(popup_header, address, mapname, report_info, uniqueID) {
+function addGeoMarker(popup_header, address, mapname, report_info, uniqueID) {
     // Creates new geocoder which allows us to convert a standard adress to LAT and LNG
     let geocoder = new google.maps.Geocoder();
     // geocode is an api, which Converts the "standard" address to LAT and LNG
