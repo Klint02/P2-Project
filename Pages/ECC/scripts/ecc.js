@@ -1,17 +1,14 @@
-//let emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
-let caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
-//let d = new Date()
-//let path = "../../Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
-//let markersArray = []; //Can be made non-global
+const caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
+const emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
 let caller_markers = {}; //should be made non-global
 let object_to_change; //should be made non-global
-let markerID; //MUST be made non-global
+let last_marker_id;
 
 function getCalls(mapname, path) {
     let queue = 0;
     fetch(path)
         .then(clearAllMarkers()) // clears all markers in the client-side array
-        .then(getCurrentEmergencies(mapname, path))
+        .then(getCurrentEmergencies(mapname, path, emergency_marker))
         .then(response => response.json())
         .then(calls => {
             // Get the number of calls in queue
@@ -40,8 +37,9 @@ function getCalls(mapname, path) {
                         Tidspunkt: ${calls[i].timeset} <br>`;
 
                         // Adds marker wher caller is calling from
-                        markerID = addCallerMarker(calls[object_to_change].AMLLocation, caller_marker, mapname);
-
+                        marker = addCallerMarker(calls[object_to_change].AMLLocation, caller_marker, mapname);
+                        caller_markers[marker.id] = marker;
+                        last_marker_id = marker.id;
                         // Post data
                         fetch('/change_answering', {
                             method: 'POST',
@@ -76,7 +74,6 @@ async function postData(mapname) {
                 } else if (calls[object_to_change].AMLLocation.address != "Unknown address") {
                     console.log("Before: ", calls[object_to_change].situation);
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].location, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
-                    //addGeoMarker(String(calls[object_to_change].situation), calls[object_to_change].location.address, mapname, info_to_display, calls[object_to_change].id);
                     object_to_change = undefined;//dont let me plot the emergency more than once
                 }
 
@@ -86,7 +83,8 @@ async function postData(mapname) {
 
             });
         // Post data
-        delPerson(markerID);
+        console.log("adadadasdHELLO");
+        delPerson(last_marker_id, caller_markers);
         fetch('/emergency_accepted', {
             method: 'POST',
             headers: {
@@ -117,6 +115,8 @@ if (document.cookie != "") {
     });
     document.querySelector('#emergency_handled').addEventListener('click', function (event) {
         event.preventDefault();
+        console.log("asdadasdasdasdasdasdada");
+        console.log(event);
         postData(map);
     });
 }

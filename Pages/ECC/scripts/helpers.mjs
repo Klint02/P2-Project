@@ -1,4 +1,4 @@
-let emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
+
 
 try {
     document.querySelector(".nodefault").addEventListener("click", function (event) {
@@ -12,7 +12,7 @@ function makeUniqueID() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
-function getCurrentEmergencies(mapname, path, object_to_change) {
+function getCurrentEmergencies(mapname, path, emergency_marker) {
     fetch(path)
         .then(response => response.json())
         .then(calls => {

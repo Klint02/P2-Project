@@ -13,17 +13,13 @@ export function postHandler(req, res) {
     let path = "Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
     switch (req.url) {
         case "change_answering":
-            console.log(pageChangeAnswering(req, res, path));
-            break;
+            return pageChangeAnswering(req, res, path);
         case "emergency_accepted":
-            console.log(pageEmergencyAccepted(req, res, path));
-            break;
+            return pageEmergencyAccepted(req, res, path);
         case "emergency_handled":
-            console.log(pageEmergencyHandled(req, res, path));
-            break;
+            return pageEmergencyHandled(req, res, path);
         case "callerobj":
             return pageCallerObj(req, res, path);
-            break;
 
     }
 }

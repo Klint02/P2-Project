@@ -11,6 +11,8 @@ export function pageEmergencyHandled(req, res, path) {
             }
         }
         exportObject(path, content, res);
+        res.statusCode = 200;
+        res.end("\n");
     }).catch(err => {
         console.log(err);
         return errorResponse(res, 500, "Internal Error: Request failed: " + err);

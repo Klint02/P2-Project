@@ -18,7 +18,7 @@ function initMap() {
         center: markers[2],
     });
 
-    getCurrentEmergencies(map, path);
+    getCurrentEmergencies(map, path, emergency_marker);
 }
 
 //input the marker name so we can add more info to the marker and add an event listener later
@@ -86,11 +86,11 @@ function addCallerMarker(LngLat, markertype, mapname) {
         infowindow.setContent(`<h1 id="firstHeading" class="firstHeading">Current caller</h1>`);
         infowindow.open(mapname, marker);
     });
-    caller_markers[marker.id] = marker;
-    return marker.id;
+    //caller_markers[marker.id] = marker;
+    return marker/*.id*/;
 }
 
-function delPerson(markerID) {
+function delPerson(markerID, caller_markers) {
     let find_specefic_marker;
     for (var i in caller_markers) {
         if (i == markerID) {
