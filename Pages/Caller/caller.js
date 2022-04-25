@@ -13,7 +13,7 @@
 // Takes info written in the caller.html form and assigns it to variables
 // The variables are used to assign data to a caller
 
-function handle_submit(event) {
+function handleSubmit(event) {
   const data = new FormData(event.target);
 
   const name = data.get('name');
@@ -49,7 +49,7 @@ function info_placer(name, situation, address, injuries, description) {
   if (address.length === formZeroLen) {
     address = "Unknown address"
   } else {
-    add_geo_marker(address).then(latlngObj => {
+    addGeoMarker(address).then(latlngObj => {
       info_placer_result(name, situation, injuries, description, address, latlngObj, addressArr, addressArrIndex);
     }).catch(err => {
       console.log(err);
@@ -81,6 +81,6 @@ function info_placer_result(name, situation, injuries, description, address, lat
 
   // Converts the object to a JSON string for the POST request
   let caller = JSON.stringify(callObj)
-  send_JSON(caller);
+  sendJSON(caller);
 
 }

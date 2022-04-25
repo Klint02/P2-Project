@@ -1,8 +1,9 @@
-import { page_callerobj } from "./Pages/callerobj.mjs";
-import { page_emergency_accepted } from "./Pages/emergency_accepted.mjs";
-import { page_ecc } from "./Pages/ecc.mjs";
+import { page_callerobj as pageCallerObj } from "./Pages/callerobj.mjs";
+import { page_emergency_accepted as pageEmergencyAccepted } from "./Pages/emergency_accepted.mjs";
+import { page_ecc as pageEcc } from "./Pages/ecc.mjs";
+import { page_change_answering as pageChangeAnswering } from "./Pages/change answering.mjs"
 import { determineMimeType, addCaller } from "./helpers.mjs";
-import { getArgs } from "./helpers.mjs";
+import { getArgs as getArgs } from "./helpers.mjs";
 import * as fs from 'fs';
 import { operator } from "./classes.mjs";
 
@@ -11,10 +12,12 @@ export function postHandler(req, res) {
     let path = "Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
     switch (req.url) {
         case "change_answering":
+            return pageChangeAnswering(req);
         case "emergency_accepted":
-            return page_emergency_accepted(req, res, path);
+            return pageEmergencyAccepted(req, res, path);
         case "callerobj":
-            return page_callerobj(req, res, path);
+            return pageCallerObj(req, res, path);
+
     }
 }
 
@@ -30,7 +33,7 @@ export function getHandler(req, res, operatorPath) {
     //Depending on the requested page GET requests need to be handled differently
     switch (splitUrl[0]) {
         case "Pages/ECC/ecc.html":
-            if (page_ecc(args, res, operatorPath) == 1) return 1;
+            if (pageEcc(args, res, operatorPath) == 1) return 1;
             break;
     }
     //Continues response

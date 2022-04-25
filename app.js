@@ -4,13 +4,6 @@ const online = false;
 
 import * as http from 'http';
 import * as fs from 'fs';
-import * as url from 'url';
-//const fs = require("fs");
-//const url = require("url");
-//const { v4: uuidv4 } = require('uuid');
-//const { rejects } = require('assert');
-//const { addAbortSignal } = require('stream');
-//const { isArray } = require('util');
 const operatorPath = "Server/ServerData/operators.json";
 
 let hostname;
@@ -23,7 +16,7 @@ import { postHandler, getHandler, fileResponse, errorResponse } from './Server/r
 
 
 //Create server object with the function requestHandler as input
-const server = http.createServer(requestHandler);
+const server = http.create_server(requestHandler);
 
 //Tells server to listen on ip and port
 server.listen(port, hostname, () => {
@@ -59,8 +52,5 @@ function processReq(req, res, operatorPath) {
             return getHandler(req, res, operatorPath);
         default:
             return fileResponse(req.url, res);
-
-
     }
 }
-
