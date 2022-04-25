@@ -90,14 +90,8 @@ function addCallerMarker(LngLat, markertype, mapname) {
     return marker/*.id*/;
 }
 
-function delPerson(markerID, caller_markers) {
-    let find_specefic_marker;
-    for (var i in caller_markers) {
-        if (i == markerID) {
-            find_specefic_marker = caller_markers[i];
-        }
-    }
-    find_specefic_marker.setMap(null);
+function delPerson(markerID) {
+    markerID.setMap(null);
 }
 
 function clearAllMarkers() {

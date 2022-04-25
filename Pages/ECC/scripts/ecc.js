@@ -1,8 +1,7 @@
 const caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
 const emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
-let caller_markers = {}; //should be made non-global
 let object_to_change; //should be made non-global
-let last_marker_id;
+let last_marker;
 
 function getCalls(mapname, path) {
     let queue = 0;
@@ -38,8 +37,7 @@ function getCalls(mapname, path) {
 
                         // Adds marker wher caller is calling from
                         marker = addCallerMarker(calls[object_to_change].AMLLocation, caller_marker, mapname);
-                        caller_markers[marker.id] = marker;
-                        last_marker_id = marker.id;
+                        last_marker = marker;
                         // Post data
                         fetch('/change_answering', {
                             method: 'POST',
@@ -83,7 +81,7 @@ async function postData(mapname) {
 
             });
         // Post data
-        delPerson(last_marker_id, caller_markers);
+        delPerson(last_marker);
         fetch('/emergency_accepted', {
             method: 'POST',
             headers: {
