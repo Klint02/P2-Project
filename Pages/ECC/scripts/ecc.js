@@ -8,7 +8,6 @@ let object_to_change; //should be made non-global
 let markerID; //MUST be made non-global
 
 function getCalls(mapname) {
-    console.log("hello");
     let queue = 0;
     fetch(path)
         .then(clearAllMarkers()) // clears all markers in the client-side array

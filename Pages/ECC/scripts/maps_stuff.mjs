@@ -1,4 +1,4 @@
-let map
+let map;
 function initMap() {
     const markers = [
         { lat: 57.05270767455275, lng: 9.913094102327587 },

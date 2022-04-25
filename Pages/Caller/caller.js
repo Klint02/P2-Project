@@ -75,6 +75,7 @@ function infoPlacerResult(name, situation, injuries, description, address, latln
     injuries: injuries,
     answered: false,
     answering: false,
+    active: false,
     useful: true,
     description: description
   }

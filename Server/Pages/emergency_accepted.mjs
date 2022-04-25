@@ -7,7 +7,7 @@ export function pageEmergencyAccepted(req, res, path) {
     getPostData(req).then(obj => {
         let content = importObject(path, res);
         content[obj.to_change].answering = obj.value
-        if (exportObject(path, content, res) == 1) return 1;
+        exportObject(path, content, res);
         res.statusCode = 200;
         res.end("\n");
     }).catch(err => {
