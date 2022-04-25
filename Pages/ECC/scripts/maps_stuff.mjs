@@ -90,8 +90,8 @@ function delPerson(markerID) {
     }
     find_specefic_marker.setMap(null);
 }
-
-function addGeoMarker(popup_header, address, mapname, report_info, uniqueID) {
+/*
+function addGeoMarker(popup_header, adress, mapname, report_info, uniqueID) {
     console.log("Address: " + address);
     // Creates new geocoder which allows us to convert a standard adress to LAT and LNG
     let geocoder = new google.maps.Geocoder();
@@ -108,7 +108,7 @@ function addGeoMarker(popup_header, address, mapname, report_info, uniqueID) {
             alert('Geocode was not successful for the following reason: ' + status);
         }
     });
-}
+}*/
 
 function clearAllMarkers() {
     for (var i = 0; i < markersArray.length; i++) {
