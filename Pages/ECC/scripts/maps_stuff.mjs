@@ -64,7 +64,7 @@ function delMarker(marker) { //deletes the desired marker with no warning
     });
 }
 
-function add_caller_marker(LngLat, markertype, mapname) {
+function addCallerMarker(LngLat, markertype, mapname) {
     var marker = new google.maps.Marker({
         map: mapname,
         icon: markertype,
