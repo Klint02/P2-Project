@@ -1,3 +1,4 @@
+let map
 function initMap() {
     const markers = [
         { lat: 57.05270767455275, lng: 9.913094102327587 },
@@ -7,7 +8,7 @@ function initMap() {
     ]
 
     // The map, centered at Aalborg
-    let map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById("map"), {
         zoom: 12,
         center: markers[2],
     });
