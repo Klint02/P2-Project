@@ -1,4 +1,4 @@
-function add_geo_marker(address) {
+function addGeoMarker(address) {
     return new Promise((resolve, reject) => {
         let latlngObj;
         // Creates new geocoder which allows us to convert a standard adress to LAT and LNG
@@ -19,18 +19,11 @@ function add_geo_marker(address) {
     });
 }
 
-// Listens to when a form is submitted, and runs the handlesubmit function
-const form = document.querySelector('form');
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    handle_submit(event);
-});
-
 // Creates a POST request with the caller object
 // Used for caller queue and other
 // Stored in ServerData/CallerDB/
 // sendJSON
-async function send_JSON(caller) {
+async function sendJSON(caller) {
     let response = await fetch('/callerobj', {
         method: 'POST',
         headers: {
@@ -40,7 +33,7 @@ async function send_JSON(caller) {
     });
 }
 
-function clear_form() {
+function clearForm() {
     document.getElementById('name').value = '';
     document.getElementById('situation').value = '';
     document.getElementById('address').value = '';

@@ -75,8 +75,8 @@ async function postData(mapname) {
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, calls[object_to_change].id);
                     object_to_change = undefined; //dont let me plot the emergency more than once
                 } else if (calls[object_to_change].address != "Unknown address") {
-                    console.log("Before: ", calls[object_to_change].address);
-                    addGeoMarker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display, calls[object_to_change].id);
+                    console.log("Before: ", calls[object_to_change].situation);
+                    addGeoMarker(String(calls[object_to_change].situation), calls[object_to_change].location.address, mapname, info_to_display, calls[object_to_change].id);
                     object_to_change = undefined;//dont let me plot the emergency more than once
                 }
 

@@ -91,12 +91,14 @@ function delPerson(markerID) {
 }
 
 function addGeoMarker(popup_header, address, mapname, report_info, uniqueID) {
+    console.log("Address: " + address);
     // Creates new geocoder which allows us to convert a standard adress to LAT and LNG
     let geocoder = new google.maps.Geocoder();
     // geocode is an api, which Converts the "standard" address to LAT and LNG
     geocoder.geocode({ 'address': address }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             // Centers the map to the location of the address
+            //TODO: mapname.setCenter() does not exist
             mapname.setCenter(results[0].geometry.location);
             // Inserts marker on the LAT and LNG of the adress
             addMarker(popup_header, results[0].geometry.location, emergency_marker, mapname, report_info, uniqueID);
