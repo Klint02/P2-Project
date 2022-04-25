@@ -36,6 +36,7 @@ export function getHandler(req, res, operatorPath) {
     //Depending on the requested page GET requests need to be handled differently
     switch (splitUrl[0]) {
         case "Pages/ECC/ecc.html":
+            res.setHeader("Cache-Control", "no-store")
             if (pageEcc(args, res, operatorPath) == 1) return 1;
             break;
     }
