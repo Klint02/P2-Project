@@ -1,0 +1,44 @@
+[
+    {
+        "name": "Thomas Nykjær",
+        "location": {
+            "address": "Sigrid Undsets Vej 210B",
+            "lat": 57.0153647,
+            "lng": 9.9887313
+        },
+        "situation": "I'm dying",
+        "number": 93612930,
+        "timeset": "25.4.2022 11.13.29",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "21",
+        "answered": false,
+        "answering": false,
+        "useful": true,
+        "description": "I am a rabbit",
+        "id": "7c1ff52b-a7e0-4750-845d-75be3d6a1e68"
+    },
+    {
+        "name": "Thomas Nykjær",
+        "location": {
+            "address": "Sigrid Undsets Vej 210B",
+            "lat": 57.0153647,
+            "lng": 9.9887313
+        },
+        "situation": "asd",
+        "number": 73307562,
+        "timeset": "25.4.2022 11.14.46",
+        "AMLLocation": {
+            "lat": 57.052578,
+            "lng": 9.911738
+        },
+        "injuries": "unknown injuries",
+        "answered": false,
+        "answering": false,
+        "useful": true,
+        "description": "No description provided",
+        "id": "c7ba66f8-0e2c-4127-b0af-9234ed2046a5"
+    }
+]
