@@ -1,0 +1,56 @@
+[
+    {
+        "name": "Patrick Gravengaard",
+        "address": "Sigrid Undsets Vej 234B, 9220 Aalborg",
+        "situation": "Spørg dig selv",
+        "number": 99136134,
+        "timeset": "21.4.2022 13.22.35",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "5",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "active": false,
+        "description": "asdsadasdsadasdsadasdsadasdsadasdsadasdsadasdsad",
+        "id": "c398631c-5f23-4009-b2e1-f00176e9dec9"
+    },
+    {
+        "name": "Patrick Gravengaard",
+        "address": "Sigrid Undsets Vej 234B, 9220 Aalborg",
+        "situation": "unknown situation",
+        "number": 46824656,
+        "timeset": "21.4.2022 13.23.04",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "5",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "active": false,
+        "description": "asdsadasdsadasdsadasdsadasdsadasdsadasdsadasdsad",
+        "id": "d678b1a3-429a-4135-96bf-87607e62c1d7"
+    },
+    {
+        "name": "Patrick Gravengaard",
+        "address": "Sigrid Undsets Vej 234B, 9220 Aalborg",
+        "situation": "Spørg dig selv",
+        "number": 41367024,
+        "timeset": "21.4.2022 13.25.36",
+        "AMLLocation": {
+            "lat": 57.046832,
+            "lng": 9.913825
+        },
+        "injuries": "5",
+        "answered": true,
+        "answering": true,
+        "useful": true,
+        "active": false,
+        "description": "asdsadasdsadasdsadasdsadasdsadasdsadasdsadasdsad",
+        "id": "071c8a00-ee52-436d-8fd3-f2680d044ac0"
+    }
+]
