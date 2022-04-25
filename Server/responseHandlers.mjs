@@ -11,10 +11,12 @@ export function postHandler(req, res) {
     let path = "Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
     switch (req.url) {
         case "change_answering":
+            page_change_answering(req);
         case "emergency_accepted":
             return page_emergency_accepted(req, res, path);
         case "callerobj":
             return page_callerobj(req, res, path);
+
     }
 }
 
