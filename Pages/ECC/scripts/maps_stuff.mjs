@@ -1,4 +1,9 @@
 let map;
+let d = new Date();
+let markersArray = []; //Can be made non-global
+let path = "../../Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
+
+
 function initMap() {
     const markers = [
         { lat: 57.05270767455275, lng: 9.913094102327587 },
@@ -13,18 +18,22 @@ function initMap() {
         center: markers[2],
     });
 
-    getCurrentEmergencies(map);
+    getCurrentEmergencies(map, path);
 }
 
 //input the marker name so we can add more info to the marker and add an event listener later
 function addMarker(popup_header, LngLat, markertype, mapname, report_info, uniqueID) {
     const infowindow = new google.maps.InfoWindow();
     //dont yet know how to add custom markers, but insert here
+    const temp = {
+        lat: LngLat.lat,
+        lng: LngLat.lng
+    }
     var marker = new google.maps.Marker({
         map: mapname,
         icon: markertype,
         id: uniqueID,
-        position: LngLat //results of .this = geocoder.geocode function
+        position: temp //results of .this = geocoder.geocode function
     });
     google.maps.event.addListener(marker, 'click', function () {   //adds the infowindow.open function to left-clicks on the marker
         infowindow.close(); // Close previously opened infowindow

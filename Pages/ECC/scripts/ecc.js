@@ -1,17 +1,17 @@
-let emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
+//let emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
 let caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
-let d = new Date()
-let path = "../../Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
-let markersArray = []; //Can be made non-global
+//let d = new Date()
+//let path = "../../Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
+//let markersArray = []; //Can be made non-global
 let caller_markers = {}; //should be made non-global
 let object_to_change; //should be made non-global
 let markerID; //MUST be made non-global
 
-function getCalls(mapname) {
+function getCalls(mapname, path) {
     let queue = 0;
     fetch(path)
         .then(clearAllMarkers()) // clears all markers in the client-side array
-        .then(getCurrentEmergencies(mapname))
+        .then(getCurrentEmergencies(mapname, path))
         .then(response => response.json())
         .then(calls => {
             // Get the number of calls in queue
@@ -113,7 +113,7 @@ if (document.cookie != "") {
     });
     document.querySelector('#new_call').addEventListener('click', function (event) {
         event.preventDefault();
-        getCalls(map);
+        getCalls(map, path);
     });
     document.querySelector('#emergency_handled').addEventListener('click', function (event) {
         event.preventDefault();

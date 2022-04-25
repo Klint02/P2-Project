@@ -14,12 +14,16 @@ export function postHandler(req, res) {
     switch (req.url) {
         case "change_answering":
             console.log(pageChangeAnswering(req, res, path));
+            break;
         case "emergency_accepted":
             console.log(pageEmergencyAccepted(req, res, path));
+            break;
         case "emergency_handled":
             console.log(pageEmergencyHandled(req, res, path));
+            break;
         case "callerobj":
             return pageCallerObj(req, res, path);
+            break;
 
     }
 }
