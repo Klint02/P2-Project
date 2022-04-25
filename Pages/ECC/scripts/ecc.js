@@ -83,7 +83,6 @@ async function postData(mapname) {
 
             });
         // Post data
-        console.log("adadadasdHELLO");
         delPerson(last_marker_id, caller_markers);
         fetch('/emergency_accepted', {
             method: 'POST',
@@ -115,7 +114,6 @@ if (document.cookie != "") {
     });
     document.querySelector('#emergency_handled').addEventListener('click', function (event) {
         event.preventDefault();
-        console.log("asdadasdasdasdasdasdada");
         console.log(event);
         postData(map);
     });
