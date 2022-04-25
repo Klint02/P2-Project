@@ -41,7 +41,7 @@ function getCalls(mapname) {
                         Tidspunkt: ${calls[i].timeset} <br>`;
 
                         // Adds marker wher caller is calling from
-                        markerID = add_caller_marker(calls[object_to_change].AMLLocation, caller_marker, mapname);
+                        markerID = addCallerMarker(calls[object_to_change].AMLLocation, caller_marker, mapname);
 
                         // Post data
                         fetch('/change_answering', {
@@ -71,12 +71,13 @@ async function postData(mapname) {
                 // Information to display in box
                 let info_to_display = `Id: ${calls[object_to_change].id} <br>Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].address}<br>Time: ${calls[object_to_change].timeset}<br>Description: ${calls[object_to_change].description}`;
                 // Checks if address is provided or if there is need of use of only lat:lng for place of emergency
-                if (calls[object_to_change].address == "Unknown address") {
+                if (calls[object_to_change].location.address == "Unknown address") {
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, calls[object_to_change].id);
                     object_to_change = undefined; //dont let me plot the emergency more than once
-                } else if (calls[object_to_change].address != "Unknown address") {
+                } else if (calls[object_to_change].AMLLocation.address != "Unknown address") {
                     console.log("Before: ", calls[object_to_change].situation);
-                    addGeoMarker(String(calls[object_to_change].situation), calls[object_to_change].location.address, mapname, info_to_display, calls[object_to_change].id);
+                    //TODO, The following uses an address for aml location, but aml location does not provide an address only lng/lat
+                    //addGeoMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation.address, mapname, info_to_display, calls[object_to_change].id);
                     object_to_change = undefined;//dont let me plot the emergency more than once
                 }
 

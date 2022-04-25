@@ -8,6 +8,8 @@ export function pageChangeAnswering(req, res, path) {
         let content = importObject(path, res);
         content[obj.to_change].answering = obj.value
         exportObject(path, content, res);
+        res.statusCode = 200;
+        res.end("\n");
     }).catch(err => {
         console.log(err);
         return errorResponse(res, 500, "Internal Error: Request failed: " + err);
