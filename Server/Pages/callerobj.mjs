@@ -4,7 +4,7 @@ import { exportObject } from '../helpers.mjs';
 import { getPostData } from "../helpers.mjs";
 import { addCaller } from '../helpers.mjs';
 
-export function page_callerobj(req, res, path) {
+export function pageCallerObj(req, res, path) {
     // Creates a date object 'd' the fs.writeFileSync uses to name it's documents by date
     // and writes the stringified json to its respective json document in the Server/ServerData/CallerDB/caller-year-month-day.
     getPostData(req).then(caller => {

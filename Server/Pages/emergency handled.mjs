@@ -1,4 +1,7 @@
-function page_emergency_handled(req) {
+import { errorResponse } from "../responseHandlers.mjs";
+import { importObject, exportObject } from "../helpers.mjs";
+
+export function pageEmergencyHandled(req) {
     getPostData(req).then(obj => {
         let content = importObject(path, res);
         // Find the place where the id match

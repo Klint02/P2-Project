@@ -12,7 +12,7 @@ function initMap() {
         center: markers[2],
     });
 
-    get_current_emergencies(map);
+    getCurrentEmergencies(map);
 }
 
 //input the marker name so we can add more info to the marker and add an event listener later
@@ -67,7 +67,7 @@ function add_caller_marker(LngLat, markertype, mapname) {
     var marker = new google.maps.Marker({
         map: mapname,
         icon: markertype,
-        id: make_UniqueID(),
+        id: makeUniqueID(),
         position: LngLat //results of .this = geocoder.geocode function
     });
     const infowindow = new google.maps.InfoWindow()

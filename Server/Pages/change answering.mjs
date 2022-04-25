@@ -1,6 +1,7 @@
-import { getPostData } from "../helpers.mjs"
+import { getPostData, importObject, exportObject } from "../helpers.mjs"
+import { errorResponse } from "../responseHandlers.mjs";
 
-export function page_change_answering(req) {
+export function pageChangeAnswering(req, res, path) {
     //TODO: could potentially be moved to it's own function, but I couldn't be bothered
     // Get the content in the json file and change the answering variable and write the file
     getPostData(req).then(obj => {

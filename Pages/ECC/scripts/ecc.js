@@ -8,6 +8,7 @@ let object_to_change; //should be made non-global
 let markerID; //MUST be made non-global
 
 function getCalls(mapname) {
+    console.log("hello");
     let queue = 0;
     fetch(path)
         .then(clearAllMarkers()) // clears all markers in the client-side array
@@ -74,6 +75,7 @@ async function postData(mapname) {
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, calls[object_to_change].id);
                     object_to_change = undefined; //dont let me plot the emergency more than once
                 } else if (calls[object_to_change].address != "Unknown address") {
+                    console.log("Before: ", calls[object_to_change].address);
                     addGeoMarker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display, calls[object_to_change].id);
                     object_to_change = undefined;//dont let me plot the emergency more than once
                 }

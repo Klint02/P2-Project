@@ -1,6 +1,7 @@
 import { importObject } from "../helpers.mjs";
+import { errorResponse } from "../responseHandlers.mjs";
 
-export function page_ecc(args, res, operatorPath) {
+export function pageEcc(args, res, operatorPath) {
     if (args.length > 0 || args["uname"] == undefined) return;
     //sets a cookie to a uuid if login is successfull
     const cookie = checkLogin(args, res, operatorPath);
