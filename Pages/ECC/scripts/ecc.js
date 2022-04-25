@@ -1,7 +1,7 @@
 let emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
 let caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
 let d = new Date()
-let path = "../../ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
+let path = "../../Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
 let markers = [];
 let map;
 let markersArray = [];
@@ -76,9 +76,9 @@ function get_calls(mapname) {
                         let call_text = document.getElementById('call_text');
                         call_text.innerHTML = `Id: ${calls[i].id} <br>
                         Navn: ${calls[i].name} <br>
-                        Addresse: ${calls[i].address} <br>
-                        Situation: ${calls[i].whatIs} <br>
-                        Tidspunkt: ${calls[i].whenIs} <br>`;
+                        Addresse: ${calls[i].location.address} <br>
+                        Situation: ${calls[i].situation} <br>
+                        Tidspunkt: ${calls[i].timeset} <br>`;
 
                         // Adds marker wher caller is calling from
                         markerID = add_caller_marker(calls[object_to_change].AMLLocation, caller_marker, mapname);
@@ -269,8 +269,11 @@ class event {
         //this.address =
     }
 }
-
-document.querySelector(".nodefault").addEventListener("click", function (event) {
-    event.preventDefault();
-});
+try {
+    document.querySelector(".nodefault").addEventListener("click", function (event) {
+        event.preventDefault();
+    });
+} catch {
+    console.log("No \"no Defaults\"")
+}
 

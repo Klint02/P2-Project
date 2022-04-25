@@ -7,6 +7,27 @@
 // implement form based test (DONE)
 // implement RNG data (NOT DONE)
 
+// PLACEHOLDER FUNCTION 
+// NEEDED FOR GOOGLE MAPS LAT AND LONG
+function add_geo_marker(popup_header, address, mapname, report_info) {
+    // Creates new geocoder which allows us to convert a standard adress to LAT and LNG
+    let geocoder = new google.maps.Geocoder();
+    // geocode is an api, which Converts the "standard" address to LAT and LNG
+    geocoder.geocode({ 'address': address }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            // Centers the map to the location of the address
+            mapname.setCenter(results[0].geometry.location);
+            // Inserts marker on the LAT and LNG of the adress
+            addmarker(popup_header, results[0].geometry.location, emergency_marker, mapname, report_info);
+            // If the address is invalid or any other error
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+
+}
+
+
 
 // Takes info written in the caller.html form and assigns it to variables
 // The variables are used to assign data to a caller
@@ -39,9 +60,11 @@ form.addEventListener('submit', (event) => {
 function infoPlacer(name, situation, address, injuries, description) {
   let addressArr = [{ lat: 57.017145, lng: 9.987593 }, { lat: 57.052578, lng: 9.911738 }, { lat: 57.046832, lng: 9.913825 }];
   let addressArrIndex, formZeroLen = 0, numberMAX = 99999999, numberMIN = 10000000;
+  let locationObj;
   let tempNumber = Math.floor(Math.random() * numberMAX);
-  tempNumber < numberMIN ? number = tempNumber + 10000000 : number = tempNumber;
 
+  tempNumber < numberMIN ? number = tempNumber + 10000000 : number = tempNumber;
+  
   addressArrIndex = (Math.floor(Math.random() * addressArr.length));
   //console.log(addressArrIndex);
 
@@ -62,10 +85,12 @@ function infoPlacer(name, situation, address, injuries, description) {
   if (description.length === formZeroLen) {
     description = "No description provided";
   }
+
+  
   // Assigns the info values to an object
   let callObj = {
     name: name,
-    address: address,
+    location: locationObj = {address: address, lat: address === "Unknown address" ? "" : "test", lng: address === "Unknown address" ? "" : "test"},
     situation: situation,
     number: number,
     timeset: new Date().toLocaleString("da-DK", { timeZone: "Europe/Copenhagen" }),
