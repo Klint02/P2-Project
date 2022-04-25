@@ -225,8 +225,9 @@ function addmarker(popup_header, LngLat, markertype, mapname, report_info, uniqu
         id: uniqueID,
         position: LngLat //results of .this = geocoder.geocode function
     });
-    google.maps.event.addListener(marker, 'click', function () {
+    google.maps.event.addListener(marker, 'click', function () {   //adds the infowindow.open function to left-clicks on the marker
         infowindow.close(); // Close previously opened infowindow
+        //the following string cant be moved, due to how G-maps api works. 
         infowindow.setContent(`<div id="content">
         <div id="siteNotice">
         </div>
@@ -237,24 +238,35 @@ function addmarker(popup_header, LngLat, markertype, mapname, report_info, uniqu
         </div>`);
         infowindow.open(mapname, marker);
     });
-    google.maps.event.addListener(marker, "rightclick", function (point) { delMarker(marker) });
+    google.maps.event.addListener(marker, "rightclick", function (point) { confirmDelMarker(marker) }); //adds the cconfirmDelMarker function to right clicks on the marker
+    delayDelete(marker, 120); //deletes the marker with no warning after x seconds
 };
 
-var delMarker = function (marker) {
-    if (confirm('are you sure you want to delete the marker?') == true) {
-        marker.setMap(null);
-        let markerID = String(marker.id);// this is a comment
-        fetch('/emergency_handled', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: `{"to_change": "${markerID}", "value": false}`,
-        });
+var confirmDelMarker = function (marker) {//deletes the desired marker after user confirmation
+    if (confirm('are you sure you want to delete the marker?') == true) {//opens a warning box at top of screen. "if confirmed by user"-> run delMarker
+        delMarker(marker);
     }
 
 }
 
+function delMarker(marker) { //deletes the desired marker with no warning
+    marker.setMap(null); //removes the marker from the current users map
+    let markerID = String(marker.id);
+    fetch('/emergency_handled', {  //changes the related call's "emergency_handled" status in callers.js to true
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: `{"to_change": "${markerID}", "value": false}`,
+    });
+
+
+}
+
+function delayDelete(marker, secondsDelay) {
+    let i = secondsDelay * 1000 //convert to milliseconds
+    setTimeout(delMarker(marker), i);//wait i seconds, then run delMarker
+};
 
 function add_caller_marker(LngLat, markertype, mapname) {
     var marker = new google.maps.Marker({
