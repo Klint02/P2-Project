@@ -6,11 +6,11 @@ try {
     console.log("No \"no Defaults\"")
 }
 
-function make_UniqueID() {
+function makeUniqueID() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
-function get_current_emergencies(mapname) {
+function getCurrentEmergencies(mapname) {
     fetch(path)
         .then(response => response.json())
         .then(calls => {
@@ -19,9 +19,9 @@ function get_current_emergencies(mapname) {
                     // Information to display in box
                     let info_to_display = `Id: ${calls[i].id} <br>Navn: ${calls[i].name}<br>Tlf: ${calls[i].number}<br>Addresse: ${calls[i].address}<br>Time: ${calls[i].timeset}<br>Description: ${calls[i].description}`;
                     if (calls[i].address == "Unknown address") {
-                        add_marker(calls[i].situation, calls[i].AMLLocation, emergency_marker, mapname, info_to_display, calls[i].id); //AMLLocation burde være adresslocation (long/lat for address)
+                        addMarker(calls[i].situation, calls[i].AMLLocation, emergency_marker, mapname, info_to_display, calls[i].id); //AMLLocation burde være adresslocation (long/lat for address)
                     } else if (calls[i].address != "Unknown address") {
-                        add_geo_marker(calls[i].situation, calls[i].address, mapname, info_to_display, calls[i].id);
+                        addGeoMarker(calls[i].situation, calls[i].address, mapname, info_to_display, calls[i].id);
                     }
                 }
             }

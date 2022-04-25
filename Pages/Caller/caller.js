@@ -9,7 +9,7 @@
 
 // PLACEHOLDER FUNCTION 
 // NEEDED FOR GOOGLE MAPS LAT AND LONG
-function add_geo_marker(popup_header, address, mapname, report_info) {
+function addGeoMarker(popup_header, address, mapname, report_info) {
   // Creates new geocoder which allows us to convert a standard adress to LAT and LNG
   let geocoder = new google.maps.Geocoder();
   // geocode is an api, which Converts the "standard" address to LAT and LNG
@@ -18,7 +18,7 @@ function add_geo_marker(popup_header, address, mapname, report_info) {
       // Centers the map to the location of the address
       mapname.setCenter(results[0].geometry.location);
       // Inserts marker on the LAT and LNG of the adress
-      add_marker(popup_header, results[0].geometry.location, emergency_marker, mapname, report_info);
+      addMarker(popup_header, results[0].geometry.location, emergency_marker, mapname, report_info);
       // If the address is invalid or any other error
     } else {
       alert('Geocode was not successful for the following reason: ' + status);

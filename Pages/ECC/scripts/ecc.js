@@ -7,11 +7,11 @@ let caller_markers = {}; //should be made non-global
 let object_to_change; //should be made non-global
 let markerID; //MUST be made non-global
 
-function get_calls(mapname) {
+function getCalls(mapname) {
     let queue = 0;
     fetch(path)
         .then(clearAllMarkers()) // clears all markers in the client-side array
-        .then(get_current_emergencies(mapname))
+        .then(getCurrentEmergencies(mapname))
         .then(response => response.json())
         .then(calls => {
             // Get the number of calls in queue
@@ -58,7 +58,7 @@ function get_calls(mapname) {
         });
 }
 
-async function post_data(mapname) {
+async function postData(mapname) {
     if (object_to_change === undefined) {
         // Creates HTML with information
         let call_text = document.getElementById('call_text');
@@ -71,10 +71,10 @@ async function post_data(mapname) {
                 let info_to_display = `Id: ${calls[object_to_change].id} <br>Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].address}<br>Time: ${calls[object_to_change].timeset}<br>Description: ${calls[object_to_change].description}`;
                 // Checks if address is provided or if there is need of use of only lat:lng for place of emergency
                 if (calls[object_to_change].address == "Unknown address") {
-                    add_marker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, calls[object_to_change].id);
+                    addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, calls[object_to_change].id);
                     object_to_change = undefined; //dont let me plot the emergency more than once
                 } else if (calls[object_to_change].address != "Unknown address") {
-                    add_geo_marker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display, calls[object_to_change].id);
+                    addGeoMarker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display, calls[object_to_change].id);
                     object_to_change = undefined;//dont let me plot the emergency more than once
                 }
 
@@ -111,10 +111,10 @@ if (document.cookie != "") {
     });
     document.querySelector('#new_call').addEventListener('click', function (event) {
         event.preventDefault();
-        get_calls(map);
+        getCalls(map);
     });
     document.querySelector('#emergency_handled').addEventListener('click', function (event) {
         event.preventDefault();
-        post_data(map);
+        postData(map);
     });
 }

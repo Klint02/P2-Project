@@ -1,4 +1,6 @@
-function page_change_answering() {
+import { getPostData } from "../helpers.mjs"
+
+function page_change_answering(req) {
     //TODO: could potentially be moved to it's own function, but I couldn't be bothered
     // Get the content in the json file and change the answering variable and write the file
     getPostData(req).then(obj => {

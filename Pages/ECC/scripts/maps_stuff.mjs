@@ -16,7 +16,7 @@ function initMap() {
 }
 
 //input the marker name so we can add more info to the marker and add an event listener later
-function add_marker(popup_header, LngLat, markertype, mapname, report_info, uniqueID) {
+function addMarker(popup_header, LngLat, markertype, mapname, report_info, uniqueID) {
     const infowindow = new google.maps.InfoWindow();
     //dont yet know how to add custom markers, but insert here
     var marker = new google.maps.Marker({
@@ -99,7 +99,7 @@ function add_geo_marker(popup_header, address, mapname, report_info, uniqueID) {
             // Centers the map to the location of the address
             mapname.setCenter(results[0].geometry.location);
             // Inserts marker on the LAT and LNG of the adress
-            add_marker(popup_header, results[0].geometry.location, emergency_marker, mapname, report_info, uniqueID);
+            addMarker(popup_header, results[0].geometry.location, emergency_marker, mapname, report_info, uniqueID);
             // If the address is invalid or any other error
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
