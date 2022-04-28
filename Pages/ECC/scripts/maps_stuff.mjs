@@ -40,7 +40,7 @@ function addMarker(popup_header, LngLat, markertype, mapname, report_info, uniqu
 };
 
 function delayDelete(SecondsDelay, marker) {
-    let i = secondsDelay * 1000 //convert to milliseconds
+    let i = SecondsDelay * 1000 //convert to milliseconds
     //setTimeout(delMarker(marker,i));//wait i seconds, then run delMarker
     console.log("Hello");
     setTimeout(() => { console.log("World!"); }, i);
