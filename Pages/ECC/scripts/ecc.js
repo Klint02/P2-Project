@@ -70,7 +70,6 @@ async function postData(mapname) {
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
                     object_to_change = undefined; //dont let me plot the emergency more than once
                 } else if (calls[object_to_change].AMLLocation.address != "Unknown address") {
-                    console.log("Before: ", calls[object_to_change].situation);
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].location, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
                     object_to_change = undefined;//dont let me plot the emergency more than once
                 }
@@ -112,7 +111,7 @@ if (document.cookie != "") {
     });
     document.querySelector('#emergency_handled').addEventListener('click', function (event) {
         event.preventDefault();
-        console.log(event);
+        //console.log(event);
         postData(map);
     });
 }

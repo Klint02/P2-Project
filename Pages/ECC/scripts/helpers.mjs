@@ -16,7 +16,6 @@ function getCurrentEmergencies(mapname, path, emergency_marker) {
     fetch(path)
         .then(response => response.json())
         .then(calls => {
-            console.log(calls);
             for (let i = 0; i < calls.length; i++) {
                 if (calls[i].answered === true && calls[i].active === true && calls[i].answering === true) {
                     // Information to display in box
