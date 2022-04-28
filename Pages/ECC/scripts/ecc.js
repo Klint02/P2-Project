@@ -65,7 +65,12 @@ async function postData(mapname) {
             .then(response => response.json())
             .then(calls => {
                 // Information to display in box
-                let info_to_display = `Id: ${calls[object_to_change].id} <br>Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].location.address}<br>Time: ${calls[object_to_change].timeset}<br>Description: ${calls[object_to_change].description}`;
+                let info_to_display = `Id: ${calls[object_to_change].id},
+                <br>Navn: ${calls[object_to_change].name},
+                <br>Tlf: ${calls[object_to_change].number},
+                <br>Addresse: ${calls[object_to_change].location.address},
+                <br>Time: ${calls[object_to_change].timeset},
+                <br>Description: ${calls[object_to_change].description}`;
                 // Checks if address is provided or if there is need of use of only lat:lng for place of emergency
                 if (calls[object_to_change].location.address == "Unknown address") {
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
