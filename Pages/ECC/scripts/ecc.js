@@ -98,6 +98,7 @@ async function postData(mapname) {
 }
 
 function link(id) {
+    object_to_change = undefined;
     document.querySelectorAll(".gm-style-iw-c")[0].remove();
     if (current_object == undefined) {
         alert("Start a call to link it")
