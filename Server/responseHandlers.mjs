@@ -50,7 +50,7 @@ export function getHandler(req, res, operatorPath) {
 
 
 
-//So far does nothing exept continues, might do something later
+//So far does nothing except continues, might do something later
 export function responseCompiler(req, res) {
     fileResponse(req.url, res);
 }

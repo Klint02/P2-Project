@@ -72,10 +72,12 @@ function addCallerMarker(LngLat, markertype, mapname) {
     return marker/*.id*/;
 }
 
+//Deletes a person marker
 function delPerson(markerID) {
     markerID.setMap(null);
 }
 
+//Deletes all markers
 function clearAllMarkers() {
     for (var i = 0; i < markersArray.length; i++) {
         markersArray[i].setMap(null);
