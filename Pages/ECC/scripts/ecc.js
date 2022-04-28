@@ -115,7 +115,7 @@ function link(id) {
             },
             body: `{"objID": \"${id}\", "curentObjID" : \"${current_object.id}\"}`,
         }).then(() => {
-            getCurrentEmergencies("map", path, "", true);
+            getCurrentEmergencies(map, path, emergency_marker, true);
         });
     }
 }

@@ -1,4 +1,3 @@
-let map;
 let d = new Date();
 let markersArray = []; //Can be made non-global
 let path = "../../Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
