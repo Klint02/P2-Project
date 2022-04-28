@@ -112,3 +112,8 @@ export function addCaller(path, caller, res) {
     if (exportObjectPush(path, caller, res) == 1) return 1;
     return 0;
 }
+
+export function getLastSplit(input, splitChar) {
+    const temp = input.split(splitChar);
+    return temp[temp.length - 1]
+}

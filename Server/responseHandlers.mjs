@@ -3,7 +3,7 @@ import { pageEmergencyAccepted } from "./Pages/emergency_accepted.mjs";
 import { pageEmergencyHandled } from "./Pages/emergency_handled.mjs";
 import { pageEcc as pageEcc } from "./Pages/ecc.mjs";
 import { pageChangeAnswering as pageChangeAnswering } from "./Pages/change_answering.mjs"
-import { determineMimeType, addCaller } from "./helpers.mjs";
+import { determineMimeType, getLastSplit } from "./helpers.mjs";
 import { getArgs as getArgs } from "./helpers.mjs";
 import * as fs from 'fs';
 import { operator } from "./classes.mjs";
@@ -40,15 +40,13 @@ export function getHandler(req, res, operatorPath) {
         case "Pages/ECC/ecc.html":
             if (pageEcc(args, res, operatorPath) == 1) return 1;
             break;
-        case "Pages/ECC/scripts/initMap.mjs":
+        case "Pages/ECC/scripts/" + getLastSplit(splitUrl[0], "\/"):
             res.setHeader("Cache-Control", "public, max-age=1800")
             break;
     }
     //Continues response
     responseCompiler(req, res);
 }
-
-
 
 //So far does nothing except continues, might do something later
 export function responseCompiler(req, res) {
