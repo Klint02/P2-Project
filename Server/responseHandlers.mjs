@@ -5,6 +5,7 @@ import { pageEcc as pageEcc } from "./Pages/ecc.mjs";
 import { pageChangeAnswering as pageChangeAnswering } from "./Pages/change_answering.mjs"
 import { determineMimeType, getLastSplit } from "./helpers.mjs";
 import { getArgs as getArgs } from "./helpers.mjs";
+import { addLink } from "./Pages/add_link.mjs";
 import * as fs from 'fs';
 import { operator } from "./classes.mjs";
 
@@ -20,6 +21,8 @@ export function postHandler(req, res) {
             return pageEmergencyHandled(req, res, path);
         case "callerobj":
             return pageCallerObj(req, res, path);
+        case "add_link":
+            return addLink(req, res, path);
         default:
             return errorResponse(res, 404, "Post request not found");
 

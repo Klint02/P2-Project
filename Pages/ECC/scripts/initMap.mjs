@@ -8,5 +8,5 @@ function initMap() {
         center: defaultCenter,
     });
 
-    getCurrentEmergencies(map, path, emergency_marker);
+    getCurrentEmergencies(map, path, emergency_marker, false);
 }

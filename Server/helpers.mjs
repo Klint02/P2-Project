@@ -85,9 +85,11 @@ export function importObject(path, res) {
         if (temp != "") {
             return JSON.parse(temp);
         }
-        return errorResponse(res, 500, "Internal Error: Data file not found: " + path);
+        errorResponse(res, 500, "Internal Error: Data file not found: " + path);
+        return 1;
     } catch (err) {
-        return errorResponse(res, 500, "Internal Error: Reading file failed " + path + "  :  Cought error: " + err);
+        errorResponse(res, 500, "Internal Error: Reading file failed " + path + "  :  Cought error: " + err);
+        return 1;
     }
 }
 

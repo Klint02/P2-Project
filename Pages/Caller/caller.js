@@ -77,7 +77,8 @@ function infoPlacerResult(name, situation, injuries, description, address, latln
     answering: false,
     active: false,
     useful: true,
-    description: description
+    description: description,
+    links: []
   }
 
   // Converts the object to a JSON string for the POST request

@@ -34,6 +34,7 @@ function addMarker(popup_header, LngLat, markertype, mapname, report_info, uniqu
 
         confirmDelMarker(marker)
     });
+
     markersArray.push(marker);
 };
 
