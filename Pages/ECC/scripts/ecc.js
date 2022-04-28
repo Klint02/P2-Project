@@ -3,6 +3,8 @@ const emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png
 let object_to_change; //should be made non-global
 let last_marker;
 
+initECC();
+
 function getCalls(mapname, path) {
     let queue = 0;
     fetch(path)
@@ -95,23 +97,25 @@ async function postData(mapname) {
 //If a uuid is found remove the login screen and replace with a login success thingy
 //and a logout button that expires the cookie
 /*For the if statement, was changed because it now doesn't work: document.cookie != "uuid="*/
-if (document.cookie != "") {
-    document.getElementById("loginForm").remove();
-    //document.getElementById("loginText").innerText = "Logged in";
-    let loginPlaceholder = document.getElementById("logoutPlaceholder");
-    //loginPlaceholder.style.display = "inline-block";
-    loginPlaceholder.innerHTML = '<div id="calls"><button id="new_call">Næste opkald</button><button id="emergency_handled">Plot emergency</button><p id="call_text"></p></div><p>Logged in</p><button id=logoutbtn>Logout</button>';
-    document.getElementById("logoutbtn").addEventListener("click", function (event) {
-        location.href = "ecc.html";
-        document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-    });
-    document.querySelector('#new_call').addEventListener('click', function (event) {
-        event.preventDefault();
-        getCalls(map, path);
-    });
-    document.querySelector('#emergency_handled').addEventListener('click', function (event) {
-        event.preventDefault();
-        //console.log(event);
-        postData(map);
-    });
+function initECC() {
+    if (document.cookie != "") {
+        document.getElementById("loginForm").remove();
+        //document.getElementById("loginText").innerText = "Logged in";
+        let loginPlaceholder = document.getElementById("logoutPlaceholder");
+        //loginPlaceholder.style.display = "inline-block";
+        loginPlaceholder.innerHTML = '<div id="calls"><button id="new_call">Næste opkald</button><button id="emergency_handled">Plot emergency</button><p id="call_text"></p></div><p>Logged in</p><button id=logoutbtn>Logout</button>';
+        document.getElementById("logoutbtn").addEventListener("click", function (event) {
+            location.href = "ecc.html";
+            document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+        });
+        document.querySelector('#new_call').addEventListener('click', function (event) {
+            event.preventDefault();
+            getCalls(map, path);
+        });
+        document.querySelector('#emergency_handled').addEventListener('click', function (event) {
+            event.preventDefault();
+            //console.log(event);
+            postData(map);
+        });
+    }
 }
