@@ -1,8 +1,8 @@
-import { pageCallerObj as pageCallerObj } from "./Pages/callerobj.mjs";
-import { pageEmergencyAccepted } from "./Pages/emergency_accepted.mjs";
-import { pageEmergencyHandled } from "./Pages/emergency_handled.mjs";
-import { pageEcc as pageEcc } from "./Pages/ecc.mjs";
-import { pageChangeAnswering as pageChangeAnswering } from "./Pages/change_answering.mjs"
+import { pageCallerObj as pageCallerObj } from "./FunctionFiles/callerobj.mjs";
+import { pageEmergencyAccepted } from "./FunctionFiles/emergency_accepted.mjs";
+import { pageEmergencyHandled } from "./FunctionFiles/emergency_handled.mjs";
+import { pageEcc as pageEcc } from "./FunctionFiles/ecc.mjs";
+import { pageChangeAnswering as pageChangeAnswering } from "./FunctionFiles/change_answering.mjs"
 import { determineMimeType, addCaller } from "./helpers.mjs";
 import { getArgs as getArgs } from "./helpers.mjs";
 import * as fs from 'fs';

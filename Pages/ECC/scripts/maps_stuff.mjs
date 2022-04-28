@@ -49,11 +49,23 @@ function addMarker(popup_header, LngLat, markertype, mapname, report_info, uniqu
         infowindow.open(mapname, marker);
     });
     google.maps.event.addListener(marker, "rightclick", function (point) {//adds the confirmDelMarker function to right clicks on the marker
-
         confirmDelMarker(marker)
     });
     markersArray.push(marker);
+    //setTimeout(delMarker(marker), 9000);
+
+    delayDelete(15, marker);
 };
+
+function delayDelete(SecondsDelay, marker) {
+    let i = secondsDelay * 1000 //convert to milliseconds
+    //setTimeout(delMarker(marker,i));//wait i seconds, then run delMarker
+    console.log("Hello");
+    setTimeout(() => { console.log("World!"); }, i);
+    console.log("Goodbye!");
+    //delMarker(marker);
+};
+
 
 var confirmDelMarker = function (marker) {//deletes the desired marker after user confirmation
     if (confirm('are you sure you want to delete the marker?') == true) {//opens a warning box at top of screen. "if confirmed by user"-> run delMarker
