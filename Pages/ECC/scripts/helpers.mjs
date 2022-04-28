@@ -1,4 +1,4 @@
-
+let map;
 
 try {
     document.querySelector(".nodefault").addEventListener("click", function (event) {
@@ -13,6 +13,7 @@ function makeUniqueID() {
 }
 
 function getCurrentEmergencies(mapname, path, emergency_marker, update) {
+    clearAllMarkers();
     fetch(path)
         .then(response => response.json())
         .then(calls => {
@@ -29,6 +30,7 @@ function getCurrentEmergencies(mapname, path, emergency_marker, update) {
                     }
                 }
             }
+
         });
 }
 
@@ -73,7 +75,6 @@ function addLinks(obj, calls, links, update) {
                     strokeOpacity: 1.0,
                     strokeWeight: 2
                 });
-
                 line.setMap(map);
             }
         }
@@ -82,8 +83,6 @@ function addLinks(obj, calls, links, update) {
 
 Array.prototype.contains = function (input) {
     for (let i = 0; i < this.length; i++) {
-        console.log(this[i]);
-        console.log(input);
         if (this[i].addressOne.lat == input.addressOne.lat &&
             this[i].addressOne.lng == input.addressOne.lng &&
             this[i].addressTwo.lat == input.addressTwo.lat &&
