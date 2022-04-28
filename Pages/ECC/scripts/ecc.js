@@ -25,6 +25,10 @@ function getCalls(mapname, path) {
                     let call_text = document.getElementById('call_text');
                     call_text.innerHTML = `Der er ikke flere opkald`;
                 } else {
+                    // Delete last person_marker
+                    if (last_marker != undefined) {
+                        delPerson(last_marker);
+                    }
                     // If call is unanswered
                     if (calls[i].answered === false && calls[i].answering === false) {
                         // Get the first unanswered call
