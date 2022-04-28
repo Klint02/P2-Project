@@ -20,6 +20,8 @@ export function postHandler(req, res) {
             return pageEmergencyHandled(req, res, path);
         case "callerobj":
             return pageCallerObj(req, res, path);
+        default:
+            return errorResponse(res, 404, "Post request not found");
 
     }
 }
@@ -36,8 +38,10 @@ export function getHandler(req, res, operatorPath) {
     //Depending on the requested page GET requests need to be handled differently
     switch (splitUrl[0]) {
         case "Pages/ECC/ecc.html":
-            res.setHeader("Cache-Control", "no-store")
             if (pageEcc(args, res, operatorPath) == 1) return 1;
+            break;
+        case "Pages/ECC/scripts/initMap.mjs":
+            res.setHeader("Cache-Control", "public, max-age=1800")
             break;
     }
     //Continues response
