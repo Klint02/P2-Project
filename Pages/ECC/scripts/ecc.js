@@ -31,13 +31,20 @@ function getCalls(mapname, path) {
                     }
                     // If call is unanswered
                     if (calls[i].answered === false && calls[i].answering === false) {
+                        // Checks if there is and address if not set address to the AML
+                        let addressInput;
+                        if (calls[i].location.address == "Unknown address") {
+                            addressInput = String("(Unknown) AML - Lat: " + calls[i].AMLLocation.lat + " Lng: " + calls[i].AMLLocation.lng);
+                        } else {
+                            addressInput = calls[i].location.address;
+                        }
                         // Get the first unanswered call
                         object_to_change = i;
                         // Creates HTML with information
                         let call_text = document.getElementById('call_text');
                         call_text.innerHTML = `Id: ${calls[i].id} <br>
                         Navn: ${calls[i].name} <br>
-                        Addresse: ${calls[i].location.address} <br>
+                        Addresse: ${addressInput} <br>
                         Situation: ${calls[i].situation} <br>
                         Tidspunkt: ${calls[i].timeset} <br>`;
 
@@ -68,11 +75,18 @@ async function postData(mapname) {
         fetch(path)
             .then(response => response.json())
             .then(calls => {
+                // Checks if there is and address if not set address to the AML
+                let addressInput;
+                if (calls[object_to_change].location.address == "Unknown address") {
+                    addressInput = String("(Unknown) AML - Lat: " + calls[object_to_change].AMLLocation.lat + " Lng: " + calls[object_to_change].AMLLocation.lng);
+                } else {
+                    addressInput = calls[object_to_change].location.address;
+                }
                 // Information to display in box
                 let info_to_display = `Id: ${calls[object_to_change].id},
                 <br>Navn: ${calls[object_to_change].name},
                 <br>Tlf: ${calls[object_to_change].number},
-                <br>Addresse: ${calls[object_to_change].location.address},
+                <br>Addresse: ${addressInput},
                 <br>Time: ${calls[object_to_change].timeset},
                 <br>Description: ${calls[object_to_change].description}`;
                 // Checks if address is provided or if there is need of use of only lat:lng for place of emergency
