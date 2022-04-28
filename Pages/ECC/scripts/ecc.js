@@ -1,8 +1,9 @@
 const caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
 const emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
-let caller_markers = {}; //should be made non-global
 let object_to_change; //should be made non-global
-let last_marker_id;
+let last_marker;
+
+initECC();
 
 function getCalls(mapname, path) {
     let queue = 0;
@@ -38,8 +39,7 @@ function getCalls(mapname, path) {
 
                         // Adds marker wher caller is calling from
                         marker = addCallerMarker(calls[object_to_change].AMLLocation, caller_marker, mapname);
-                        caller_markers[marker.id] = marker;
-                        last_marker_id = marker.id;
+                        last_marker = marker;
                         // Post data
                         fetch('/change_answering', {
                             method: 'POST',
@@ -71,7 +71,6 @@ async function postData(mapname) {
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
                     object_to_change = undefined; //dont let me plot the emergency more than once
                 } else if (calls[object_to_change].AMLLocation.address != "Unknown address") {
-                    console.log("Before: ", calls[object_to_change].situation);
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].location, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
                     object_to_change = undefined;//dont let me plot the emergency more than once
                 }
@@ -82,7 +81,7 @@ async function postData(mapname) {
 
             });
         // Post data
-        delPerson(last_marker_id, caller_markers);
+        delPerson(last_marker);
         fetch('/emergency_accepted', {
             method: 'POST',
             headers: {
@@ -97,23 +96,25 @@ async function postData(mapname) {
 //If a uuid is found remove the login screen and replace with a login success thingy
 //and a logout button that expires the cookie
 /*For the if statement, was changed because it now doesn't work: document.cookie != "uuid="*/
-if (document.cookie != "") {
-    document.getElementById("loginForm").remove();
-    //document.getElementById("loginText").innerText = "Logged in";
-    let loginPlaceholder = document.getElementById("logoutPlaceholder");
-    //loginPlaceholder.style.display = "inline-block";
-    loginPlaceholder.innerHTML = '<div id="calls"><button id="new_call">Næste opkald</button><button id="emergency_handled">Plot emergency</button><p id="call_text"></p></div><p>Logged in</p><button id=logoutbtn>Logout</button>';
-    document.getElementById("logoutbtn").addEventListener("click", function (event) {
-        location.href = "ecc.html";
-        document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-    });
-    document.querySelector('#new_call').addEventListener('click', function (event) {
-        event.preventDefault();
-        getCalls(map, path);
-    });
-    document.querySelector('#emergency_handled').addEventListener('click', function (event) {
-        event.preventDefault();
-        console.log(event);
-        postData(map);
-    });
+function initECC() {
+    if (document.cookie != "") {
+        document.getElementById("loginForm").remove();
+        //document.getElementById("loginText").innerText = "Logged in";
+        let loginPlaceholder = document.getElementById("logoutPlaceholder");
+        //loginPlaceholder.style.display = "inline-block";
+        loginPlaceholder.innerHTML = '<div id="calls"><button id="new_call">Næste opkald</button><button id="emergency_handled">Plot emergency</button><p id="call_text"></p></div><p>Logged in</p><button id=logoutbtn>Logout</button>';
+        document.getElementById("logoutbtn").addEventListener("click", function (event) {
+            location.href = "ecc.html";
+            document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+        });
+        document.querySelector('#new_call').addEventListener('click', function (event) {
+            event.preventDefault();
+            getCalls(map, path);
+        });
+        document.querySelector('#emergency_handled').addEventListener('click', function (event) {
+            event.preventDefault();
+            //console.log(event);
+            postData(map);
+        });
+    }
 }
