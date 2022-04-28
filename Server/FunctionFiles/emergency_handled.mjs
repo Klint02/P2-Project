@@ -1,5 +1,5 @@
 import { errorResponse } from "../responseHandlers.mjs";
-import { importObject, exportObject, getPostData } from "../helpers.mjs";
+import { importObject, exportObject, getPostData } from "../serverHelpers.mjs";
 
 export function pageEmergencyHandled(req, res, path) {
     getPostData(req).then(obj => {
