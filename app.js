@@ -16,7 +16,7 @@ import { postHandler, getHandler, fileResponse, errorResponse } from './Server/r
 
 
 //Create server object with the function requestHandler as input
-const server = http.create_server(requestHandler);
+const server = http.createServer(requestHandler);
 
 //Tells server to listen on ip and port
 server.listen(port, hostname, () => {
@@ -44,7 +44,7 @@ function processReq(req, res, operatorPath) {
     //Depending on http method used, different handlers handle the request. If an
     //unexpected method type appears we attempt to respond with a default file 
     //response
-    //console.log("Request: " + req.method + " " + req.url);
+    console.log("Request: " + req.method + " " + req.url);
     switch (req.method) {
         case 'POST':
             return postHandler(req, res);

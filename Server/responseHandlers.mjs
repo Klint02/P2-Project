@@ -1,7 +1,8 @@
-import { page_callerobj as pageCallerObj } from "./Pages/callerobj.mjs";
-import { page_emergency_accepted as pageEmergencyAccepted } from "./Pages/emergency_accepted.mjs";
-import { page_ecc as pageEcc } from "./Pages/ecc.mjs";
-import { page_change_answering as pageChangeAnswering } from "./Pages/change answering.mjs"
+import { pageCallerObj as pageCallerObj } from "./Pages/callerobj.mjs";
+import { pageEmergencyAccepted } from "./Pages/emergency_accepted.mjs";
+import { pageEmergencyHandled } from "./Pages/emergency_handled.mjs";
+import { pageEcc as pageEcc } from "./Pages/ecc.mjs";
+import { pageChangeAnswering as pageChangeAnswering } from "./Pages/change_answering.mjs"
 import { determineMimeType, addCaller } from "./helpers.mjs";
 import { getArgs as getArgs } from "./helpers.mjs";
 import * as fs from 'fs';
@@ -12,11 +13,15 @@ export function postHandler(req, res) {
     let path = "Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
     switch (req.url) {
         case "change_answering":
-            return pageChangeAnswering(req);
+            return pageChangeAnswering(req, res, path);
         case "emergency_accepted":
             return pageEmergencyAccepted(req, res, path);
+        case "emergency_handled":
+            return pageEmergencyHandled(req, res, path);
         case "callerobj":
             return pageCallerObj(req, res, path);
+        default:
+            return errorResponse(res, 404, "Post request not found");
 
     }
 }
@@ -35,6 +40,9 @@ export function getHandler(req, res, operatorPath) {
         case "Pages/ECC/ecc.html":
             if (pageEcc(args, res, operatorPath) == 1) return 1;
             break;
+        case "Pages/ECC/scripts/initMap.mjs":
+            res.setHeader("Cache-Control", "public, max-age=1800")
+            break;
     }
     //Continues response
     responseCompiler(req, res);
@@ -42,7 +50,7 @@ export function getHandler(req, res, operatorPath) {
 
 
 
-//So far does nothing exept continues, might do something later
+//So far does nothing except continues, might do something later
 export function responseCompiler(req, res) {
     fileResponse(req.url, res);
 }

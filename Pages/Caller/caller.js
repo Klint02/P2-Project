@@ -25,12 +25,11 @@ function handleSubmit(event) {
   const injuries = data.get('injuries');
 
   const description = data.get('description');
-
-  info_placer(name, situation, address, injuries, description);
+  infoPlacer(name, situation, address, injuries, description);
 }
 
 // Reads info from variables and determines whether there is a need for generating placeholders or not
-function info_placer(name, situation, address, injuries, description) {
+function infoPlacer(name, situation, address, injuries, description) {
   let addressArr = [{ lat: 57.017145, lng: 9.987593 }, { lat: 57.052578, lng: 9.911738 }, { lat: 57.046832, lng: 9.913825 }];
   let addressArrIndex, formZeroLen = 0, numberMAX = 99999999, numberMIN = 10000000;
   let tempNumber = Math.floor(Math.random() * numberMAX);
@@ -45,22 +44,23 @@ function info_placer(name, situation, address, injuries, description) {
   if (injuries.length === formZeroLen) injuries = "unknown injuries";
 
   if (description.length === formZeroLen) description = "No description provided";
-
   if (address.length === formZeroLen) {
     address = "Unknown address"
+    infoPlacerResult(name, situation, injuries, description, address, latlngObj, addressArr, addressArrIndex);
   } else {
-    addGeoMarker(address).then(latlngObj => {
-      info_placer_result(name, situation, injuries, description, address, latlngObj, addressArr, addressArrIndex);
-    }).catch(err => {
+    let templatlngObj;
+    addGeoMarker(address).then((latlngObj) => {
+      templatlngObj = latlngObj;
+    }).catch((err) => {
       console.log(err);
-      info_placer_result(name, situation, injuries, description, address, latlngObj, addressArr, addressArrIndex);
+    }).finally(() => {
+      infoPlacerResult(name, situation, injuries, description, address, templatlngObj, addressArr, addressArrIndex);
     });
-    // Assigns the info values to an object
-    clear_form();
   }
+  clearForm();
 }
-
-function info_placer_result(name, situation, injuries, description, address, latlngObj, addressArr, addressArrIndex) {
+// Assigns the info values to an object
+function infoPlacerResult(name, situation, injuries, description, address, latlngObj, addressArr, addressArrIndex) {
   let callObj = {
     name: name,
     location: locationObj = {
@@ -75,6 +75,7 @@ function info_placer_result(name, situation, injuries, description, address, lat
     injuries: injuries,
     answered: false,
     answering: false,
+    active: false,
     useful: true,
     description: description
   }
@@ -84,3 +85,11 @@ function info_placer_result(name, situation, injuries, description, address, lat
   sendJSON(caller);
 
 }
+
+
+// Listens to when a form is submitted, and runs the handlesubmit function
+const form = document.querySelector('form');
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  handleSubmit(event);
+});

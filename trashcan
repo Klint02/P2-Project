@@ -65,7 +65,7 @@ function reportsemantics(reportstring) {
 function plopmarker(address, popup_header, mapname, report_info_to_display) {
     // If the data in address is a string (a normal address, example: Tagens vej 12)
     if (typeof address === 'string' || address instanceof String) {
-        add_geo_marker(popup_header, address, mapname, report_info_to_display);
+        addGeoMarker(popup_header, address, mapname, report_info_to_display);
         // If the data in address is anything else - in our case an object ( { lat: 0000, lng: 0000 } )
     } else {
         // Centers the map to the location of the address
@@ -78,6 +78,6 @@ function plopmarker(address, popup_header, mapname, report_info_to_display) {
 
 function delayDelete(marker, milliSecondsDelay) {
     // let i = secondsDelay * 1000 //convert to milliseconds
-     setTimeout(delMarker(marker), milliSecondsDelay);//wait i seconds, then run delMarker
- };
+    setTimeout(delMarker(marker), milliSecondsDelay);//wait i seconds, then run delMarker
+};
 ///////////////////////////////////////////////////////////////

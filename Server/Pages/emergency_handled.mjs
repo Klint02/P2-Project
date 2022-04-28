@@ -1,4 +1,7 @@
-function page_emergency_handled(req) {
+import { errorResponse } from "../responseHandlers.mjs";
+import { importObject, exportObject, getPostData } from "../helpers.mjs";
+
+export function pageEmergencyHandled(req, res, path) {
     getPostData(req).then(obj => {
         let content = importObject(path, res);
         // Find the place where the id match
@@ -8,6 +11,8 @@ function page_emergency_handled(req) {
             }
         }
         exportObject(path, content, res);
+        res.statusCode = 200;
+        res.end("\n");
     }).catch(err => {
         console.log(err);
         return errorResponse(res, 500, "Internal Error: Request failed: " + err);

@@ -1,17 +1,15 @@
-let emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
-let caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
-let d = new Date()
-let path = "../../Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
-let markersArray = []; //Can be made non-global
-let caller_markers = {}; //should be made non-global
+const caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
+const emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
 let object_to_change; //should be made non-global
-let markerID; //MUST be made non-global
+let last_marker;
 
-function getCalls(mapname) {
+initECC();
+
+function getCalls(mapname, path) {
     let queue = 0;
     fetch(path)
         .then(clearAllMarkers()) // clears all markers in the client-side array
-        .then(getCurrentEmergencies(mapname))
+        .then(getCurrentEmergencies(mapname, path, emergency_marker))
         .then(response => response.json())
         .then(calls => {
             // Get the number of calls in queue
@@ -40,8 +38,8 @@ function getCalls(mapname) {
                         Tidspunkt: ${calls[i].timeset} <br>`;
 
                         // Adds marker wher caller is calling from
-                        markerID = add_caller_marker(calls[object_to_change].AMLLocation, caller_marker, mapname);
-
+                        marker = addCallerMarker(calls[object_to_change].AMLLocation, caller_marker, mapname);
+                        last_marker = marker;
                         // Post data
                         fetch('/change_answering', {
                             method: 'POST',
@@ -68,13 +66,13 @@ async function postData(mapname) {
             .then(response => response.json())
             .then(calls => {
                 // Information to display in box
-                let info_to_display = `Id: ${calls[object_to_change].id} <br>Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].address}<br>Time: ${calls[object_to_change].timeset}<br>Description: ${calls[object_to_change].description}`;
+                let info_to_display = `Id: ${calls[object_to_change].id} <br>Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].location.address}<br>Time: ${calls[object_to_change].timeset}<br>Description: ${calls[object_to_change].description}`;
                 // Checks if address is provided or if there is need of use of only lat:lng for place of emergency
-                if (calls[object_to_change].address == "Unknown address") {
-                    addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, calls[object_to_change].id);
+                if (calls[object_to_change].location.address == "Unknown address") {
+                    addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
                     object_to_change = undefined; //dont let me plot the emergency more than once
-                } else if (calls[object_to_change].address != "Unknown address") {
-                    addGeoMarker(String(calls[object_to_change].situation), calls[object_to_change].address, mapname, info_to_display, calls[object_to_change].id);
+                } else if (calls[object_to_change].AMLLocation.address != "Unknown address") {
+                    addMarker(String(calls[object_to_change].situation), calls[object_to_change].location, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
                     object_to_change = undefined;//dont let me plot the emergency more than once
                 }
 
@@ -84,7 +82,7 @@ async function postData(mapname) {
 
             });
         // Post data
-        delPerson(markerID);
+        delPerson(last_marker);
         fetch('/emergency_accepted', {
             method: 'POST',
             headers: {
@@ -99,22 +97,25 @@ async function postData(mapname) {
 //If a uuid is found remove the login screen and replace with a login success thingy
 //and a logout button that expires the cookie
 /*For the if statement, was changed because it now doesn't work: document.cookie != "uuid="*/
-if (document.cookie != "") {
-    document.getElementById("loginForm").remove();
-    //document.getElementById("loginText").innerText = "Logged in";
-    let loginPlaceholder = document.getElementById("logoutPlaceholder");
-    //loginPlaceholder.style.display = "inline-block";
-    loginPlaceholder.innerHTML = '<div id="calls"><button id="new_call">Næste opkald</button><button id="emergency_handled">Plot emergency</button><p id="call_text"></p></div><p>Logged in</p><button id=logoutbtn>Logout</button>';
-    document.getElementById("logoutbtn").addEventListener("click", function (event) {
-        location.href = "ecc.html";
-        document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-    });
-    document.querySelector('#new_call').addEventListener('click', function (event) {
-        event.preventDefault();
-        getCalls(map);
-    });
-    document.querySelector('#emergency_handled').addEventListener('click', function (event) {
-        event.preventDefault();
-        postData(map);
-    });
+function initECC() {
+    if (document.cookie != "") {
+        document.getElementById("loginForm").remove();
+        //document.getElementById("loginText").innerText = "Logged in";
+        let loginPlaceholder = document.getElementById("logoutPlaceholder");
+        //loginPlaceholder.style.display = "inline-block";
+        loginPlaceholder.innerHTML = '<div id="calls"><button id="new_call">Næste opkald</button><button id="emergency_handled">Plot emergency</button><p id="call_text"></p></div><p>Logged in</p><button id=logoutbtn>Logout</button>';
+        document.getElementById("logoutbtn").addEventListener("click", function (event) {
+            location.href = "ecc.html";
+            document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
+        });
+        document.querySelector('#new_call').addEventListener('click', function (event) {
+            event.preventDefault();
+            getCalls(map, path);
+        });
+        document.querySelector('#emergency_handled').addEventListener('click', function (event) {
+            event.preventDefault();
+            //console.log(event);
+            postData(map);
+        });
+    }
 }
