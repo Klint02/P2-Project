@@ -7,12 +7,8 @@
 // implement form based test (DONE)
 // implement RNG data (NOT DONE)
 
-// PLACEHOLDER FUNCTION 
-// NEEDED FOR GOOGLE MAPS LAT AND LONG
-
 // Takes info written in the caller.html form and assigns it to variables
 // The variables are used to assign data to a caller
-
 function handleSubmit(event) {
   const data = new FormData(event.target);
 
@@ -30,23 +26,22 @@ function handleSubmit(event) {
 
 // Reads info from variables and determines whether there is a need for generating placeholders or not
 function infoPlacer(name, situation, address, injuries, description) {
-  let addressArr = [{ lat: 57.017145, lng: 9.987593 }, { lat: 57.052578, lng: 9.911738 }, { lat: 57.046832, lng: 9.913825 }];
-  let addressArrIndex, formZeroLen = 0, numberMAX = 99999999, numberMIN = 10000000;
-  let tempNumber = Math.floor(Math.random() * numberMAX);
+  const FORMZEROLEN = 0, NUMBERMAX = 99999999, NUMBERMIN = 10000000;
+  let tempNumber = Math.floor(Math.random() * NUMBERMAX);
   let latlngObj;
-  tempNumber < numberMIN ? number = tempNumber + 10000000 : number = tempNumber;
-  addressArrIndex = (Math.floor(Math.random() * addressArr.length));
+  tempNumber < NUMBERMIN ? number = tempNumber + 10000000 : number = tempNumber;
 
-  if (name.length === formZeroLen) name = "unknown caller";
+  if (name.length === FORMZEROLEN) name = "unknown caller";
 
-  if (situation.length === formZeroLen) situation = "unknown situation";
+  if (situation.length === FORMZEROLEN) situation = "unknown situation";
 
-  if (injuries.length === formZeroLen) injuries = "unknown injuries";
+  if (injuries.length === FORMZEROLEN) injuries = "unknown injuries";
 
-  if (description.length === formZeroLen) description = "No description provided";
-  if (address.length === formZeroLen) {
+  if (description.length === FORMZEROLEN) description = "No description provided";
+  
+  if (address.length === FORMZEROLEN) {
     address = "Unknown address"
-    infoPlacerResult(name, situation, injuries, description, address, latlngObj, addressArr, addressArrIndex);
+    infoPlacerResult(name, situation, injuries, description, address, latlngObj);
   } else {
     let templatlngObj;
     addGeoMarker(address).then((latlngObj) => {
@@ -54,13 +49,13 @@ function infoPlacer(name, situation, address, injuries, description) {
     }).catch((err) => {
       console.log(err);
     }).finally(() => {
-      infoPlacerResult(name, situation, injuries, description, address, templatlngObj, addressArr, addressArrIndex);
+      infoPlacerResult(name, situation, injuries, description, address, templatlngObj);
     });
   }
   clearForm();
 }
 // Assigns the info values to an object
-function infoPlacerResult(name, situation, injuries, description, address, latlngObj, addressArr, addressArrIndex) {
+function infoPlacerResult(name, situation, injuries, description, address, latlngObj) {
   let callObj = {
     name: name,
     location: locationObj = {
@@ -71,7 +66,7 @@ function infoPlacerResult(name, situation, injuries, description, address, latln
     situation: situation,
     number: number,
     timeset: new Date().toLocaleString("da-DK", { timeZone: "Europe/Copenhagen" }),
-    AMLLocation: addressArr[addressArrIndex],
+    AMLLocation: address === "Unknown address" ? AMLAalborg() : AMLRadius(latlngObj.lat, latlngObj.lng),
     injuries: injuries,
     answered: false,
     answering: false,
@@ -79,13 +74,41 @@ function infoPlacerResult(name, situation, injuries, description, address, latln
     useful: true,
     description: description
   }
-
+  
   // Converts the object to a JSON string for the POST request
   let caller = JSON.stringify(callObj)
   sendJSON(caller);
-
 }
 
+// Generates a random set of coordinates within Aalborg and parses them as an object
+// Used to generate a random onlooker for a given emergency without a known location
+function AMLAalborg() {
+  const LATMAX = 51250, LNGMAX = 134500, COORDCONVERTER = 1000000;
+  let latOffset = Math.floor(Math.random() * LATMAX);
+  let lngOffset = Math.floor(Math.random() * LNGMAX);
+  let lat = ((57000000 + latOffset) / COORDCONVERTER);
+  let lng = ((9865500 + lngOffset) / COORDCONVERTER);
+  let AMLLocationObj = {
+    lat: lat,
+    lng: lng  
+  }
+ return AMLLocationObj;
+}
+
+// Takes given coordinates from a known address and offsets them
+// Used to generate a random onlooker for a given emergency
+function AMLRadius(lat, lng) {
+  const RADIUS = 512, DIAMETER = 1024, LNGMAX = 134500, COORDCONVERTER = 1000000;
+  let latOffset = Math.floor(Math.random() * DIAMETER - RADIUS);
+  let lngOffset = Math.floor(Math.random() * DIAMETER - RADIUS);
+  lat = (((lat * COORDCONVERTER) + latOffset) / COORDCONVERTER);
+  lng = (((lng * COORDCONVERTER) + lngOffset) / COORDCONVERTER);
+  let AMLLocationObj = {
+    lat: lat,
+    lng: lng  
+  }
+  return AMLLocationObj;
+}
 
 // Listens to when a form is submitted, and runs the handlesubmit function
 const form = document.querySelector('form');
