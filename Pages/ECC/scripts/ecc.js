@@ -1,5 +1,4 @@
 const caller_marker = "http://maps.google.com/mapfiles/kml/shapes/man.png"
-const emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
 let object_to_change; //should be made non-global
 let last_marker;
 
@@ -39,6 +38,8 @@ function getCalls(mapname, path) {
 
                         // Adds marker wher caller is calling from
                         marker = addCallerMarker(calls[object_to_change].AMLLocation, caller_marker, mapname);
+                        map.setCenter(marker.getPosition());
+                        map.setZoom(13);
                         last_marker = marker;
                         // Post data
                         fetch('/change_answering', {
