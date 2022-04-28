@@ -1,4 +1,4 @@
-import { importObject } from "../helpers.mjs";
+import { importObject } from "../serverHelpers.mjs";
 import { errorResponse } from "../responseHandlers.mjs";
 
 export function pageEcc(args, res, operatorPath) {

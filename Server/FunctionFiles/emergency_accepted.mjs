@@ -1,4 +1,4 @@
-import { importObject, exportObject, getPostData } from "../helpers.mjs";
+import { importObject, exportObject, getPostData } from "../serverHelpers.mjs";
 import { errorResponse } from "../responseHandlers.mjs";
 
 export function pageEmergencyAccepted(req, res, path) {
@@ -14,5 +14,5 @@ export function pageEmergencyAccepted(req, res, path) {
     }).catch(err => {
         return errorResponse(res, 500, "Internal Error: Request failed: " + err);
     });
-    
+
 }
