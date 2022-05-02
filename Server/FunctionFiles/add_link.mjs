@@ -1,5 +1,5 @@
-import { exportObject, importObject } from "../helpers.mjs";
-import { getPostData } from "../helpers.mjs";
+import { exportObject, importObject } from "../serverHelpers.mjs";
+import { getPostData } from "../serverHelpers.mjs";
 
 export function addLink(req, res, path) {
     getPostData(req).then(inputObj => {

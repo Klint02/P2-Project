@@ -5,6 +5,7 @@ import { pageEcc as pageEcc } from "./FunctionFiles/ecc.mjs";
 import { pageChangeAnswering as pageChangeAnswering } from "./FunctionFiles/change_answering.mjs"
 import { determineMimeType, addCaller } from "./serverHelpers.mjs";
 import { getArgs as getArgs, getLastSplit } from "./serverHelpers.mjs";
+import { addLink } from "./FunctionFiles/add_link.mjs"
 import * as fs from 'fs';
 import { operator } from "./classes.mjs";
 

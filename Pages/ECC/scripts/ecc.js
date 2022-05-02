@@ -120,9 +120,14 @@ async function postData(mapname) {
 }
 
 function link(id) {
+    delMarker(last_marker);
     object_to_change = undefined;
-    document.querySelectorAll(".gm-style-iw-a")[0].remove();
-    document.querySelectorAll(".gm-style-iw-a")[0].remove();
+    try {
+        document.querySelectorAll(".gm-style-iw")[0].remove();
+        document.querySelectorAll(".gm-style-iw")[0].remove();
+    } catch {
+        console.log("Couldn't autoremove prompt");
+    }
     if (current_object == undefined) {
         alert("Start a call to link it")
     } else {
@@ -139,6 +144,7 @@ function link(id) {
             },
             body: `{"objID": \"${id}\", "curentObjID" : \"${current_object.id}\"}`,
         }).then(() => {
+            console.log("GetCurrent");
             getCurrentEmergencies(map, path, emergency_marker, true);
         });
     }

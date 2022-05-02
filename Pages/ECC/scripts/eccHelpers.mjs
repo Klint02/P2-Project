@@ -8,6 +8,7 @@ try {
     console.log("No \"no Defaults\"")
 }
 
+//TODO: we have an offical uuid generator "uuidv4()"
 function makeUniqueID() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }

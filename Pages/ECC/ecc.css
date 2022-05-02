@@ -1,12 +1,13 @@
 #map {
-    height: 60vh;
-    width: 90%;
-  }
+  height: 60vh;
+  width: 90%;
+}
+
 #reportInput {
   width: 60vh;
   height: 10vh;
 }
 
-.logoutPlaceholder > * {
+.logoutPlaceholder>* {
   display: inline-block;
 }
