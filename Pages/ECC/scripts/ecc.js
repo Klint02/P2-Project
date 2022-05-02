@@ -25,15 +25,26 @@ function getCalls(mapname, path) {
                     let call_text = document.getElementById('call_text');
                     call_text.innerHTML = `Der er ikke flere opkald`;
                 } else {
+                    // Delete last person_marker
+                    if (last_marker != undefined) {
+                        delPerson(last_marker);
+                    }
                     // If call is unanswered
                     if (calls[i].answered === false && calls[i].answering === false) {
+                        // Checks if there is and address if not set address to the AML
+                        let addressInput;
+                        if (calls[i].location.address == "Unknown address") {
+                            addressInput = String("(Unknown) AML - Lat: " + calls[i].AMLLocation.lat + " Lng: " + calls[i].AMLLocation.lng);
+                        } else {
+                            addressInput = calls[i].location.address;
+                        }
                         // Get the first unanswered call
                         object_to_change = i;
                         // Creates HTML with information
                         let call_text = document.getElementById('call_text');
                         call_text.innerHTML = `Id: ${calls[i].id} <br>
                         Navn: ${calls[i].name} <br>
-                        Addresse: ${calls[i].location.address} <br>
+                        Addresse: ${addressInput} <br>
                         Situation: ${calls[i].situation} <br>
                         Tidspunkt: ${calls[i].timeset} <br>`;
 
@@ -51,7 +62,6 @@ function getCalls(mapname, path) {
                             },
                             body: `{"to_change": ${object_to_change}, "value": true}`,
                         });
-
                         i = calls.length;
                     }
                 }
@@ -64,12 +74,24 @@ async function postData(mapname) {
         // Creates HTML with information
         let call_text = document.getElementById('call_text');
         call_text.innerHTML = `Du skal først tage et opkald`;
-    } else {
+    } else {//else  if we know what object to change:
         fetch(path)
             .then(response => response.json())
             .then(calls => {
+                // Checks if there is and address if not set address to the AML
+                let addressInput;
+                if (calls[object_to_change].location.address == "Unknown address") {
+                    addressInput = String("(Unknown) AML - Lat: " + calls[object_to_change].AMLLocation.lat + " Lng: " + calls[object_to_change].AMLLocation.lng);
+                } else {
+                    addressInput = calls[object_to_change].location.address;
+                }
                 // Information to display in box
-                let info_to_display = `Id: ${calls[object_to_change].id} <button id="linkMe" onclick="link(\'${calls[object_to_change].id}\')">Link current call</button><br>Navn: ${calls[object_to_change].name}<br>Tlf: ${calls[object_to_change].number}<br>Addresse: ${calls[object_to_change].location.address}<br>Time: ${calls[object_to_change].timeset}<br>Description: ${calls[object_to_change].description}`;
+                let info_to_display = `Id: ${calls[object_to_change].id},
+                <br>Navn: ${calls[object_to_change].name},
+                <br>Tlf: ${calls[object_to_change].number},
+                <br>Addresse: ${addressInput},
+                <br>Time: ${calls[object_to_change].timeset},
+                <br>Description: ${calls[object_to_change].description}`;
                 // Checks if address is provided or if there is need of use of only lat:lng for place of emergency
                 if (calls[object_to_change].location.address == "Unknown address") {
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
