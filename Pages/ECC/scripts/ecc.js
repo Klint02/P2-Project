@@ -122,8 +122,8 @@ async function postData(mapname) {
 function link(id) {
     delMarker(last_marker);
     object_to_change = undefined;
+    //Remove popup. This is NOT the proper way to do it, hence why it is in a try catch
     try {
-        document.querySelectorAll(".gm-style-iw")[0].remove();
         document.querySelectorAll(".gm-style-iw")[0].remove();
     } catch {
         console.log("Couldn't autoremove prompt");
@@ -144,7 +144,6 @@ function link(id) {
             },
             body: `{"objID": \"${id}\", "curentObjID" : \"${current_object.id}\"}`,
         }).then(() => {
-            console.log("GetCurrent");
             getCurrentEmergencies(map, path, emergency_marker, true);
         });
     }
@@ -174,4 +173,24 @@ function initECC() {
             postData(map);
         });
     }
+}
+
+if (document.cookie == "") {
+    document.querySelector('#loginForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        const obj = {
+            uname: data.get("uname"),
+            psw: data.get("psw")
+        }
+        fetch('/Pages/ECC/ecc.html', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(obj),
+        }).then(response => {
+            location.reload();
+        });
+    });
 }

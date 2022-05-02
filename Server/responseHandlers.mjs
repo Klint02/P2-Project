@@ -7,11 +7,13 @@ import { determineMimeType, addCaller } from "./serverHelpers.mjs";
 import { getArgs as getArgs, getLastSplit } from "./serverHelpers.mjs";
 import { addLink } from "./FunctionFiles/add_link.mjs"
 import * as fs from 'fs';
-import { operator } from "./classes.mjs";
+
+const operatorPath = "Server/ServerData/operators.json";
 
 export function postHandler(req, res) {
     let d = new Date()
     let path = "Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
+    console.log(req.url);
     switch (req.url) {
         case "change_answering":
             return pageChangeAnswering(req, res, path);
@@ -23,6 +25,8 @@ export function postHandler(req, res) {
             return pageCallerObj(req, res, path);
         case "add_link":
             return addLink(req, res, path);
+        case "Pages/ECC/ecc.html":
+            return pageEcc(req, res, operatorPath);
         default:
             return errorResponse(res, 404, "Post request not found");
 
@@ -32,7 +36,7 @@ export function postHandler(req, res) {
 
 
 //Handles http requests of method type GET
-export function getHandler(req, res, operatorPath) {
+export function getHandler(req, res) {
     //Split the url at "?" as first part is the path to the page and after is
     //arguments
     const splitUrl = req.url.split('?');
@@ -40,11 +44,13 @@ export function getHandler(req, res, operatorPath) {
     const args = getArgs(splitUrl[1]);
     //Depending on the requested page GET requests need to be handled differently
     switch (splitUrl[0]) {
-        case "Pages/ECC/ecc.html":
-            if (pageEcc(args, res, operatorPath) == 1) return 1;
-            break;
+        /*case "Pages/ECC/ecc.html":
+            if (pageEcc(req, res, operatorPath) == 1) return 1;
+            break;*/
         case "Pages/ECC/scripts/" + getLastSplit(splitUrl[0], "\/"):
             res.setHeader("Cache-Control", "public, max-age=1800")
+            break;
+        default:
             break;
     }
     //Continues response
