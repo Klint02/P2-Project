@@ -4,7 +4,6 @@ const online = false;
 
 import * as http from 'http';
 import * as fs from 'fs';
-const operatorPath = "Server/ServerData/operators.json";
 
 let hostname;
 online ? hostname = '192.168.1.72' : hostname = 'localhost';
@@ -27,14 +26,14 @@ server.listen(port, hostname, () => {
 //Process a request, if it failes respond with error 500
 function requestHandler(req, res) {
     try {
-        processReq(req, res, operatorPath);
+        processReq(req, res);
     } catch (err) {
         errorResponse(res, 500, "Internal Error" + err);
     }
 }
 
 //Function to process a request, can fail hence the function requestHandler
-function processReq(req, res, operatorPath) {
+function processReq(req, res) {
     //Remove the first "/" as we do not use absolute paths
     req.url = req.url.substring(1);
     //The webpages initial page is simply "/" which was just removed so it's
@@ -49,7 +48,7 @@ function processReq(req, res, operatorPath) {
         case 'POST':
             return postHandler(req, res);
         case 'GET':
-            return getHandler(req, res, operatorPath);
+            return getHandler(req, res);
         default:
             return fileResponse(req.url, res);
     }
