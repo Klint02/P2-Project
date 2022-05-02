@@ -11,3 +11,16 @@
 .logoutPlaceholder>* {
   display: inline-block;
 }
+
+#new_call {
+  margin-right: 20px;
+}
+
+div.horizontal {
+  margin-bottom: 50px;
+  
+}
+
+body form button {
+  margin-top: 20px;
+}
