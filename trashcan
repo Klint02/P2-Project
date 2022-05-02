@@ -230,3 +230,13 @@ function getArgs(argsRaw) {
 /////////////////////////////////////////////////////////////////
 
 
+////////////////////////////////////////////////////////////////
+// Delay delete
+function delayDelete(SecondsDelay, marker) {
+    let i = SecondsDelay * 1000 //convert to milliseconds
+    //setTimeout(delMarker(marker,i));//wait i seconds, then run delMarker
+    console.log("Hello");
+    setTimeout(() => { console.log("World!"); }, i);
+    console.log("Goodbye!");
+    //delMarker(marker);
+};
