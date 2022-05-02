@@ -59,7 +59,7 @@ function infoPlacer(rawData, FORMZEROLEN) {
 
     if (rawData.description.length === FORMZEROLEN) rawData.description = "No description provided";
 }
-
+//TODO: Handle invalid address
 function geoCreator(rawData, FORMZEROLEN) {
     let latlngObj;
     if (rawData.address.length === FORMZEROLEN || rawData.address === "Unknown address") {
@@ -94,7 +94,8 @@ function infoPlacerResult(rawData, latlngObj) {
         answering: false,
         active: false,
         useful: true,
-        description: rawData.description
+        description: rawData.description,
+        links: []
     }
   
     // Converts the object to a JSON string for the POST request

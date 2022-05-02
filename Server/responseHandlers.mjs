@@ -4,7 +4,7 @@ import { pageEmergencyHandled } from "./FunctionFiles/emergency_handled.mjs";
 import { pageEcc as pageEcc } from "./FunctionFiles/ecc.mjs";
 import { pageChangeAnswering as pageChangeAnswering } from "./FunctionFiles/change_answering.mjs"
 import { determineMimeType, addCaller } from "./serverHelpers.mjs";
-import { getArgs as getArgs } from "./serverHelpers.mjs";
+import { getArgs as getArgs, getLastSplit } from "./serverHelpers.mjs";
 import * as fs from 'fs';
 import { operator } from "./classes.mjs";
 
