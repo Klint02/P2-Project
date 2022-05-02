@@ -81,3 +81,53 @@ function delayDelete(marker, milliSecondsDelay) {
     setTimeout(delMarker(marker), milliSecondsDelay);//wait i seconds, then run delMarker
 };
 ///////////////////////////////////////////////////////////////
+// caller.js
+
+// Makes a random number of injured people
+function randomNumberOfInjuredTheft() {
+  let injured = Math.ceil(Math.random() * 4);
+  let string;
+  
+  if(injured > 0) {
+    let string = `${injured} People are injured`;
+  }
+  return string;
+}
+
+function randomNumberOfInjuredCarChrash() {
+  let injured = Math.floor(Math.random() * 15);
+  let critical = Math.floor(Math.random() * 8);
+  let killed = Math.floor(Math.random() * 5);
+  let string;
+  
+  if(critical > 0 && injured > 0 && killed > 0) {
+    string = `${injured} People are injured, and ${critical} are in critical condition, and ${killed} killed`;
+  }else if (critical > 0 && injured === 0) {
+    string = `${critical} people critically injured`;
+  } else if (injured > 0 && critical === 0) {
+    string = `${injured} people injured`;
+  } else {
+    string= `${killed} people killed`;
+  }
+  return string;
+}
+
+function randomNumberOfInjuredMurder() {
+  let injured = Math.floor(Math.random() * 2);
+  let critical = Math.floor(Math.random() * 3);
+  let killed = Math.floor(Math.random() * 3);
+  let string;
+  
+  if(critical > 0 && injured > 0 && killed > 0) {
+    string = `${injured} People are injured, and ${critical} are in critical condition, and ${killed} killed`;
+  }else if (critical > 0 && injured === 0) {
+    string = `${critical} people critically injured`;
+  } else if (injured > 0 && critical === 0) {
+    string = `${injured} people injured`;
+  } else {
+    string = `${killed} people killed`;
+  }
+  return string;
+}
+
+///////////////////////////////////////////////////////////////
