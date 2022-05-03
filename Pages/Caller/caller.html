@@ -4,30 +4,44 @@
 <head>
     <title>Caller Interface</title>
     <meta charset="utf-8" />
+    <script type="text/javascript" src=placeholderDB.js defer></script>
+    <script type="text/javascript" src=callerHelpers.mjs defer></script>
+    <link rel="stylesheet" href="caller.css" />
     <script type="text/javascript" src=caller.js defer></script>
+    <script
+        src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBuaBC03nHrW5mWu1hPomE_eX7qLgScauQ&libraries=&v=weekly'
+        async defer></script>
 </head>
 
 <body>
+    <div class="center">
+        <h1>Caller interface</h1>
+        <h2>Write your info down</h2>
+        <form id="" accept-charset=utf-8>
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" value=""><br>
+            <label for="situation">What is happening?:</label><br>
+            <input type="text" id="situation" name="situation" value=""><br>
+            <label for="address">Address:</label><br>
+            <input type="text" id="address" name="address" value=""><br>
+            <label for="injuries">How many people are injured?:</label><br>
+            <input type="text" id="injuries" name="injuries" value=""><br>
+            <label for="description">Additional info:</label><br>
+            <textarea id="description" name="description" value=""></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+    
+        <button type="button" id="RNG">
+            RNG
+        </button>
 
-    <h1>Caller interface</h1>
-    <h2>Write your info down</h2>
-    <form id="">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" value=""><br>
-        <label for="situation">What is happening?:</label><br>
-        <input type="text" id="situation" name="situation" value=""><br>
-        <label for="address">Address:</label><br>
-        <input type="text" id="address" name="address" value=""><br>
-        <label for="injuries">How many people are injured?:</label><br>
-        <input type="text" id="injuries" name="injuries" value=""><br>
-        <label for="description">Additional info:</label><br>
-        <input type="text" id="description" name="description" value=""><br>
-        <input type="submit" value="Submit">
-    </form>
+        <br>
 
-    <form action="../index.html">
-        <button type="submit">Back to index</button>
-    </form>
+        <form action="../index.html" accept-charset=utf-8>
+            <button type="submit">Back to index</button>
+        </form>
+    </div>
+
 
 </body>
 

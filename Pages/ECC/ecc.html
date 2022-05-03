@@ -3,6 +3,11 @@
 
 <head>
     <meta charset="utf8">
+    <!---<script src="scripts/eccHelpers.mjs"></script>
+    <script src="scripts/maps_stuff.mjs"></script>-->
+    <script type="text/javascript" src=scripts/initMap.mjs></script>
+    <script src="scripts/eccHelpers.mjs"></script>
+    <script src="scripts/maps_stuff.mjs"></script>
     <link rel="stylesheet" href="ecc.css" />
     <title>EEC interface</title>
 </head>
@@ -16,30 +21,21 @@
     <h1>ECC interface</h1>
     <div id="logoutPlaceholder" class="horizontal">
     </div>
-    <form id="loginForm" method="get">
+    <form id="loginForm" method="post">
         <label>Username:</label>
         <input type="text" name="uname" id="uname" required><br>
         <label>Password:</label>
         <input type="password" name="psw" ud="psw" required><br>
         <input type="submit" id="inputButton" value="Login"></button>
     </form>
-    <h3>Map</h3>
-
     <div id="map">
         <script
             src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBuaBC03nHrW5mWu1hPomE_eX7qLgScauQ&callback=initMap&libraries=&v=weekly'
             async defer></script>
     </div>
-    <!-- <div>
-        <form method="get" class="nodefault">
-            <textarea id="reportInput" name="report"></textarea>
-            <input type="submit">
-        </form>
-    </div> -->
     <form action="../index.html">
         <button type="submit">Back to index</button>
     </form>
-
     <script src="scripts/ecc.js"></script>
 </body>
 

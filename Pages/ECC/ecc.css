@@ -1,12 +1,26 @@
 #map {
-    height: 60vh;
-    width: 90%;
-  }
+  height: 60vh;
+  width: 90%;
+}
+
 #reportInput {
   width: 60vh;
   height: 10vh;
 }
 
-.logoutPlaceholder > * {
+.logoutPlaceholder>* {
   display: inline-block;
+}
+
+#new_call {
+  margin-right: 20px;
+}
+
+div.horizontal {
+  margin-bottom: 50px;
+  
+}
+
+body form button {
+  margin-top: 20px;
 }
