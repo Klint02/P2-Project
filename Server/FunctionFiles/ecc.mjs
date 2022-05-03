@@ -10,7 +10,7 @@ export function pageEcc(req, res, operatorPath) {
             return 1;
         };
         //Secure commeneted out because online server is running without TLS/SSL
-        res.setHeader("set-cookie", ["uuid=" + cookie /*+ ";secure"*/]);
+        res.setHeader("set-cookie", ["uuid=" + cookie + ";SameSite=Strict"/*+ ";secure"*/]);
         fileResponse(req.url, res);
     }).catch(err => {
         console.log(err);
