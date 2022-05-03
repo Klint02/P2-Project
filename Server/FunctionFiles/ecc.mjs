@@ -1,14 +1,6 @@
 import { importObject, getPostData } from "../serverHelpers.mjs";
 import { errorResponse, fileResponse } from "../responseHandlers.mjs";
 
-/*export function pageEcc(args, res, operatorPath) {
-    if (args.length > 0 || args["uname"] == undefined) return;
-    //sets a cookie to a uuid if login is successfull
-    const cookie = checkLogin(args, res, operatorPath);
-    if (cookie == 1) return 1;
-    res.setHeader("set-cookie", ["uuid=" + cookie + ";secure"]);
-}*/
-
 export function pageEcc(req, res, operatorPath) {
     getPostData(req).then(obj => {
         console.log(obj);
@@ -17,7 +9,8 @@ export function pageEcc(req, res, operatorPath) {
             errorResponse(res, 403, "Login failed");
             return 1;
         };
-        res.setHeader("set-cookie", ["uuid=" + cookie + ";secure"]);
+        //Secure commeneted out because online server is running without TLS/SSL
+        res.setHeader("set-cookie", ["uuid=" + cookie /*+ ";secure"*/]);
         fileResponse(req.url, res);
     }).catch(err => {
         console.log(err);

@@ -291,3 +291,13 @@ function delayDelete(SecondsDelay, marker) {
     console.log("Goodbye!");
     //delMarker(marker);
 };
+
+/////////////////////////////////////////////////////////////////
+//Old login code for a GET request
+/*export function pageEcc(args, res, operatorPath) {
+    if (args.length > 0 || args["uname"] == undefined) return;
+    //sets a cookie to a uuid if login is successfull
+    const cookie = checkLogin(args, res, operatorPath);
+    if (cookie == 1) return 1;
+    res.setHeader("set-cookie", ["uuid=" + cookie + ";secure"]);
+}*/
