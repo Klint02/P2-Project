@@ -16,6 +16,7 @@ form.addEventListener('submit', (event) => {
   event.preventDefault();
   handleSubmit(event, rawData);
   infoPlacer(rawData, FORMZEROLEN);
+  genPhoneNumber(rawData);
   geoCreator(rawData, FORMZEROLEN);
   clearForm();
 });
@@ -25,6 +26,7 @@ document.getElementById("RNG").addEventListener('click', (event) => {
   let rawData = {
   }
   infoRNG(rawData, nameDB, situationDB, addressDB, FORMZEROLEN);
+  genPhoneNumber(rawData);
   geoCreator(rawData, FORMZEROLEN);
 });
 
@@ -46,11 +48,7 @@ function handleSubmit(event, rawData) {
 
 // Reads info from variables and determines whether there is a need for generating placeholders or not
 function infoPlacer(rawData, FORMZEROLEN) {
-  const NUMBERMAX = 99999999, NUMBERMIN = 10000000;
-  let tempNumber = Math.floor(Math.random() * NUMBERMAX);
-
-  tempNumber < NUMBERMIN ? number = tempNumber + 10000000 : number = tempNumber;
-
+  
   if (rawData.name.length === FORMZEROLEN) rawData.name = "unknown caller";
 
   if (rawData.situation.length === FORMZEROLEN) rawData.situation = "unknown situation";
@@ -76,6 +74,13 @@ function geoCreator(rawData, FORMZEROLEN) {
     });
   }
 }
+function genPhoneNumber(rawData) {
+    const NUMBERMAX = 99999999, NUMBERMIN = 10000000;
+    let tempNumber = Math.floor(Math.random() * NUMBERMAX);
+
+    tempNumber < NUMBERMIN ? rawData.number = tempNumber + 10000000 : rawData.number = tempNumber;
+}
+
 // Assigns the info values to an object
 function infoPlacerResult(rawData, latlngObj) {
   let callObj = {
