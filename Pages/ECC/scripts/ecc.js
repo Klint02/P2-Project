@@ -92,19 +92,21 @@ async function postData(mapname) {
                 <br>Addresse: ${addressInput},
                 <br>Time: ${calls[object_to_change].timeset},
                 <br>Description: ${calls[object_to_change].description}`;
-                // Checks if address is provided or if there is need of use of only lat:lng for place of emergency
+                console.log("sideBar");
+                console.log(calls[object_to_change]);
+                // Checks if address is provided or if there is need of use of only AML lat:lng for place of emergency
                 if (calls[object_to_change].location.address == "Unknown address") {
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
+                    populateSideBar(calls, calls[object_to_change]);
                     object_to_change = undefined; //dont let me plot the emergency more than once
                 } else if (calls[object_to_change].AMLLocation.address != "Unknown address") {
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].location, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
+                    populateSideBar(calls, calls[object_to_change]);
                     object_to_change = undefined;//dont let me plot the emergency more than once
                 }
-
                 // Creates HTML with information
                 let call_text = document.getElementById('call_text');
                 call_text.innerHTML = `Tag næste opkald`;
-
             });
         // Post data
         delPerson(last_marker);
@@ -119,8 +121,7 @@ async function postData(mapname) {
 
 }
 
-function link(id) {
-    delMarker(last_marker);
+function link(id, sidebar) {
     object_to_change = undefined;
     //Remove popup. This is NOT the proper way to do it, hence why it is in a try catch
     try {
@@ -131,6 +132,7 @@ function link(id) {
     if (current_object == undefined) {
         alert("Start a call to link it")
     } else {
+        if (!sidebar) delMarker(last_marker);
         for (let i = 0; i < current_object.links.length; i++) {
             if (current_object.links[i] == id) {
                 return;

@@ -85,49 +85,49 @@ function delayDelete(marker, milliSecondsDelay) {
 
 // Makes a random number of injured people
 function randomNumberOfInjuredTheft() {
-  let injured = Math.ceil(Math.random() * 4);
-  let string;
-  
-  if(injured > 0) {
-    let string = `${injured} People are injured`;
-  }
-  return string;
+    let injured = Math.ceil(Math.random() * 4);
+    let string;
+
+    if (injured > 0) {
+        let string = `${injured} People are injured`;
+    }
+    return string;
 }
 
 function randomNumberOfInjuredCarChrash() {
-  let injured = Math.floor(Math.random() * 15);
-  let critical = Math.floor(Math.random() * 8);
-  let killed = Math.floor(Math.random() * 5);
-  let string;
-  
-  if(critical > 0 && injured > 0 && killed > 0) {
-    string = `${injured} People are injured, and ${critical} are in critical condition, and ${killed} killed`;
-  }else if (critical > 0 && injured === 0) {
-    string = `${critical} people critically injured`;
-  } else if (injured > 0 && critical === 0) {
-    string = `${injured} people injured`;
-  } else {
-    string= `${killed} people killed`;
-  }
-  return string;
+    let injured = Math.floor(Math.random() * 15);
+    let critical = Math.floor(Math.random() * 8);
+    let killed = Math.floor(Math.random() * 5);
+    let string;
+
+    if (critical > 0 && injured > 0 && killed > 0) {
+        string = `${injured} People are injured, and ${critical} are in critical condition, and ${killed} killed`;
+    } else if (critical > 0 && injured === 0) {
+        string = `${critical} people critically injured`;
+    } else if (injured > 0 && critical === 0) {
+        string = `${injured} people injured`;
+    } else {
+        string = `${killed} people killed`;
+    }
+    return string;
 }
 
 function randomNumberOfInjuredMurder() {
-  let injured = Math.floor(Math.random() * 2);
-  let critical = Math.floor(Math.random() * 3);
-  let killed = Math.floor(Math.random() * 3);
-  let string;
-  
-  if(critical > 0 && injured > 0 && killed > 0) {
-    string = `${injured} People are injured, and ${critical} are in critical condition, and ${killed} killed`;
-  }else if (critical > 0 && injured === 0) {
-    string = `${critical} people critically injured`;
-  } else if (injured > 0 && critical === 0) {
-    string = `${injured} people injured`;
-  } else {
-    string = `${killed} people killed`;
-  }
-  return string;
+    let injured = Math.floor(Math.random() * 2);
+    let critical = Math.floor(Math.random() * 3);
+    let killed = Math.floor(Math.random() * 3);
+    let string;
+
+    if (critical > 0 && injured > 0 && killed > 0) {
+        string = `${injured} People are injured, and ${critical} are in critical condition, and ${killed} killed`;
+    } else if (critical > 0 && injured === 0) {
+        string = `${critical} people critically injured`;
+    } else if (injured > 0 && critical === 0) {
+        string = `${injured} people injured`;
+    } else {
+        string = `${killed} people killed`;
+    }
+    return string;
 }
 
 ///////////////////////////////////////////////////////////////
@@ -301,3 +301,27 @@ function delayDelete(SecondsDelay, marker) {
     if (cookie == 1) return 1;
     res.setHeader("set-cookie", ["uuid=" + cookie + ";secure"]);
 }*/
+
+
+let table = document.createElement("table");
+table.setAttribute("width", "100%");
+
+let btn1 = document.createElement("button");
+btn1.className = "collapsible";
+btn1.setAttribute("float", "left");
+btn1.innerText = obj.situation;
+let btn2 = document.createElement("button");
+btn2.className = "gotoMarker";
+btn2.setAttribute("onclick", "${gotoMarker('${obj.id}');}");
+btn2.innerText = obj.situation;
+console.log(btn1.clientHeight);
+btn2.style.height = btn1.style.height;
+
+table.appendChild(btn1);
+table.appendChild(btn2);
+
+table.className = "sideBarElement";
+table.setAttribute("onclick", "gotoMarker();")
+//table.innerHTML = `<button class="collapsible" float:left;>${obj.situation}</button><button class="gotoMarker" type="button" onclick="gotoMarker('${obj.id}');">Go to</button>`;
+table.innerHTML += `<div class="content"><b class="sidebarElementPadding">${obj.situation}</b>\n<p class="sidebarElementPadding">info</p></div>`;
+return table;
