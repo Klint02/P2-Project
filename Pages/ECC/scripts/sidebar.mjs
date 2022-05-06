@@ -1,5 +1,5 @@
+let lastAppendedSidebar;
 function populateSideBar(objs, extra) {
-    console.log(extra);
     sideBar = document.getElementById("sideBar");
     sideBar.innerHTML = "";
     let i = 0;
@@ -8,14 +8,16 @@ function populateSideBar(objs, extra) {
             sideBar.appendChild(createSideElement(objs[i], i));
         }
     }
-    if (extra != undefined) sideBar.appendChild(createSideElement(extra, i + 1));
+    if (extra != undefined && lastAppendedSidebar != extra) {
+        lastAppendedSidebar = extra;
+        sideBar.appendChild(createSideElement(extra, i + 1));
+    }
 
     let buttons = document.getElementsByClassName("collapsible");
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener("click", (event) => {
             //this.classList.toggle("active");
             let content = buttons[i].nextElementSibling.nextElementSibling;
-            console.log(content);
             if (content.style.display === "block") {
                 content.style.display = "none";
             } else {
@@ -41,17 +43,17 @@ function createSideElement(obj, i) {
     <p class="sidebarElementPadding">Phone nr: ${obj.number}</b>
     <p class="sidebarElementPadding">Time: ${time}</b>
     <p class="sidebarElementPadding">Injuries: ${obj.injuries}</b>
+    <p class="sidebarElementPadding">Add Info: ${obj.description}</b>
     </div>`;
     return div;
 }
 
 function gotoMarker(objID) {
     if (objID == undefined) return;
-    console.log(markersArray);
     markersArray.forEach((localMarker) => {
         if (localMarker.id == objID) {
             map.setCenter(localMarker.getPosition());
-            map.setZoom(12);
+            map.setZoom(15);
         }
     });
 }

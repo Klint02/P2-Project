@@ -52,7 +52,7 @@ function getCalls(mapname, path) {
                         current_object = calls[object_to_change];
                         marker = addCallerMarker(calls[object_to_change].AMLLocation, caller_marker, mapname);
                         map.setCenter(marker.getPosition());
-                        map.setZoom(13);
+                        map.setZoom(16);
                         last_marker = marker;
                         // Post data
                         fetch('/change_answering', {
@@ -92,8 +92,6 @@ async function postData(mapname) {
                 <br>Addresse: ${addressInput},
                 <br>Time: ${calls[object_to_change].timeset},
                 <br>Description: ${calls[object_to_change].description}`;
-                console.log("sideBar");
-                console.log(calls[object_to_change]);
                 // Checks if address is provided or if there is need of use of only AML lat:lng for place of emergency
                 if (calls[object_to_change].location.address == "Unknown address") {
                     addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
@@ -132,7 +130,8 @@ function link(id, sidebar) {
     if (current_object == undefined) {
         alert("Start a call to link it")
     } else {
-        if (!sidebar) delMarker(last_marker);
+        sidebar = false;
+        if (!sidebar) delPerson(last_marker);
         for (let i = 0; i < current_object.links.length; i++) {
             if (current_object.links[i] == id) {
                 return;
