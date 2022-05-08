@@ -123,5 +123,10 @@ html {
 .box-behind {
   width: 500px;
   height: 350px; 
-  padding: 50px;  
+  padding: 50px;
+  border-radius: 15px;  
+}
+
+.button {
+  border-radius: 8px;
 }
