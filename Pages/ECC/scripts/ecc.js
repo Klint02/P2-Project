@@ -23,7 +23,8 @@ function getCalls(mapname, path) {
                 if (queue === 0) {
                     // Creates HTML with information
                     let call_text = document.getElementById('call_text');
-                    call_text.innerHTML = `Der er ikke flere opkald`;
+                    call_text.style.marginLeft = "10px";
+                    call_text.innerHTML = `No calls in queue`;
                 } else {
                     // Delete last person_marker
                     if (last_marker != undefined) {
@@ -42,6 +43,7 @@ function getCalls(mapname, path) {
                         object_to_change = i;
                         // Creates HTML with information
                         let call_text = document.getElementById('call_text');
+                        call_text.style.marginLeft = "10px";
                         call_text.innerHTML = `Id: ${calls[i].id} <br>
                         Navn: ${calls[i].name} <br>
                         Addresse: ${addressInput} <br>
@@ -73,7 +75,8 @@ async function postData(mapname) {
     if (object_to_change === undefined) {
         // Creates HTML with information
         let call_text = document.getElementById('call_text');
-        call_text.innerHTML = `Du skal først tage et opkald`;
+        call_text.style.marginLeft = "10px";
+        call_text.innerHTML = `You need to pick up a call first`;
     } else {//else  if we know what object to change:
         fetch(path)
             .then(response => response.json())
@@ -104,6 +107,7 @@ async function postData(mapname) {
                 }
                 // Creates HTML with information
                 let call_text = document.getElementById('call_text');
+                call_text.style.marginLeft = "10px";
                 call_text.innerHTML = `Tag næste opkald`;
             });
         // Post data
@@ -159,7 +163,7 @@ function initECC() {
         //document.getElementById("loginText").innerText = "Logged in";
         let loginPlaceholder = document.getElementById("logoutPlaceholder");
         //loginPlaceholder.style.display = "inline-block";
-        loginPlaceholder.innerHTML = '<div id="calls"><button id="new_call">Next call</button><button id="emergency_handled">Plot emergency</button><p id="call_text"></p></div><p>Logged in</p><button id=logoutbtn>Logout</button>';
+        loginPlaceholder.innerHTML = '<div id="calls"><button id="new_call" class="btn btn-primary btn-block">Next call</button><button id="emergency_handled" class="btn btn-primary btn-block">Plot emergency</button><p id="call_text" style="margin-left: 10px;"></p></div><p style="margin-left: 10px;">Logged in</p><button id=logoutbtn style="margin-left: 10px;" class="btn btn-secondary btn-block">Logout</button>';
         document.getElementById("logoutbtn").addEventListener("click", function (event) {
             location.href = "ecc.html";
             document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
