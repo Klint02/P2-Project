@@ -45,10 +45,10 @@ function getCalls(mapname, path) {
                         let call_text = document.getElementById('call_text');
                         call_text.style.marginLeft = "10px";
                         call_text.innerHTML = `Id: ${calls[i].id} <br>
-                        Navn: ${calls[i].name} <br>
-                        Addresse: ${addressInput} <br>
+                        Name: ${calls[i].name} <br>
+                        Address: ${addressInput} <br>
                         Situation: ${calls[i].situation} <br>
-                        Tidspunkt: ${calls[i].timeset} <br>`;
+                        Time: ${calls[i].timeset} <br>`;
 
                         // Adds marker wher caller is calling from
                         current_object = calls[object_to_change];
@@ -90,9 +90,9 @@ async function postData(mapname) {
                 }
                 // Information to display in box
                 let info_to_display = `Id: ${calls[object_to_change].id},
-                <br>Navn: ${calls[object_to_change].name},
+                <br>Name: ${calls[object_to_change].name},
                 <br>Tlf: ${calls[object_to_change].number},
-                <br>Addresse: ${addressInput},
+                <br>Address: ${addressInput},
                 <br>Time: ${calls[object_to_change].timeset},
                 <br>Description: ${calls[object_to_change].description}`;
                 // Checks if address is provided or if there is need of use of only AML lat:lng for place of emergency
@@ -108,7 +108,7 @@ async function postData(mapname) {
                 // Creates HTML with information
                 let call_text = document.getElementById('call_text');
                 call_text.style.marginLeft = "10px";
-                call_text.innerHTML = `Tag næste opkald`;
+                call_text.innerHTML = `Pick up a new call`;
             });
         // Post data
         delPerson(last_marker);
