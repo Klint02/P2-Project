@@ -85,49 +85,243 @@ function delayDelete(marker, milliSecondsDelay) {
 
 // Makes a random number of injured people
 function randomNumberOfInjuredTheft() {
-  let injured = Math.ceil(Math.random() * 4);
-  let string;
-  
-  if(injured > 0) {
-    let string = `${injured} People are injured`;
-  }
-  return string;
+    let injured = Math.ceil(Math.random() * 4);
+    let string;
+
+    if (injured > 0) {
+        let string = `${injured} People are injured`;
+    }
+    return string;
 }
 
 function randomNumberOfInjuredCarChrash() {
-  let injured = Math.floor(Math.random() * 15);
-  let critical = Math.floor(Math.random() * 8);
-  let killed = Math.floor(Math.random() * 5);
-  let string;
-  
-  if(critical > 0 && injured > 0 && killed > 0) {
-    string = `${injured} People are injured, and ${critical} are in critical condition, and ${killed} killed`;
-  }else if (critical > 0 && injured === 0) {
-    string = `${critical} people critically injured`;
-  } else if (injured > 0 && critical === 0) {
-    string = `${injured} people injured`;
-  } else {
-    string= `${killed} people killed`;
-  }
-  return string;
+    let injured = Math.floor(Math.random() * 15);
+    let critical = Math.floor(Math.random() * 8);
+    let killed = Math.floor(Math.random() * 5);
+    let string;
+
+    if (critical > 0 && injured > 0 && killed > 0) {
+        string = `${injured} People are injured, and ${critical} are in critical condition, and ${killed} killed`;
+    } else if (critical > 0 && injured === 0) {
+        string = `${critical} people critically injured`;
+    } else if (injured > 0 && critical === 0) {
+        string = `${injured} people injured`;
+    } else {
+        string = `${killed} people killed`;
+    }
+    return string;
 }
 
 function randomNumberOfInjuredMurder() {
-  let injured = Math.floor(Math.random() * 2);
-  let critical = Math.floor(Math.random() * 3);
-  let killed = Math.floor(Math.random() * 3);
-  let string;
-  
-  if(critical > 0 && injured > 0 && killed > 0) {
-    string = `${injured} People are injured, and ${critical} are in critical condition, and ${killed} killed`;
-  }else if (critical > 0 && injured === 0) {
-    string = `${critical} people critically injured`;
-  } else if (injured > 0 && critical === 0) {
-    string = `${injured} people injured`;
-  } else {
-    string = `${killed} people killed`;
-  }
-  return string;
+    let injured = Math.floor(Math.random() * 2);
+    let critical = Math.floor(Math.random() * 3);
+    let killed = Math.floor(Math.random() * 3);
+    let string;
+
+    if (critical > 0 && injured > 0 && killed > 0) {
+        string = `${injured} People are injured, and ${critical} are in critical condition, and ${killed} killed`;
+    } else if (critical > 0 && injured === 0) {
+        string = `${critical} people critically injured`;
+    } else if (injured > 0 && critical === 0) {
+        string = `${injured} people injured`;
+    } else {
+        string = `${killed} people killed`;
+    }
+    return string;
 }
 
 ///////////////////////////////////////////////////////////////
+
+//from server.js
+// Decides whether the server is run locally
+const local = true;
+
+host();
+const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
+const operatorPath = "ServerData/operators.json";
+class operator {
+    constructor(uname, psw) {
+        this.uname = uname;
+        this.psw = psw;
+        this.id = uuidv4();
+    }
+}
+class event {
+    constructor(lat, lng, type, adInfo, operator) {
+        this.lat = lat;
+        this.lng = lng;
+        this.type = type;
+        this.adInfo = adInfo;
+        this.operator = operator;
+        //this.address =
+    }
+}
+
+
+//Change to true and enter details in the new operator line ONLY RUN THE SERVER ONCE WITH THIS SET TO TRUE
+if (0) {
+    const obj = new operator("Tobias", "hejsa");
+    exportObject(operatorPath, obj);
+}
+if (0) {
+    const obj = new event("");
+    exportObject(operatorPath, obj);
+}
+
+
+// Sites and files that are currently available to view and use. MAKE SURE THERE FILES EXIST
+const validSites = ["/index.html",
+    "/Pages/ECC/ecc.html",
+    "/Pages/ECC/ecc.js",
+    "/Pages/ECC/ecc.css",
+    "/Pages/Caller/caller.js",
+    "/Pages/ECC/login.js",
+    "/Pages/Caller/caller.html"
+];
+const validSuffixes = ["html",
+    "js",
+    "mjs",
+    "css"
+];
+
+//Main funtion for hosting the server
+function host() {
+    //HTTP essential stuff
+    const http = require("http");
+    const fs = require('fs').promises;
+    let host = '192.168.1.72';
+    if (local) {
+        host = 'localhost';
+    }
+    const port = 8000;
+
+    const requestListener = function (req, res) {
+        //Parses the incoming URL
+        const temp = req.url.toString().split('?');
+        let args = getArgs(temp);
+        let file = temp[0];
+        if (file == "/") {
+            file = "/index.html"
+        }
+        const fileType = file.split('.')[1];
+
+        //Essential host stuff
+        if (validSites.contains(file) && validSuffixes.contains(fileType)) {
+            file = file.substring(1);
+            let cookie = "";
+            if (file == "Pages/ECC/ecc.html") {
+                cookie = checkLogin(args);
+            }
+            fs.readFile(file)
+                .then(contents => {
+                    res.setHeader("Content-Type", getMIMEType(fileType));
+                    if (cookie != "") {
+                        res.setHeader("set-cookie", ["uuid=" + cookie]);
+                    }
+                    res.writeHead(200);
+                    res.end(contents);
+                })
+                .catch(err => {
+                    console.log("Page does not exist in file system: " + file);
+                    res.writeHead(500);
+                    res.end(err);
+                    return;
+                });
+
+
+        } else {
+            console.log("Page not found in validSites: \"" + file + "\"");
+            res.writeHead(404);
+            res.end("Page not found: " + file);
+            return;
+        }
+    };
+
+    Array.prototype.contains = function (tester) {
+        for (let i = 0; i < this.length; i++) {
+            if (this[i] == tester) {
+                return true;
+            }
+        };
+        return false;
+    }
+
+    const server = http.createServer(requestListener);
+    server.listen(port, host, () => {
+        console.log(`Server is running on http://${host}:${port}`);
+    });
+}
+
+// Determines the MIME type of a file according to its file extension
+function getMIMEType(fileType) {
+    let temp = "text/";
+    if (fileType == "js") {
+        temp += "javascript";
+    } else if (fileType == "php") {
+        temp += "event-stream";
+    } else {
+        temp += fileType;
+    }
+    return temp;
+}
+
+
+//takes raw arguments and returns them neatly as an object
+function getArgs(argsRaw) {
+    let args = {}
+    if (argsRaw.length > 1) {
+        argsRaw[1].split('&').forEach(element => {
+            args[element.split('=')[0]] = element.split('=')[1];
+        });
+    }
+    return args;
+}
+
+/////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////
+// Delay delete
+function delayDelete(SecondsDelay, marker) {
+    let i = SecondsDelay * 1000 //convert to milliseconds
+    //setTimeout(delMarker(marker,i));//wait i seconds, then run delMarker
+    console.log("Hello");
+    setTimeout(() => { console.log("World!"); }, i);
+    console.log("Goodbye!");
+    //delMarker(marker);
+};
+
+/////////////////////////////////////////////////////////////////
+//Old login code for a GET request
+/*export function pageEcc(args, res, operatorPath) {
+    if (args.length > 0 || args["uname"] == undefined) return;
+    //sets a cookie to a uuid if login is successfull
+    const cookie = checkLogin(args, res, operatorPath);
+    if (cookie == 1) return 1;
+    res.setHeader("set-cookie", ["uuid=" + cookie + ";secure"]);
+}*/
+
+
+let table = document.createElement("table");
+table.setAttribute("width", "100%");
+
+let btn1 = document.createElement("button");
+btn1.className = "collapsible";
+btn1.setAttribute("float", "left");
+btn1.innerText = obj.situation;
+let btn2 = document.createElement("button");
+btn2.className = "gotoMarker";
+btn2.setAttribute("onclick", "${gotoMarker('${obj.id}');}");
+btn2.innerText = obj.situation;
+console.log(btn1.clientHeight);
+btn2.style.height = btn1.style.height;
+
+table.appendChild(btn1);
+table.appendChild(btn2);
+
+table.className = "sideBarElement";
+table.setAttribute("onclick", "gotoMarker();")
+//table.innerHTML = `<button class="collapsible" float:left;>${obj.situation}</button><button class="gotoMarker" type="button" onclick="gotoMarker('${obj.id}');">Go to</button>`;
+table.innerHTML += `<div class="content"><b class="sidebarElementPadding">${obj.situation}</b>\n<p class="sidebarElementPadding">info</p></div>`;
+return table;

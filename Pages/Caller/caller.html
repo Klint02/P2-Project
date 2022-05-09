@@ -4,8 +4,11 @@
 <head>
     <title>Caller Interface</title>
     <meta charset="utf-8" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
     <script type="text/javascript" src=placeholderDB.js defer></script>
-    <script type="text/javascript" src=helpers.mjs defer></script>
+    <script type="text/javascript" src=callerHelpers.mjs defer></script>
+    <link rel="stylesheet" href="caller.css" />
     <script type="text/javascript" src=caller.js defer></script>
     <script
         src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBuaBC03nHrW5mWu1hPomE_eX7qLgScauQ&libraries=&v=weekly'
@@ -13,30 +16,34 @@
 </head>
 
 <body>
-
-    <h1>Caller interface</h1>
-    <h2>Write your info down</h2>
-    <form id="" >
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" value=""><br>
-        <label for="situation">What is happening?:</label><br>
-        <input type="text" id="situation" name="situation" value=""><br>
-        <label for="address">Address:</label><br>
-        <input type="text" id="address" name="address" value=""><br>
-        <label for="injuries">How many people are injured?:</label><br>
-        <input type="text" id="injuries" name="injuries" value=""><br>
-        <label for="description">Additional info:</label><br>
-        <textarea id="description" name="description" value=""></textarea><br>
-        <input type="submit" value="Submit">
-    </form>
+    <div class="center border shadow p-3 mb-5 bg-white rounded">
+        <h1>Caller interface</h1>
+        <h2>Write your info down</h2>
+        <form id="" accept-charset=utf-8>
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" value="" class="form-control"><br>
+            <label for="situation">What is happening?:</label><br>
+            <input type="text" id="situation" name="situation" value="" class="form-control"><br>
+            <label for="address">Address:</label><br>
+            <input type="text" id="address" name="address" value="" class="form-control"><br>
+            <label for="injuries">How many people are injured?:</label><br>
+            <input type="text" id="injuries" name="injuries" value="" class="form-control"><br>
+            <label for="description">Additional info:</label><br>
+            <textarea id="description" name="description" value="" class="form-control"></textarea><br>
+            <input type="submit" value="Submit" class="btn btn-primary btn-block mb-4">
+        </form>
     
-    <button type="button" id="RNG">
-    RNG
-</button>  
+        <button type="button" id="RNG" class="btn btn-secondary btn-block mb-4">
+            RNG
+        </button>
 
-    <form action="../index.html">
-        <button type="submit">Back to index</button>
-    </form>
+        <br>
+
+        <form action="../index.html" accept-charset=utf-8>
+            <button type="submit" class="btn btn-secondary btn-block">Back to index</button>
+        </form>
+    </div>
+
 
 </body>
 

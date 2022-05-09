@@ -1,3 +1,4 @@
+const emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
 function initMap() {
     const defaultCenter = { lat: 57.012554751715186, lng: 9.991338053228736 };
 
@@ -7,5 +8,5 @@ function initMap() {
         center: defaultCenter,
     });
 
-    getCurrentEmergencies(map, path, emergency_marker);
+    getCurrentEmergencies(map, path, emergency_marker, false);
 }

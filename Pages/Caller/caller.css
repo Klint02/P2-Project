@@ -1,0 +1,21 @@
+.center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    border: 1px solid grey;
+  }
+
+  div.center {
+    padding-top: 50px;
+    padding-right: 50px;
+    padding-bottom: 50px;
+    padding-left: 50px;
+  }
+  
+  body div form {
+    margin-bottom: 20px;
+  }
+  

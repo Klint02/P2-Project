@@ -1,16 +1,19 @@
-import { pageCallerObj as pageCallerObj } from "./Pages/callerobj.mjs";
-import { pageEmergencyAccepted } from "./Pages/emergency_accepted.mjs";
-import { pageEmergencyHandled } from "./Pages/emergency_handled.mjs";
-import { pageEcc as pageEcc } from "./Pages/ecc.mjs";
-import { pageChangeAnswering as pageChangeAnswering } from "./Pages/change_answering.mjs"
-import { determineMimeType, addCaller } from "./helpers.mjs";
-import { getArgs as getArgs } from "./helpers.mjs";
+import { pageCallerObj as pageCallerObj } from "./FunctionFiles/callerobj.mjs";
+import { pageEmergencyAccepted } from "./FunctionFiles/emergency_accepted.mjs";
+import { pageEmergencyHandled } from "./FunctionFiles/emergency_handled.mjs";
+import { pageEcc as pageEcc } from "./FunctionFiles/ecc.mjs";
+import { pageChangeAnswering as pageChangeAnswering } from "./FunctionFiles/change_answering.mjs"
+import { determineMimeType, addCaller } from "./serverHelpers.mjs";
+import { getArgs as getArgs, getLastSplit } from "./serverHelpers.mjs";
+import { addLink } from "./FunctionFiles/add_link.mjs"
 import * as fs from 'fs';
-import { operator } from "./classes.mjs";
+
+const operatorPath = "Server/ServerData/operators.json";
 
 export function postHandler(req, res) {
     let d = new Date()
     let path = "Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
+    console.log(req.url);
     switch (req.url) {
         case "change_answering":
             return pageChangeAnswering(req, res, path);
@@ -20,6 +23,10 @@ export function postHandler(req, res) {
             return pageEmergencyHandled(req, res, path);
         case "callerobj":
             return pageCallerObj(req, res, path);
+        case "add_link":
+            return addLink(req, res, path);
+        case "Pages/ECC/ecc.html":
+            return pageEcc(req, res, operatorPath);
         default:
             return errorResponse(res, 404, "Post request not found");
 
@@ -29,7 +36,7 @@ export function postHandler(req, res) {
 
 
 //Handles http requests of method type GET
-export function getHandler(req, res, operatorPath) {
+export function getHandler(req, res) {
     //Split the url at "?" as first part is the path to the page and after is
     //arguments
     const splitUrl = req.url.split('?');
@@ -37,18 +44,18 @@ export function getHandler(req, res, operatorPath) {
     const args = getArgs(splitUrl[1]);
     //Depending on the requested page GET requests need to be handled differently
     switch (splitUrl[0]) {
-        case "Pages/ECC/ecc.html":
-            if (pageEcc(args, res, operatorPath) == 1) return 1;
-            break;
-        case "Pages/ECC/scripts/initMap.mjs":
+        /*case "Pages/ECC/ecc.html":
+            if (pageEcc(req, res, operatorPath) == 1) return 1;
+            break;*/
+        case "Pages/ECC/scripts/" + getLastSplit(splitUrl[0], "\/"):
             res.setHeader("Cache-Control", "public, max-age=1800")
+            break;
+        default:
             break;
     }
     //Continues response
     responseCompiler(req, res);
 }
-
-
 
 //So far does nothing except continues, might do something later
 export function responseCompiler(req, res) {

@@ -1,0 +1,132 @@
+/** {
+  box-sizing: border-box;
+}
+body {
+  font-size: 14px;
+}
+.v2_2 {
+  width: 100%;
+  height: 1080px;
+  background: rgba(255,255,255,1);
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+}
+.v2_6 {
+  width: 1920px;
+  height: 1080px;
+  background: url("images/frontpageimg.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+}
+.v2_16 {
+  width: 766px;
+  height: 519px;
+  background: url("images/frontpageimg.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  position: absolute;
+  top: 281px;
+  left: 577px;
+  overflow: hidden;
+}
+.v2_7 {
+  width: 766px;
+  height: 519px;
+  background: rgba(41,38,38,1);
+  opacity: 1;
+  position: relative;
+  top: 0px;
+  left: 0px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  overflow: hidden;
+}
+.v2_8 {
+  width: 505px;
+  color: rgba(255,255,255,1);
+  position: absolute;
+  top: 42px;
+  left: 130px;
+  font-family: Inter;
+  font-weight: Extra Bold;
+  font-size: 48px;
+  opacity: 1;
+  text-align: left;
+}
+.v2_9 {
+  width: 477px;
+  height: 90px;
+  background: rgba(58,86,209,1);
+  opacity: 1;
+  position: absolute;
+  top: 198px;
+  left: 144px;
+  overflow: hidden;
+}
+.v2_17 {
+  width: 142px;
+  color: rgba(255,255,255,1);
+  position: absolute;
+  top: 214px;
+  left: 312px;
+  font-family: Inter;
+  font-weight: Extra Bold;
+  font-size: 48px;
+  opacity: 1;
+  text-align: left;
+}
+.v2_10 {
+  width: 477px;
+  height: 90px;
+  background: rgba(58,86,209,1);
+  opacity: 1;
+  position: absolute;
+  top: 348px;
+  left: 144px;
+  overflow: hidden;
+}
+.v2_18 {
+  width: 327px;
+  color: rgba(255,255,255,1);
+  position: absolute;
+  top: 364px;
+  left: 219px;
+  font-family: Inter;
+  font-weight: Extra Bold;
+  font-size: 48px;
+  opacity: 1;
+  text-align: left;
+}
+*/
+
+html { 
+  background: url(images/frontpageimg.png) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.box-behind {
+  width: 500px;
+  height: 350px; 
+  padding: 50px;
+  border-radius: 15px;  
+}
+
+.button {
+  border-radius: 8px;
+}
