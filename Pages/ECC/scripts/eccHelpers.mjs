@@ -19,11 +19,24 @@ function getCurrentEmergencies(mapname, path, emergency_marker, update) {
         .then(response => response.json())
         .then(calls => {
             let links = [];
+            let extraIndex = 0;
             for (let i = 0; i < calls.length; i++) {
                 if (calls[i].answered === true && calls[i].active === true && calls[i].answering === true) {
                     addLinks(calls[i], calls, links, update);
                     // Information to display in box
-                    let info_to_display = `Id: ${calls[i].id}  </br><button id="linkMe" onclick="link(\'${calls[i].id}\')">Link current call</button><br>Navn: ${calls[i].name}<br>Tlf: ${calls[i].number}<br>Addresse: ${calls[i].address}<br>Time: ${calls[i].timeset}<br>Description: ${calls[i].description}`;
+                    extraIndex = i;
+                    let addressInput;
+                    if (calls[i].location.address == "Unknown address") {
+                        addressInput = String("(Unknown) AML - Lat: " + calls[i].AMLLocation.lat + " Lng: " + calls[i].AMLLocation.lng);
+                    } else {
+                        addressInput = calls[i].location.address;
+                    }
+                    let info_to_display = `Id: ${calls[i].id},
+                    <br>Navn: ${calls[i].name},
+                    <br>Tlf: ${calls[i].number},
+                    <br>Addresse: ${addressInput},
+                    <br>Time: ${calls[i].timeset},
+                    <br>Description: ${calls[i].description}`;
                     if (calls[i].location.address == "Unknown address") {
                         addMarker(calls[i].situation, calls[i].AMLLocation, emergency_marker, mapname, info_to_display, calls[i].id);
                     } else if (calls[i].location.address != "Unknown address") {
@@ -31,7 +44,7 @@ function getCurrentEmergencies(mapname, path, emergency_marker, update) {
                     }
                 }
             }
-
+            populateSideBar(calls);
         });
 }
 
