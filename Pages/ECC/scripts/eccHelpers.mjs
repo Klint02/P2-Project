@@ -77,7 +77,7 @@ function addLinks(obj, calls, links, update) {
                     }
                 }
                 const tempObjsFordupCheck = { addressTwo, addressOne }
-                if (links.contains(tempObjsFordupCheck)) {
+                if (links.specialContains(tempObjsFordupCheck)) {
                     console.log("dupe");
                     return;
                 }
@@ -94,8 +94,8 @@ function addLinks(obj, calls, links, update) {
         }
     }
 }
-
-Array.prototype.contains = function (input) {
+/*Checks if array of latlngObj have the same location as a latlngObj*/
+Array.prototype.specialContains = function (input) {
     for (let i = 0; i < this.length; i++) {
         if (this[i].addressOne.lat == input.addressOne.lat &&
             this[i].addressOne.lng == input.addressOne.lng &&
