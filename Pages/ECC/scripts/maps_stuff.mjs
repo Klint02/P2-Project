@@ -25,6 +25,7 @@ function addMarker(popup_header, LngLat, markertype, mapname, report_info, uniqu
         <h1 id="firstHeading" class="firstHeading">${popup_header}</h1>
         <div id="bodyContent">
         <p>${report_info}</p>
+        <button onclick="link(\'${marker.id}\', true)">Link to current call</button>
         </div>
         </div>`);
         infowindow.open(mapname, marker);
