@@ -10,10 +10,10 @@ import * as fs from 'fs';
 
 const operatorPath = "Server/ServerData/operators.json";
 
+//Handles post requests
 export function postHandler(req, res) {
     let d = new Date()
     let path = "Server/ServerData/CallerDB/callers" + "-" + d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate() + ".json";
-    console.log(req.url);
     switch (req.url) {
         case "change_answering":
             return pageChangeAnswering(req, res, path);

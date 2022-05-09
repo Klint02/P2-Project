@@ -4,7 +4,7 @@ let current_object;
 let last_marker;
 
 initECC();
-
+//Gets calls from DB and starts adding markers. Called by the "next call" button
 function getCalls(mapname, path) {
     let queue = 0;
     fetch(path)
@@ -69,6 +69,7 @@ function getCalls(mapname, path) {
         });
 }
 
+//Plots an emergency and send data to the server to change object variables. Called by "plot emergency" button
 async function postData(mapname) {
     if (object_to_change === undefined) {
         // Creates HTML with information
@@ -119,16 +120,16 @@ async function postData(mapname) {
 
 }
 
+//Starts the process of adding links between the current call and the clicked call
 function link(id, sidebar) {
     object_to_change = undefined;
-    console.log("asdasdasdasdad");
-    console.log(id);
     //Remove popup. This is NOT the proper way to do it, hence why it is in a try catch
     try {
         document.querySelectorAll(".gm-style-iw")[0].remove();
     } catch {
         console.log("Couldn't autoremove prompt");
     }
+    //current_object is only populated  
     if (current_object == undefined) {
         alert("Start a call to link it")
     } else {
@@ -162,6 +163,7 @@ function initECC() {
         let loginPlaceholder = document.getElementById("logoutPlaceholder");
         //loginPlaceholder.style.display = "inline-block";
         loginPlaceholder.innerHTML = '<div id="calls"><button id="new_call">Next call</button><button id="emergency_handled">Plot emergency</button><p id="call_text"></p></div><p>Logged in</p><button id=logoutbtn>Logout</button>';
+        //Add events to the newly played buttons
         document.getElementById("logoutbtn").addEventListener("click", function (event) {
             location.href = "ecc.html";
             document.cookie = "uuid= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
@@ -178,21 +180,27 @@ function initECC() {
     }
 }
 
+//If a cookie exists and is not "" the user is considered logged in otherwise we add the login
+//button and setup the event
 if (document.cookie == "") {
     document.querySelector('#loginForm').addEventListener('submit', function (event) {
         event.preventDefault();
+        //creates an object with logindata
         const data = new FormData(event.target);
         const obj = {
             uname: data.get("uname"),
             psw: data.get("psw")
         }
+        //Sends logindata for checking on the serverside. If a login is successfull a cookie
+        //is returned
         fetch('/Pages/ECC/ecc.html', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify(obj),
-        }).then(response => {
+        }).then(() => {
+            //reloads the page
             location.reload();
         });
     });

@@ -5,6 +5,7 @@ import { getPostData } from "../serverHelpers.mjs";
 import { addCaller } from '../serverHelpers.mjs';
 import { errorResponse } from '../responseHandlers.mjs';
 
+//Takes a POST request with JSON attached and exports it
 export function pageCallerObj(req, res, path) {
     // Creates a date object 'd' the fs.writeFileSync uses to name it's documents by date
     // and writes the stringified json to its respective json document in the Server/ServerData/CallerDB/caller-year-month-day.
@@ -18,7 +19,6 @@ export function pageCallerObj(req, res, path) {
         }
         res.statusCode = 200;
         res.end("\n");
-        //Check if an error has occured, if it hasn't: End. To prevent writing to ended stream
         return addCaller(path, caller, res);
     })
 }

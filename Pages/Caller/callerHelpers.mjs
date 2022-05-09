@@ -1,3 +1,4 @@
+//Returns a promise that tries to get a latlngObj from an address
 function addGeoMarker(address) {
     return new Promise((resolve, reject) => {
         let latlngObj;
@@ -33,6 +34,7 @@ async function sendJSON(caller) {
     });
 }
 
+//Clears the main form
 function clearForm() {
     document.getElementById('name').value = '';
     document.getElementById('situation').value = '';

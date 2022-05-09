@@ -21,6 +21,7 @@ form.addEventListener('submit', (event) => {
   clearForm();
 });
 
+//When rng button is clicked:
 document.getElementById("RNG").addEventListener('click', (event) => {
   const FORMZEROLEN = 0;
   let rawData = {
@@ -48,7 +49,7 @@ function handleSubmit(event, rawData) {
 
 // Reads info from variables and determines whether there is a need for generating placeholders or not
 function infoPlacer(rawData, FORMZEROLEN) {
-  
+
   if (rawData.name.length === FORMZEROLEN) rawData.name = "unknown caller";
 
   if (rawData.situation.length === FORMZEROLEN) rawData.situation = "unknown situation";
@@ -58,6 +59,7 @@ function infoPlacer(rawData, FORMZEROLEN) {
   if (rawData.description.length === FORMZEROLEN) rawData.description = "No description provided";
 }
 
+//Tries to get an address autmatically, if it can't simply sets the adress to "Unknown address"
 function geoCreator(rawData, FORMZEROLEN) {
   let latlngObj;
   if (rawData.address.length === FORMZEROLEN || rawData.address === "Unknown address") {
@@ -74,11 +76,13 @@ function geoCreator(rawData, FORMZEROLEN) {
     });
   }
 }
-function genPhoneNumber(rawData) {
-    const NUMBERMAX = 99999999, NUMBERMIN = 10000000;
-    let tempNumber = Math.floor(Math.random() * NUMBERMAX);
 
-    tempNumber < NUMBERMIN ? rawData.number = tempNumber + 10000000 : rawData.number = tempNumber;
+//Generates a random phone number
+function genPhoneNumber(rawData) {
+  const NUMBERMAX = 99999999, NUMBERMIN = 10000000;
+  let tempNumber = Math.floor(Math.random() * NUMBERMAX);
+
+  tempNumber < NUMBERMIN ? rawData.number = tempNumber + 10000000 : rawData.number = tempNumber;
 }
 
 // Assigns the info values to an object
