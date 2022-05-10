@@ -1,3 +1,4 @@
+//Returns a promise that tries to get a latlngObj from an address
 function addGeoMarker(address) {
     return new Promise((resolve, reject) => {
         let latlngObj;
@@ -12,7 +13,7 @@ function addGeoMarker(address) {
                 }
                 resolve(latlngObj);
             } else {
-                alert('Geocode was not successful for the following reason: ' + status);
+                alert('Geocode was not successful for the following reason: ' + status + ' and will therefore change the given address to "unknown address"');
                 reject("Unknown address");
             }
         });
@@ -33,6 +34,7 @@ async function sendJSON(caller) {
     });
 }
 
+//Clears the main form
 function clearForm() {
     document.getElementById('name').value = '';
     document.getElementById('situation').value = '';
