@@ -1,4 +1,5 @@
 const emergency_marker = "http://maps.google.com/mapfiles/kml/shapes/caution.png"
+//Callback function the google maps javascript api uses
 function initMap() {
     const defaultCenter = { lat: 57.012554751715186, lng: 9.991338053228736 };
 
@@ -7,6 +8,5 @@ function initMap() {
         zoom: 12,
         center: defaultCenter,
     });
-
     getCurrentEmergencies(map, path, emergency_marker, false);
 }

@@ -1,6 +1,7 @@
 import { getPostData, importObject, exportObject } from "../serverHelpers.mjs"
 import { errorResponse } from "../responseHandlers.mjs";
 
+//Changes value answering to an incoming value
 export function pageChangeAnswering(req, res, path) {
     //TODO: could potentially be moved to it's own function, but I couldn't be bothered
     // Get the content in the json file and change the answering variable and write the file
