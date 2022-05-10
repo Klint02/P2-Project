@@ -180,31 +180,29 @@ function initECC() {
             //console.log(event);
             postData(map);
         });
-    }
-}
-
-//If a cookie exists and is not "" the user is considered logged in otherwise we add the login
-//button and setup the event
-if (document.cookie == "") {
-    document.querySelector('#loginForm').addEventListener('submit', function (event) {
-        event.preventDefault();
-        //creates an object with logindata
-        const data = new FormData(event.target);
-        const obj = {
-            uname: data.get("uname"),
-            psw: data.get("psw")
-        }
-        //Sends logindata for checking on the serverside. If a login is successfull a cookie
-        //is returned
-        fetch('/Pages/ECC/ecc.html', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(obj),
-        }).then(() => {
-            //reloads the page
-            location.reload();
+    } else {
+        //If a cookie exists and is not "" the user is considered logged in otherwise we add the login
+        //button and setup the event
+        document.querySelector('#loginForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            //creates an object with logindata
+            const data = new FormData(event.target);
+            const obj = {
+                uname: data.get("uname"),
+                psw: data.get("psw")
+            }
+            //Sends logindata for checking on the serverside. If a login is successfull a cookie
+            //is returned
+            fetch('/Pages/ECC/ecc.html', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(obj),
+            }).then(() => {
+                //reloads the page
+                location.reload();
+            });
         });
-    });
+    }
 }
