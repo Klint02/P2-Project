@@ -116,7 +116,7 @@ function addLinks(obj, calls, links, update) {
     }
 }
 
-//Checks an object with same locatin as passed object in an array exists
+/*Checks if array of latlngObj have the same location as a latlngObj*/
 Array.prototype.specialContains = function (input) {
     for (let i = 0; i < this.length; i++) {
         if (this[i].addressOne.lat == input.addressOne.lat &&

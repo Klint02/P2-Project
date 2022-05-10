@@ -4,11 +4,13 @@ let current_object;
 let last_marker;
 
 initECC();
-//Gets calls from DB and starts adding markers. Called by the "next call" button
+
+/*Gets calls from the server and starts plotting, called when the "Next Call" button is pressed*/
 function getCalls(mapname, path) {
     let queue = 0;
+    console.log("path" + path);
+    /*Fetches callerDB file for the day*/
     fetch(path)
-        .then(clearAllMarkers()) // clears all markers in the client-side array
         .then(getCurrentEmergencies(mapname, path, emergency_marker, false))
         .then(response => response.json())
         .then(calls => {
