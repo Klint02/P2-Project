@@ -15,6 +15,7 @@ function getCalls(mapname, path) {
         .then(getCurrentEmergencies(mapname, path, emergency_marker, false))
         .then(response => response.json())
         .then(calls => {
+            populateSideBar(calls);
             // Get the number of calls in queue
             for (let i = 0; i < calls.length; i++) {
                 if (calls[i].answered == false && calls[i].answering == false) {
@@ -153,7 +154,6 @@ function initECC() {
         document.getElementById("logoutPlaceholder").innerHTML = '<button id=logoutbtn  class="btn btn-secondary btn-block">Logout</button>';
 
         let buttonsPlaceholder = document.getElementById("buttonsPlaceholder");
-        //buttonsPlaceholder.style.display = "inline-block";
         buttonsPlaceholder.innerHTML = '<div id="calls"><button id="new_call" class="btn btn-primary btn-block">Next call</button>';
         /*<button id="emergency_handled" class="btn btn-primary btn-block">Plot emergency</button>';*/
         //Add events to the newly played buttons
@@ -221,7 +221,7 @@ document.querySelector('#eccForm').addEventListener('submit', function (event) {
     })
         .then(response => response.json())
         .then(call => {
-            console.log(call);
+            populateSideBar(undefined, call);
             createMarker(call, emergency_marker, map, last_marker, object_to_change)
             //reloads the page
             //location.reload();
@@ -248,11 +248,9 @@ function createMarker(call, emergency_marker, mapname, last_marker, object_to_ch
     // Checks if address is provided or if there is need of use of only AML lat:lng for place of emergency
     if (call.location.address == "Unknown address") {
         addMarker(String(call.situation), call.AMLLocation, emergency_marker, mapname, info_to_display, call.id);
-        populateSideBar(calls, call);
         object_to_change = undefined; //dont let me plot the emergency more than once
     } else if (call.AMLLocation.address != "Unknown address") {
         addMarker(String(call.situation), call.location, emergency_marker, mapname, info_to_display, call.id);
-        populateSideBar(calls, call);
         object_to_change = undefined;//dont let me plot the emergency more than once
     }
     delPerson(last_marker);
@@ -265,8 +263,4 @@ function clearForm() {
     document.getElementById('address').value = '';
     document.getElementById('injuries').value = '';
     document.getElementById('description').value = '';
-}
-
-function validator(obj) {
-
 }
