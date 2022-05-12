@@ -137,6 +137,7 @@ function link(id, sidebar) {
             },
             body: `{"objID": \"${id}\", "curentObjID" : \"${current_object.id}\"}`,
         }).then(() => {
+            //clearForm();
             getCurrentEmergencies(map, path, emergency_marker, true);
         });
     }
@@ -149,9 +150,12 @@ function initECC() {
     if (document.cookie != "") {
         document.getElementById("loginForm").remove();
         //document.getElementById("loginText").innerText = "Logged in";
-        let loginPlaceholder = document.getElementById("logoutPlaceholder");
-        //loginPlaceholder.style.display = "inline-block";
-        loginPlaceholder.innerHTML = '<div id="calls"><button id="new_call" class="btn btn-primary btn-block">Next call</button><button id="emergency_handled" class="btn btn-primary btn-block">Plot emergency</button><p id="call_text" ></p></div><p >Logged in</p><button id=logoutbtn  class="btn btn-secondary btn-block">Logout</button>';
+        document.getElementById("logoutPlaceholder").innerHTML = '<button id=logoutbtn  class="btn btn-secondary btn-block">Logout</button>';
+
+        let buttonsPlaceholder = document.getElementById("buttonsPlaceholder");
+        //buttonsPlaceholder.style.display = "inline-block";
+        buttonsPlaceholder.innerHTML = '<div id="calls"><button id="new_call" class="btn btn-primary btn-block">Next call</button>';
+        /*<button id="emergency_handled" class="btn btn-primary btn-block">Plot emergency</button>';*/
         //Add events to the newly played buttons
         document.getElementById("logoutbtn").addEventListener("click", function (event) {
             location.href = "ecc.html";
@@ -161,11 +165,11 @@ function initECC() {
             event.preventDefault();
             getCalls(map, path);
         });
-        document.querySelector('#emergency_handled').addEventListener('click', function (event) {
+        /*document.querySelector('#emergency_handled').addEventListener('click', function (event) {
             event.preventDefault();
             //console.log(event);
             postData(map);
-        });
+        });*/
     } else {
         //If a cookie exists and is not "" the user is considered logged in otherwise we add the login
         //button and setup the event

@@ -1,16 +1,14 @@
 #map {
-  height: 60vh;
-  width: 60%;
-  margin-left: 1%;
-  float: left;
+  height: 100%;
+  width: 100%;
   /*width: 90%;*/
 }
 
 #eccForm {
   margin-left: 0px;
   padding-left: 0px;
-  width: 18%;
-  float: left;
+  /*width: 18%;
+  /*float: left;*/
 }
 
 #reportInput {
@@ -45,6 +43,7 @@ body form button {
 .border {
   border-style: solid;
 }
+
 
 .sidebarElementPadding {
   padding-left: 5px;
