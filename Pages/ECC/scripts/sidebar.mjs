@@ -5,6 +5,8 @@ function populateSideBar(objs, extra) {
     //Removes any existing elements
     if (objs == undefined) {
         sideBar.appendChild(createSideElement(extra, -1))
+        let buttonList = document.getElementsByClassName("collapsible");
+        addButtonListener(undefined, buttonList[buttonList.length - 1]);
     } else {
         sideBar.innerHTML = "";
         let i = 0;
@@ -20,20 +22,38 @@ function populateSideBar(objs, extra) {
             lastAppendedSidebar = extra;
             sideBar.appendChild(createSideElement(extra, i + 1));
         }
+
+        let buttons = document.getElementsByClassName("collapsible");
+        addButtonListener(buttons);
     }
-    //Adds events for the collapsible elements that views or hides the extra data
-    let buttons = document.getElementsByClassName("collapsible");
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener("click", (event) => {
-            let content = buttons[i].nextElementSibling.nextElementSibling;
+}
+
+//Adds events for the collapsible elements that views or hides the extra data
+function addButtonListener(buttonList, button) {
+    if (buttonList == undefined) {
+        button.addEventListener("click", (event) => {
+            let content = button.nextElementSibling.nextElementSibling;
             if (content.style.display === "block") {
                 content.style.display = "none";
             } else {
                 content.style.display = "block";
             }
         });
+    } else {
+        for (let i = 0; i < buttonList.length; i++) {
+            buttonList[i].addEventListener("click", (event) => {
+                let content = buttonList[i].nextElementSibling.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
     }
+
 }
+
 //Returns an html div element with the data from the passed object written in
 function createSideElement(obj, i) {
     if (i == -1) {
