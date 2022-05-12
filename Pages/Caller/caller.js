@@ -1,5 +1,8 @@
-// caller.js v1.1
-// FUNCTIONALITY: Creates a caller object and sends it via a POST request to a server
+// caller.js v1.2
+// FUNCTIONALITY: 
+// Creates a caller object and sends it via a POST request to a server
+// Does not reset form unless data is valid 
+// 
 // Created by Group A221a software semester 2 2022
 // Responsible: Nicklas Christensen and Rasmus Bertelsen
 
@@ -18,7 +21,7 @@ form.addEventListener('submit', (event) => {
   infoPlacer(rawData, FORMZEROLEN);
   genPhoneNumber(rawData);
   geoCreator(rawData, FORMZEROLEN);
-  clearForm();
+  
 });
 
 //When rng button is clicked:
@@ -62,6 +65,7 @@ function infoPlacer(rawData, FORMZEROLEN) {
 //Tries to get an address autmatically, if it can't simply sets the adress to "Unknown address"
 function geoCreator(rawData, FORMZEROLEN) {
   let latlngObj;
+  errorcode = 0;
   if (rawData.address.length === FORMZEROLEN || rawData.address === "Unknown address") {
     rawData.address = "Unknown address"
     infoPlacerResult(rawData, latlngObj);
@@ -71,8 +75,14 @@ function geoCreator(rawData, FORMZEROLEN) {
       templatlngObj = latlngObj;
     }).catch((err) => {
       console.log(err);
+    errorcode = 1;  
     }).finally(() => {
-      infoPlacerResult(rawData, templatlngObj);
+    
+    if (errorcode === 0) {
+    console.log(errorcode);
+    infoPlacerResult(rawData, templatlngObj);
+    clearForm();
+    }
     });
   }
 }
@@ -174,4 +184,6 @@ function randomNumberOfInjured() {
   }
   return string;
 }
+
+
 
