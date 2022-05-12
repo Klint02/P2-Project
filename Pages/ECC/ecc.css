@@ -9,13 +9,19 @@
   height: 10vh;
 }
 
-.logoutPlaceholder>* {
-  display: inline-block;
+#logoutPlaceholder>* {
+  margin-left: 10px;
+  padding-left: 10px;
 }
 
 #new_call {
   margin-right: 20px;
-  margin-left: 10px;
+  margin-left: 0px;
+}
+
+#logoutbtn {
+  margin-left: 20px;
+  padding-left: 5px;
 }
 
 div.horizontal {

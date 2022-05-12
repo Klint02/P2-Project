@@ -1,5 +1,6 @@
 let map;
 
+//The nodefault class removes the default behavior from any event
 try {
     document.querySelector(".nodefault").addEventListener("click", function (event) {
         event.preventDefault();
@@ -9,34 +10,44 @@ try {
 }
 
 //TODO: we have an offical uuid generator "uuidv4()"
+//Generates a unique identifyer
 function makeUniqueID() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
+//Gets the emergencies that are considered current and reloads the map
 function getCurrentEmergencies(mapname, path, emergency_marker, update) {
     clearAllMarkers();
+    //Fethes the callerDB for that day if called correctly !!
     fetch(path)
         .then(response => response.json())
         .then(calls => {
             let links = [];
             let extraIndex = 0;
+            //Goes through ALL emergencies current or not
             for (let i = 0; i < calls.length; i++) {
                 if (calls[i].answered === true && calls[i].active === true && calls[i].answering === true) {
+                    //Everything in this scope is considered current
+                    //Adds links between markers
                     addLinks(calls[i], calls, links, update);
-                    // Information to display in box
+                    //used for skipping an extra fetch to the server for adding the latest call in the sidebar
                     extraIndex = i;
+                    // Information to display in box
                     let addressInput;
+                    //If a proper location is available it will be used, otherwise AML location will be used
                     if (calls[i].location.address == "Unknown address") {
                         addressInput = String("(Unknown) AML - Lat: " + calls[i].AMLLocation.lat + " Lng: " + calls[i].AMLLocation.lng);
                     } else {
                         addressInput = calls[i].location.address;
                     }
+                    //Generates the info shown in the popup on the markers
                     let info_to_display = `Id: ${calls[i].id},
                     <br>Navn: ${calls[i].name},
                     <br>Tlf: ${calls[i].number},
                     <br>Addresse: ${addressInput},
                     <br>Time: ${calls[i].timeset},
                     <br>Description: ${calls[i].description}`;
+                    //addmarker called with either aml location or proper location
                     if (calls[i].location.address == "Unknown address") {
                         addMarker(calls[i].situation, calls[i].AMLLocation, emergency_marker, mapname, info_to_display, calls[i].id);
                     } else if (calls[i].location.address != "Unknown address") {
@@ -44,16 +55,23 @@ function getCurrentEmergencies(mapname, path, emergency_marker, update) {
                     }
                 }
             }
+            //Populates the side bar
             populateSideBar(calls);
         });
 }
 
+//Adds links between markers
 function addLinks(obj, calls, links, update) {
+    //Goes through link in the passed object
     for (let i = 0; i < obj.links.length; i++) {
+        //Goes through all objects
         for (let p = 0; p < calls.length; p++) {
+            //If an object in the calls array has the same id as one of the passed object's links
+            //A link will be created between them
             if (obj.links[i] == calls[p].id && ((obj.active && calls[p].active) || update)) {
                 let addressOne;
                 let addressTwo;
+                //Just for handling aml vs proper location
                 if (calls[p].location.address != "Unknown address") {
                     addressOne = {
                         lat: calls[p].location.lat,
@@ -76,12 +94,15 @@ function addLinks(obj, calls, links, update) {
                         lng: obj.AMLLocation.lng
                     }
                 }
+                //For avoiding adding a line twice in both directions
                 const tempObjsFordupCheck = { addressTwo, addressOne }
-                if (links.contains(tempObjsFordupCheck)) {
+                if (links.specialContains(tempObjsFordupCheck)) {
                     console.log("dupe");
                     return;
                 }
                 links.push({ addressOne, addressTwo });
+
+                //Creates a Polyline that can then be added to the map
                 const line = new google.maps.Polyline({
                     path: [addressOne, addressTwo],
                     geodesic: true,
@@ -95,7 +116,8 @@ function addLinks(obj, calls, links, update) {
     }
 }
 
-Array.prototype.contains = function (input) {
+/*Checks if array of latlngObj have the same location as a latlngObj*/
+Array.prototype.specialContains = function (input) {
     for (let i = 0; i < this.length; i++) {
         if (this[i].addressOne.lat == input.addressOne.lat &&
             this[i].addressOne.lng == input.addressOne.lng &&

@@ -1,6 +1,7 @@
 import { importObject, exportObject, getPostData } from "../serverHelpers.mjs";
 import { errorResponse } from "../responseHandlers.mjs";
 
+//When an emergency gets plotted, this function changes the answered value of an object
 export function pageEmergencyAccepted(req, res, path) {
     //TODO: could potentially be moved to it's own function, but I couldn't be bothered
     // Get the content in the json file and change the answering variable and write the file

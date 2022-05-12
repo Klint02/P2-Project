@@ -107,14 +107,14 @@ export function getPostData(req) {
     });
 }
 
-// Function used to add a caller to DATE.json file
-// Gives each caller a random UUID
+// Used to add a caller to DATE.json file and gives each caller a random UUID
 export function addCaller(path, caller, res) {
     caller.id = uuidv4();
     if (exportObjectPush(path, caller, res) == 1) return 1;
     return 0;
 }
 
+//Gets the last element in an array after splitting a string
 export function getLastSplit(input, splitChar) {
     const temp = input.split(splitChar);
     return temp[temp.length - 1]

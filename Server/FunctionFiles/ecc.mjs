@@ -1,9 +1,9 @@
 import { importObject, getPostData } from "../serverHelpers.mjs";
 import { errorResponse, fileResponse } from "../responseHandlers.mjs";
 
+//Handles login if needed or just passes request to fileResponse()
 export function pageEcc(req, res, operatorPath) {
     getPostData(req).then(obj => {
-        console.log(obj);
         const cookie = checkLogin(obj, res, operatorPath);
         if (cookie == 1) {
             errorResponse(res, 403, "Login failed");
