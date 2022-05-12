@@ -65,23 +65,21 @@ function infoPlacer(rawData, FORMZEROLEN) {
 //Tries to get an address autmatically, if it can't simply sets the adress to "Unknown address"
 function geoCreator(rawData, FORMZEROLEN) {
   let latlngObj;
-  errorcode = 0;
+  let errorcode = 0;
   if (rawData.address.length === FORMZEROLEN || rawData.address === "Unknown address") {
     rawData.address = "Unknown address"
     infoPlacerResult(rawData, latlngObj);
   } else {
     let templatlngObj;
     addGeoMarker(rawData.address).then((latlngObj) => {
-      templatlngObj = latlngObj;
+        templatlngObj = latlngObj;
     }).catch((err) => {
-      console.log(err);
-    errorcode = 1;  
+        console.log(err);
+        errorcode = 1;  
     }).finally(() => {
-    
     if (errorcode === 0) {
-    console.log(errorcode);
-    infoPlacerResult(rawData, templatlngObj);
-    clearForm();
+        infoPlacerResult(rawData, templatlngObj);
+        clearForm();
     }
     });
   }
