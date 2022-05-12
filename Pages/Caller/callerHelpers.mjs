@@ -13,7 +13,8 @@ function addGeoMarker(address) {
                 }
                 resolve(latlngObj);
             } else {
-                alert('Geocode was not successful for the following reason: ' + status + ' and will therefore change the given address to "unknown address"');
+                alert("Address given was invalid, please enter a new address");
+                
                 reject("Unknown address");
             }
         });

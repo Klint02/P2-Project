@@ -39,7 +39,7 @@ function createSideElement(obj, i) {
     //Creates the div and sets the attributes for it note "hidden" is important
     let div = document.createElement("div");
     div.setAttribute("style", "display: flex; flex-wrap: wrap; border: none");
-    div.setAttribute("overflow-x", "hidden");
+    
 
     //Adds the html for the sidebar
     if (i != 0) div.innerHTML = '<hr style="width: 100%; margin-top: 0px; margin-bottom: 0px;">';
