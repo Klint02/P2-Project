@@ -1,7 +1,16 @@
 #map {
   height: 60vh;
-  width: calc(80%);
+  width: 60%;
+  margin-left: 1%;
+  float: left;
   /*width: 90%;*/
+}
+
+#eccForm {
+  margin-left: 0px;
+  padding-left: 0px;
+  width: 18%;
+  float: left;
 }
 
 #reportInput {

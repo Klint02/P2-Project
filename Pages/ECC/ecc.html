@@ -32,13 +32,29 @@
             class="btn btn-secondary btn-block"></button>
     </form>
     <div style="width: 100%;">
-        <div id="map" style="width: 80%; float:left;">
+        <div id="eccForm">
+            <form id="" accept-charset=utf-8>
+                <label for="name">Name:</label><br>
+                <input type="text" id="name" name="name" value="" class="form-control"><br>
+                <label for="situation">What is happening?:</label><br>
+                <input type="text" id="situation" name="situation" value="" class="form-control"><br>
+                <label for="address">Address:</label><br>
+                <input type="text" id="address" name="address" value="" class="form-control"><br>
+                <label for="injuries">How many people are injured?:</label><br>
+                <input type="text" id="injuries" name="injuries" value="" class="form-control"><br>
+                <label for="description">Additional info:</label><br>
+                <textarea id="description" name="description" value="" class="form-control"></textarea><br>
+                <input type="submit" value="Confirm" class="btn btn-primary btn-block mb-4">
+            </form>
+        </div>
+        <div id="map">
             <script
                 src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBuaBC03nHrW5mWu1hPomE_eX7qLgScauQ&callback=initMap&libraries=&v=weekly'
                 async defer></script>
         </div>
         <div>
-            <div id="sideBar" style="width: 20%; margin-left: 80%; margin-top: 0px; overflow:scroll; height: 60vh; overflow-x: hidden;">
+            <div id="sideBar"
+                style="width: 20%; margin-left: 80%; margin-top: 0px; overflow:scroll; height: 60vh; overflow-x: hidden;">
             </div>
         </div>
     </div>
