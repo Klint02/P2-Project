@@ -13,8 +13,13 @@ function getCalls(mapname, path) {
     /*Fetches callerDB file for the day*/
     fetch(path)
         .then(getCurrentEmergencies(mapname, path, emergency_marker, false))
-        .then(response => response.json())
         .then(calls => {
+            try {
+                calls = JSON.parse(calls);
+            } catch (err) {
+                console.log("Unable to parse json: " + err);
+                return 1;
+            }
             populateSideBar(calls);
             // Get the number of calls in queue
             for (let i = 0; i < calls.length; i++) {
@@ -78,6 +83,8 @@ function getCalls(mapname, path) {
                     }
                 }
             }
+        }).catch(err => {
+            alert("No calls in queue, a peaceful moment in Gotham");
         });
 }
 
@@ -89,8 +96,13 @@ async function postData(mapname) {
         call_text.innerHTML = `You need to pick up a call first`;
     } else {//else  if we know what object to change:
         fetch(path)
-            .then(response => response.json())
             .then(calls => {
+                try {
+                    calls = JSON.parse(calls);
+                } catch (err) {
+                    console.log("Unable to parse json: " + err);
+                    return 1;
+                }
                 createMarker(calls[object_to_change], emergency_marker, map, last_marker, object_to_change);
                 // Creates HTML with information
                 let call_text = document.getElementById('call_text');
@@ -208,6 +220,8 @@ document.querySelector('#eccForm').addEventListener('submit', function (event) {
         injuries: data.get('injuries'),
         description: data.get('description')
     }
+    if (validator(obj)) alert("Data not valid");
+
     if (!obj.address.search('/([0-9]{4})/')) {
         obj.address += ", 9000";
     }
@@ -219,8 +233,13 @@ document.querySelector('#eccForm').addEventListener('submit', function (event) {
         },
         body: JSON.stringify(obj),
     })
-        .then(response => response.json())
         .then(call => {
+            try {
+                call = JSON.parse(call);
+            } catch (err) {
+                console.log("Unable to parse json: " + err);
+                return 1;
+            }
             populateSideBar(undefined, call);
             createMarker(call, emergency_marker, map, last_marker, object_to_change)
             //reloads the page
@@ -263,4 +282,10 @@ function clearForm() {
     document.getElementById('address').value = '';
     document.getElementById('injuries').value = '';
     document.getElementById('description').value = '';
+}
+
+function validator(obj) {
+    if (obj.name == "") return 1
+    if (obj.address == "") return 1;
+    return 0;
 }

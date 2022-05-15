@@ -29,7 +29,6 @@ export function postHandler(req, res) {
         case "Pages/ECC/ecc.html":
             return pageEcc(req, res, operatorPath);
         case "Pages/ECC/confirm":
-            console.log("confirm");
             return confirm(req, res, path);
         default:
             return errorResponse(res, 404, "Post request not found");

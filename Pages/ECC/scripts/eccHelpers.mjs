@@ -20,8 +20,14 @@ function getCurrentEmergencies(mapname, path, emergency_marker, update) {
     clearAllMarkers();
     //Fethes the callerDB for that day if called correctly !!
     fetch(path)
-        .then(response => response.json())
         .then(calls => {
+            try {
+                calls = JSON.parse(calls);
+            } catch (err) {
+                console.log("Unable to parse json. Maybe no calls?: " + err);
+                return 1;
+            }
+
             let links = [];
             let extraIndex = 0;
             //Goes through ALL emergencies current or not
@@ -86,7 +92,7 @@ function addLinks(obj, calls, links, update) {
                 if (obj.location.address != "Unknown address") {
                     addressTwo = {
                         lat: obj.location.lat,
-                        lng: obj.location.lng,
+                        lng: obj.location.lng
                     }
                 } else {
                     addressTwo = {
