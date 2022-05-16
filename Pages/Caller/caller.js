@@ -19,6 +19,7 @@ form.addEventListener('submit', (event) => {
   event.preventDefault();
   handleSubmit(event, rawData);
   infoPlacer(rawData, FORMZEROLEN);
+  addressFormatFixer(rawData);
   genPhoneNumber(rawData);
   geoCreator(rawData, FORMZEROLEN);
   
@@ -30,6 +31,7 @@ document.getElementById("RNG").addEventListener('click', (event) => {
   let rawData = {
   }
   infoRNG(rawData, nameDB, situationDB, addressDB, FORMZEROLEN);
+  addressFormatFixer(rawData);
   genPhoneNumber(rawData);
   geoCreator(rawData, FORMZEROLEN);
 });
@@ -181,6 +183,11 @@ function randomNumberOfInjured() {
     string = `${killed} people killed`;
   }
   return string;
+}
+function addressFormatFixer(rawData) {
+    if (rawData.address.search("/([0-9]{4})/g") == -1) {
+        rawData.address += ", 9000 Aalborg";
+    }
 }
 
 

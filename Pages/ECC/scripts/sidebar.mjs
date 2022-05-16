@@ -56,9 +56,6 @@ function addButtonListener(buttonList, button) {
 
 //Returns an html div element with the data from the passed object written in
 function createSideElement(obj, i) {
-    if (i == -1) {
-        console.log(obj);
-    }
     //Makes the time more readable for feeble human minds
     const time = obj.timeset.split(' ')[1].replace('.', ':').substring(0, 5);
 
@@ -79,9 +76,6 @@ function createSideElement(obj, i) {
     <p class="sidebarElementPadding">Injuries: ${obj.injuries}</b>
     <p class="sidebarElementPadding">Add Info: ${obj.description}</b>
     </div>`;
-    if (i == -1) {
-        console.log(div);
-    }
     return div;
 }
 

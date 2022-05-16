@@ -3,4 +3,3 @@ let nameDB = ["Jonas Hansen", "Tim Jensen", "Laura Hansen", "Helena bach", "Tobi
 let situationDB = ["Fire", "Trafic Accident", "Homicide", "Theft", "Break-in"]
 
 let addressDB = ["Maren Turis gade 3", "Strandvejen 3", "Strandvejen 4", "Strandvejen 15", "Dannebrogsgade 25", "Dannebrogsgade 36", "Fredensgade 5", "Fredensgade 15 ", "Granvej 3", "Granvej 7", "Sigrid undsets vej 234B", "Max Henius vej 7", "Max Henius vej 26", "Tjørnevej 12", "Tjørnevej 6", "Tjørnevej 13", "Unknown address"]
-
