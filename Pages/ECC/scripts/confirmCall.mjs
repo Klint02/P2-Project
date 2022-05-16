@@ -1,7 +1,5 @@
-console.log("asdadasd");
 /*Handles the form*/
 document.querySelector('#eccForm').addEventListener('submit', function (event) {
-    console.log("asdasdasd");
     event.preventDefault();
     const data = new FormData(event.target);
     /*Make object for sending to server*/
