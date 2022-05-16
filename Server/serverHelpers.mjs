@@ -102,7 +102,11 @@ export function getPostData(req) {
         });
         req.on('end', () => {
             if (body == "") reject("Empty post request");
-            resolve(JSON.parse(body));
+            try {
+                resolve(JSON.parse(body));
+            } catch (err) {
+                reject("Failed to parse JSON: " + err);
+            }
         });
     });
 }

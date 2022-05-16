@@ -3,43 +3,69 @@ let lastAppendedSidebar;
 function populateSideBar(objs, extra) {
     sideBar = document.getElementById("sideBar");
     //Removes any existing elements
-    sideBar.innerHTML = "";
-    let i = 0;
-    for (i = 0; i < objs.length; i++) {
-        //If an object is considred current it will be appended to the sidebar
-        if (objs[i].answered === true && objs[i].active === true && objs[i].answering === true) {
-            sideBar.appendChild(createSideElement(objs[i], i));
+    if (objs == undefined) {
+        sideBar.appendChild(createSideElement(extra, -1))
+        let buttonList = document.getElementsByClassName("collapsible");
+        addButtonListener(undefined, buttonList[buttonList.length - 1]);
+    } else {
+        sideBar.innerHTML = "";
+        let i = 0;
+        for (i = 0; i < objs.length; i++) {
+            //If an object is considred current it will be appended to the sidebar
+            if (objs[i].answered === true && objs[i].active === true && objs[i].answering === true) {
+                sideBar.appendChild(createSideElement(objs[i], i));
+            }
         }
-    }
-    //The extra object is the latest object added, which will not be updated in time to have parameters
-    //changed in time. Because of this it will be added despite parameters
-    if (extra != undefined && lastAppendedSidebar != extra) {
-        lastAppendedSidebar = extra;
-        sideBar.appendChild(createSideElement(extra, i + 1));
-    }
+        //The extra object is the latest object added, which will not be updated in time to have parameters
+        //changed in time. Because of this it will be added despite parameters
+        if (extra != undefined && lastAppendedSidebar != extra) {
+            lastAppendedSidebar = extra;
+            sideBar.appendChild(createSideElement(extra, i + 1));
+        }
 
-    //Adds events for the collapsible elements that views or hides the extra data
-    let buttons = document.getElementsByClassName("collapsible");
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener("click", (event) => {
-            let content = buttons[i].nextElementSibling.nextElementSibling;
+        let buttons = document.getElementsByClassName("collapsible");
+        addButtonListener(buttons);
+    }
+}
+
+//Adds events for the collapsible elements that views or hides the extra data
+function addButtonListener(buttonList, button) {
+    if (buttonList == undefined) {
+        button.addEventListener("click", (event) => {
+            let content = button.nextElementSibling.nextElementSibling;
             if (content.style.display === "block") {
                 content.style.display = "none";
             } else {
                 content.style.display = "block";
             }
         });
+    } else {
+        for (let i = 0; i < buttonList.length; i++) {
+            buttonList[i].addEventListener("click", (event) => {
+                let content = buttonList[i].nextElementSibling.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
     }
+
 }
+
 //Returns an html div element with the data from the passed object written in
 function createSideElement(obj, i) {
+    if (i == -1) {
+        console.log(obj);
+    }
     //Makes the time more readable for feeble human minds
     const time = obj.timeset.split(' ')[1].replace('.', ':').substring(0, 5);
 
     //Creates the div and sets the attributes for it note "hidden" is important
     let div = document.createElement("div");
     div.setAttribute("style", "display: flex; flex-wrap: wrap; border: none");
-    
+
 
     //Adds the html for the sidebar
     if (i != 0) div.innerHTML = '<hr style="width: 100%; margin-top: 0px; margin-bottom: 0px;">';
@@ -53,6 +79,9 @@ function createSideElement(obj, i) {
     <p class="sidebarElementPadding">Injuries: ${obj.injuries}</b>
     <p class="sidebarElementPadding">Add Info: ${obj.description}</b>
     </div>`;
+    if (i == -1) {
+        console.log(div);
+    }
     return div;
 }
 

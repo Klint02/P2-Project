@@ -6,6 +6,7 @@ import { pageChangeAnswering as pageChangeAnswering } from "./FunctionFiles/chan
 import { determineMimeType, addCaller } from "./serverHelpers.mjs";
 import { getArgs as getArgs, getLastSplit } from "./serverHelpers.mjs";
 import { addLink } from "./FunctionFiles/add_link.mjs"
+import { confirm } from "./FunctionFiles/confirmCall.mjs";
 import * as fs from 'fs';
 
 const operatorPath = "Server/ServerData/operators.json";
@@ -27,6 +28,8 @@ export function postHandler(req, res) {
             return addLink(req, res, path);
         case "Pages/ECC/ecc.html":
             return pageEcc(req, res, operatorPath);
+        case "Pages/ECC/confirm":
+            return confirm(req, res, path);
         default:
             return errorResponse(res, 404, "Post request not found");
 
