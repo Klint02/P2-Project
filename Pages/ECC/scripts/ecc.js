@@ -12,14 +12,11 @@ function getCalls(mapname, path) {
     console.log("path" + path);
     /*Fetches callerDB file for the day*/
     fetch(path)
+        .then(response => response.json())
+        .catch(err => { console.log(err) })
         .then(getCurrentEmergencies(mapname, path, emergency_marker, false))
         .then(calls => {
-            try {
-                calls = JSON.parse(calls);
-            } catch (err) {
-                console.log("Unable to parse json: " + err);
-                return 1;
-            }
+            if (calls == undefined) return 1;
             populateSideBar(calls);
             // Get the number of calls in queue
             for (let i = 0; i < calls.length; i++) {
@@ -27,6 +24,7 @@ function getCalls(mapname, path) {
                     queue++;
                 }
             }
+            console.log("queue: " + queue);
             // Check through all calls
             for (let i = 0; i < calls.length; i++) {
                 if (queue === 0) {
@@ -96,13 +94,10 @@ async function postData(mapname) {
         call_text.innerHTML = `You need to pick up a call first`;
     } else {//else  if we know what object to change:
         fetch(path)
+            .then(response => response.json())
+            .catch(err => { console.log(err) })
             .then(calls => {
-                try {
-                    calls = JSON.parse(calls);
-                } catch (err) {
-                    console.log("Unable to parse json: " + err);
-                    return 1;
-                }
+                if (calls == undefined) return 1;
                 createMarker(calls[object_to_change], emergency_marker, map, last_marker, object_to_change);
                 // Creates HTML with information
                 let call_text = document.getElementById('call_text');
@@ -212,18 +207,22 @@ function initECC() {
 document.querySelector('#eccForm').addEventListener('submit', function (event) {
     event.preventDefault();
     const data = new FormData(event.target);
-    const obj = {
-        id: current_object.id,
+    let obj = {
         name: data.get('name'),
         situation: data.get('situation'),
         address: data.get('address'),
         injuries: data.get('injuries'),
         description: data.get('description')
     }
+    if (current_object == undefined) {
+        obj.id = makeUniqueID();
+    } else {
+        obj.id = current_object.id;
+    }
     if (validator(obj)) alert("Data not valid");
 
     if (!obj.address.search('/([0-9]{4})/')) {
-        obj.address += ", 9000";
+        obj.address += ", 9000 Aalborg";
     }
 
     fetch('/Pages/ECC/confirm', {
@@ -233,13 +232,9 @@ document.querySelector('#eccForm').addEventListener('submit', function (event) {
         },
         body: JSON.stringify(obj),
     })
+        .then(response => response.json())
+        .catch(err => { console.log(err) })
         .then(call => {
-            try {
-                call = JSON.parse(call);
-            } catch (err) {
-                console.log("Unable to parse json: " + err);
-                return 1;
-            }
             populateSideBar(undefined, call);
             createMarker(call, emergency_marker, map, last_marker, object_to_change)
             //reloads the page

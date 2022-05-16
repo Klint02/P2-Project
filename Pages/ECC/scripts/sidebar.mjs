@@ -3,6 +3,7 @@ let lastAppendedSidebar;
 function populateSideBar(objs, extra) {
     sideBar = document.getElementById("sideBar");
     //Removes any existing elements
+    console.log(objs);
     if (objs == undefined) {
         sideBar.appendChild(createSideElement(extra, -1))
         let buttonList = document.getElementsByClassName("collapsible");

@@ -226,7 +226,7 @@ function host() {
                     console.log("Page does not exist in file system: " + file);
                     res.writeHead(500);
                     res.end(err);
-                    return;
+                    return 1;
                 });
 
 
