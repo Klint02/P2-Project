@@ -21,7 +21,9 @@ function getCurrentEmergencies(mapname, path, emergency_marker, update) {
     //Fethes the callerDB for that day if called correctly !!
     fetch(path)
         .then(response => response.json())
+        .catch(err => { console.warn("Possibly non-existing caller file: " + err) })
         .then(calls => {
+            if (calls == undefined) return 1;
             let links = [];
             let extraIndex = 0;
             //Goes through ALL emergencies current or not
@@ -86,7 +88,7 @@ function addLinks(obj, calls, links, update) {
                 if (obj.location.address != "Unknown address") {
                     addressTwo = {
                         lat: obj.location.lat,
-                        lng: obj.location.lng,
+                        lng: obj.location.lng
                     }
                 } else {
                     addressTwo = {
@@ -97,7 +99,6 @@ function addLinks(obj, calls, links, update) {
                 //For avoiding adding a line twice in both directions
                 const tempObjsFordupCheck = { addressTwo, addressOne }
                 if (links.specialContains(tempObjsFordupCheck)) {
-                    console.log("dupe");
                     return;
                 }
                 links.push({ addressOne, addressTwo });
