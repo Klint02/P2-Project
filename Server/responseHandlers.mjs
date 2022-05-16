@@ -6,7 +6,7 @@ import { pageChangeAnswering as pageChangeAnswering } from "./FunctionFiles/chan
 import { determineMimeType, addCaller } from "./serverHelpers.mjs";
 import { getArgs as getArgs, getLastSplit } from "./serverHelpers.mjs";
 import { addLink } from "./FunctionFiles/add_link.mjs"
-import { confirm } from "../Pages/ECC/scripts/confirmCall.mjs";
+import { confirm } from "./FunctionFiles/confirmCall.mjs";
 import * as fs from 'fs';
 
 const operatorPath = "Server/ServerData/operators.json";

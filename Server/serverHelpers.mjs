@@ -102,7 +102,6 @@ export function getPostData(req) {
         });
         req.on('end', () => {
             if (body == "") reject("Empty post request");
-            console.log(body);
             try {
                 resolve(JSON.parse(body));
             } catch (err) {
