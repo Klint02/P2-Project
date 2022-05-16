@@ -7,9 +7,7 @@ initECC();
 
 /*Gets calls from the server and starts plotting, called when the "Next Call" button is pressed*/
 function getCalls(mapname, path) {
-    console.log("Next");
     let queue = 0;
-    console.log("path" + path);
     /*Fetches callerDB file for the day*/
     fetch(path)
         .then(response => response.json())
@@ -24,7 +22,6 @@ function getCalls(mapname, path) {
                     queue++;
                 }
             }
-            console.log("queue: " + queue);
             // Check through all calls
             for (let i = 0; i < calls.length; i++) {
                 if (queue === 0) {
