@@ -18,7 +18,7 @@ document.querySelector('#eccForm').addEventListener('submit', function (event) {
     }
     if (validator(obj)) alert("Data not valid");
 
-    if (!obj.address.search('/([0-9]{4})/')) {
+    if (obj.address.search("/([0-9]{4})/g") == -1) {
         obj.address += ", 9000 Aalborg";
     }
 

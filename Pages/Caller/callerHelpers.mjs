@@ -6,15 +6,18 @@ function addGeoMarker(address) {
         let geocoder = new google.maps.Geocoder();
         // geocode is an api, which Converts the "standard" address to LAT and LNG
         geocoder.geocode({ 'address': address }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
+            if (status == google.maps.GeocoderStatus.OK && results[0].partial_match != true) {
                 latlngObj = {
                     lat: ((results[0].geometry.location.lat())),
                     lng: ((results[0].geometry.location.lng()))
                 }
                 resolve(latlngObj);
             } else {
-                alert("Address given was invalid, please enter a new address");
-                
+                if (results[0].partial_match === true) {
+                    alert("Google maps only found a partial match which is forbidden");
+                } else {
+                    alert("Address given was invalid, please enter a new address");
+                }
                 reject("Unknown address");
             }
         });
