@@ -13,7 +13,7 @@ function addGeoMarker(address) {
                 }
                 resolve(latlngObj);
             } else {
-                alert("Address given was invalid, please enter a new address");
+                alert("Address given was invalid, please enter a new address" + status);
                 
                 reject("Unknown address");
             }
