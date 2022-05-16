@@ -21,7 +21,7 @@ function getCurrentEmergencies(mapname, path, emergency_marker, update) {
     //Fethes the callerDB for that day if called correctly !!
     fetch(path)
         .then(response => response.json())
-        .catch(err => { console.log(err) })
+        .catch(err => { console.warn("Possibly non-existing caller file: " + err) })
         .then(calls => {
             if (calls == undefined) return 1;
             let links = [];
