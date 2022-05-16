@@ -8,12 +8,14 @@ initECC();
 /*Gets calls from the server and starts plotting, called when the "Next Call" button is pressed*/
 function getCalls(mapname, path) {
     let queue = 0;
-    console.log("path" + path);
     /*Fetches callerDB file for the day*/
     fetch(path)
-        .then(getCurrentEmergencies(mapname, path, emergency_marker, false))
         .then(response => response.json())
+        .catch(err => { console.log(err) })
+        .then(getCurrentEmergencies(mapname, path, emergency_marker, false))
         .then(calls => {
+            if (calls == undefined) return 1;
+            populateSideBar(calls);
             // Get the number of calls in queue
             for (let i = 0; i < calls.length; i++) {
                 if (calls[i].answered == false && calls[i].answering == false) {
@@ -24,8 +26,10 @@ function getCalls(mapname, path) {
             for (let i = 0; i < calls.length; i++) {
                 if (queue === 0) {
                     // Creates HTML with information
-                    let call_text = document.getElementById('call_text');
-                    call_text.innerHTML = `There is no calls in queue`;
+                    alert("No calls in queue, a peaceful moment in Gotham");
+                    break;
+                    /*let call_text = document.getElementById('call_text');
+                    call_text.innerHTML = `There is no calls in queue`;*/
                 } else {
                     // Delete last person_marker
                     if (last_marker != undefined) {
@@ -44,11 +48,17 @@ function getCalls(mapname, path) {
                         object_to_change = i;
                         // Creates HTML with information
                         let call_text = document.getElementById('call_text');
-                        call_text.innerHTML = `Id: ${calls[i].id} <br>
+                        /*call_text.innerHTML = `Id: ${calls[i].id} <br>
                         Name: ${calls[i].name} <br>
                         Address: ${addressInput} <br>
                         Situation: ${calls[i].situation} <br>
-                        Time: ${calls[i].timeset} <br>`;
+                        Time: ${calls[i].timeset} <br>`;*/
+                        document.getElementById("name").value = calls[i].name;
+                        document.getElementById("situation").value = calls[i].situation;
+                        document.getElementById("address").value = addressInput;
+                        document.getElementById("injuries").value = calls[i].injuries;
+                        document.getElementById("description").value = calls[i].description;
+
 
                         // Adds marker wher caller is calling from
                         current_object = calls[object_to_change];
@@ -68,6 +78,8 @@ function getCalls(mapname, path) {
                     }
                 }
             }
+        }).catch(err => {
+            alert("No calls in queue, a peaceful moment in Gotham");
         });
 }
 
@@ -80,31 +92,10 @@ async function postData(mapname) {
     } else {//else  if we know what object to change:
         fetch(path)
             .then(response => response.json())
+            .catch(err => { console.log(err) })
             .then(calls => {
-                // Checks if there is and address if not set address to the AML
-                let addressInput;
-                if (calls[object_to_change].location.address == "Unknown address") {
-                    addressInput = String("(Unknown) AML - Lat: " + calls[object_to_change].AMLLocation.lat + " Lng: " + calls[object_to_change].AMLLocation.lng);
-                } else {
-                    addressInput = calls[object_to_change].location.address;
-                }
-                // Information to display in box
-                let info_to_display = `Id: ${calls[object_to_change].id},
-                <br>Name: ${calls[object_to_change].name},
-                <br>Tlf: ${calls[object_to_change].number},
-                <br>Address: ${addressInput},
-                <br>Time: ${calls[object_to_change].timeset},
-                <br>Description: ${calls[object_to_change].description}`;
-                // Checks if address is provided or if there is need of use of only AML lat:lng for place of emergency
-                if (calls[object_to_change].location.address == "Unknown address") {
-                    addMarker(String(calls[object_to_change].situation), calls[object_to_change].AMLLocation, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
-                    populateSideBar(calls, calls[object_to_change]);
-                    object_to_change = undefined; //dont let me plot the emergency more than once
-                } else if (calls[object_to_change].AMLLocation.address != "Unknown address") {
-                    addMarker(String(calls[object_to_change].situation), calls[object_to_change].location, emergency_marker, mapname, info_to_display, calls[object_to_change].id);
-                    populateSideBar(calls, calls[object_to_change]);
-                    object_to_change = undefined;//dont let me plot the emergency more than once
-                }
+                if (calls == undefined) return 1;
+                createMarker(calls[object_to_change], emergency_marker, map, last_marker, object_to_change);
                 // Creates HTML with information
                 let call_text = document.getElementById('call_text');
                 call_text.style.marginLeft = "10px";
@@ -151,6 +142,7 @@ function link(id, sidebar) {
             },
             body: `{"objID": \"${id}\", "curentObjID" : \"${current_object.id}\"}`,
         }).then(() => {
+            //clearForm();
             getCurrentEmergencies(map, path, emergency_marker, true);
         });
     }
@@ -163,9 +155,11 @@ function initECC() {
     if (document.cookie != "") {
         document.getElementById("loginForm").remove();
         //document.getElementById("loginText").innerText = "Logged in";
-        let loginPlaceholder = document.getElementById("logoutPlaceholder");
-        //loginPlaceholder.style.display = "inline-block";
-        loginPlaceholder.innerHTML = '<div id="calls"><button id="new_call" class="btn btn-primary btn-block">Next call</button><button id="emergency_handled" class="btn btn-primary btn-block">Plot emergency</button><p id="call_text" ></p></div><p >Logged in</p><button id=logoutbtn  class="btn btn-secondary btn-block">Logout</button>';
+        document.getElementById("logoutPlaceholder").innerHTML = '<button id=logoutbtn  class="btn btn-secondary btn-block">Logout</button>';
+
+        let buttonsPlaceholder = document.getElementById("buttonsPlaceholder");
+        buttonsPlaceholder.innerHTML = '<div id="calls"><button id="new_call" class="btn btn-primary btn-block">Next call</button>';
+        /*<button id="emergency_handled" class="btn btn-primary btn-block">Plot emergency</button>';*/
         //Add events to the newly played buttons
         document.getElementById("logoutbtn").addEventListener("click", function (event) {
             location.href = "ecc.html";
@@ -175,11 +169,11 @@ function initECC() {
             event.preventDefault();
             getCalls(map, path);
         });
-        document.querySelector('#emergency_handled').addEventListener('click', function (event) {
+        /*document.querySelector('#emergency_handled').addEventListener('click', function (event) {
             event.preventDefault();
             //console.log(event);
             postData(map);
-        });
+        });*/
     } else {
         //If a cookie exists and is not "" the user is considered logged in otherwise we add the login
         //button and setup the event
@@ -205,4 +199,32 @@ function initECC() {
             });
         });
     }
+}
+
+/*Creates and adds marker to the map*/
+function createMarker(call, emergency_marker, mapname, last_marker, object_to_change) {
+    let addressInput;
+    if (call.location.address == "Unknown address") {
+        addressInput = String("(Unknown) AML - Lat: " + call.AMLLocation.lat + " Lng: " + call.AMLLocation.lng);
+    } else {
+        addressInput = call.location.address;
+    }
+    // Information to display in box
+    let info_to_display =
+        `Id: ${call.id},
+        <br>Name: ${call.name},
+        <br>Tlf: ${call.number},
+        <br>Address: ${addressInput},
+        <br>Time: ${call.timeset},
+        <br>Description: ${call.description}`;
+    // Checks if address is provided or if there is need of use of only AML lat:lng for place of emergency
+    if (call.location.address == "Unknown address") {
+        addMarker(String(call.situation), call.AMLLocation, emergency_marker, mapname, info_to_display, call.id);
+        object_to_change = undefined; //dont let me plot the emergency more than once
+    } else if (call.AMLLocation.address != "Unknown address") {
+        addMarker(String(call.situation), call.location, emergency_marker, mapname, info_to_display, call.id);
+        object_to_change = undefined;//dont let me plot the emergency more than once
+    }
+    delPerson(last_marker);
+    clearForm();
 }
