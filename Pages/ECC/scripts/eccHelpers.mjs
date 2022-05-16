@@ -99,7 +99,6 @@ function addLinks(obj, calls, links, update) {
                 //For avoiding adding a line twice in both directions
                 const tempObjsFordupCheck = { addressTwo, addressOne }
                 if (links.specialContains(tempObjsFordupCheck)) {
-                    console.log("dupe");
                     return;
                 }
                 links.push({ addressOne, addressTwo });

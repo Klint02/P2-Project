@@ -4,7 +4,6 @@ import { errorResponse } from "../../../Server/responseHandlers.mjs";
 
 export function confirm(req, res, path) {
     getPostData(req).then((data) => {
-        console.log(data);
         let calls = importObject(path);
         if (calls === 1) return 1;
         let found = false;
