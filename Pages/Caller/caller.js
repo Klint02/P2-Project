@@ -71,6 +71,7 @@ function geoCreator(rawData, FORMZEROLEN) {
   if (rawData.address.length === FORMZEROLEN || rawData.address === "Unknown address") {
     rawData.address = "Unknown address"
     infoPlacerResult(rawData, latlngObj);
+    clearForm();
   } else {
     let templatlngObj;
     addGeoMarker(rawData.address).then((latlngObj) => {
