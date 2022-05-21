@@ -63,13 +63,18 @@ function createSideElement(obj, i) {
     let div = document.createElement("div");
     div.setAttribute("style", "display: flex; flex-wrap: wrap; border: none");
 
-
+    let addressInput;
+    if (obj.location.address == "Unknown address") {
+        addressInput = String("(Unknown) AML - Lat: " + obj.AMLLocation.lat + " Lng: " + obj.AMLLocation.lng);
+    } else {
+        addressInput = obj.location.address;
+    }
     //Adds the html for the sidebar
     if (i != 0) div.innerHTML = '<hr style="width: 100%; margin-top: 0px; margin-bottom: 0px;">';
     div.innerHTML += `<button class="collapsible" float:left;>${obj.situation}</button><button class="gotoMarker" type="button" onclick="gotoMarker('${obj.id}');">Go to</button>`;
     div.innerHTML += `<div class="content"><button class="button" type="button" onclick="link(\'${obj.id}\', true)">Link to current call</button><br>
     <b class="sidebarElementPadding">Name: ${obj.name}</b>
-    <p class="sidebarElementPadding">Address: ${obj.location.address}</p>
+    <p class="sidebarElementPadding">Address: ${addressInput}</p>
     <p class="sidebarElementPadding">Call location: ${obj.AMLLocation.lat}  :  ${obj.AMLLocation.lng}</p>
     <p class="sidebarElementPadding">Phone nr: ${obj.number}</b>
     <p class="sidebarElementPadding">Time: ${time}</b>
