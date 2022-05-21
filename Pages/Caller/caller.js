@@ -22,7 +22,7 @@ form.addEventListener('submit', (event) => {
   addressFormatFixer(rawData);
   genPhoneNumber(rawData);
   geoCreator(rawData, FORMZEROLEN);
-  
+
 });
 
 //When rng button is clicked:
@@ -74,15 +74,15 @@ function geoCreator(rawData, FORMZEROLEN) {
   } else {
     let templatlngObj;
     addGeoMarker(rawData.address).then((latlngObj) => {
-        templatlngObj = latlngObj;
+      templatlngObj = latlngObj;
     }).catch((err) => {
-        console.log(err);
-        errorcode = 1;  
+      console.log(err);
+      errorcode = 1;
     }).finally(() => {
-    if (errorcode === 0) {
+      if (errorcode === 0) {
         infoPlacerResult(rawData, templatlngObj);
         clearForm();
-    }
+      }
     });
   }
 }
@@ -185,9 +185,9 @@ function randomNumberOfInjured() {
   return string;
 }
 function addressFormatFixer(rawData) {
-    if (rawData.address.search("/([0-9]{4})/g") == -1) {
-        rawData.address += ", 9000 Aalborg";
-    }
+  if (rawData.address != "" && rawData.address.search("/([0-9]{4})/g") == -1) {
+    rawData.address += ", 9000 Aalborg";
+  }
 }
 
 
