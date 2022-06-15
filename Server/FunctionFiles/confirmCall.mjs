@@ -41,15 +41,15 @@ export function confirm(req, res, path) {
                     lng: data.location.lng
                 },
                 situation: data.situation,
-                number: data.number,
+                number: 0,
                 timeset: new Date().toLocaleString("da-DK", { timeZone: "Europe/Copenhagen" }),
                 AMLLocation: { lat: 0, lng: 0 },
-                injuries: data.injuries,
+                injuries: data.injuries || "No info available",
                 answered: true,
                 answering: true,
                 active: true,
                 useful: true,
-                description: data.description,
+                description: data.description || "No description provided",
                 links: [],
                 id: uuidv4()
             }
