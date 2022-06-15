@@ -190,6 +190,3 @@ function addressFormatFixer(rawData) {
     rawData.address += ", 9000 Aalborg";
   }
 }
-
-
-

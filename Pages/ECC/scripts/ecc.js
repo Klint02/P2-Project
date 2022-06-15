@@ -6,12 +6,12 @@ let last_marker;
 initECC();
 
 /*Gets calls from the server and starts plotting, called when the "Next Call" button is pressed*/
-function getCalls(mapname, path) {
+async function getCalls(mapname, path) {
     let queue = 0;
     /*Fetches callerDB file for the day*/
     fetch(path)
         .then(response => response.json())
-        .catch(err => { console.log(err) })
+        .catch(err => { alert("No calls"); console.log(err) })
         .then(getCurrentEmergencies(mapname, path, emergency_marker, false))
         .then(calls => {
             if (calls == undefined) return 1;
@@ -46,19 +46,18 @@ function getCalls(mapname, path) {
                         }
                         // Get the first unanswered call
                         object_to_change = i;
-                        // Creates HTML with information
-                        let call_text = document.getElementById('call_text');
-                        /*call_text.innerHTML = `Id: ${calls[i].id} <br>
-                        Name: ${calls[i].name} <br>
-                        Address: ${addressInput} <br>
-                        Situation: ${calls[i].situation} <br>
-                        Time: ${calls[i].timeset} <br>`;*/
+
                         document.getElementById("name").value = calls[i].name;
+                        if (calls[i].situation == "") calls[i].situation = "unknown situation";
                         document.getElementById("situation").value = calls[i].situation;
-                        document.getElementById("address").value = addressInput;
                         document.getElementById("injuries").value = calls[i].injuries;
                         document.getElementById("description").value = calls[i].description;
 
+                        if (addressInput.search("(Lat:.{1,}Lng:)") > 0) {
+                            document.getElementById("address").placeholder = addressInput;
+                        } else {
+                            document.getElementById("address").value = addressInput;
+                        }
 
                         // Adds marker wher caller is calling from
                         current_object = calls[object_to_change];
@@ -225,6 +224,6 @@ function createMarker(call, emergency_marker, mapname, last_marker, object_to_ch
         addMarker(String(call.situation), call.location, emergency_marker, mapname, info_to_display, call.id);
         object_to_change = undefined;//dont let me plot the emergency more than once
     }
-    delPerson(last_marker);
+    if (last_marker != undefined) delPerson(last_marker);
     clearForm();
 }

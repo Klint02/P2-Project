@@ -69,6 +69,7 @@ function createSideElement(obj, i) {
     } else {
         addressInput = obj.location.address;
     }
+    if (obj.situation == "") obj.situation = "unknown situation";
     //Adds the html for the sidebar
     if (i != 0) div.innerHTML = '<hr style="width: 100%; margin-top: 0px; margin-bottom: 0px;">';
     div.innerHTML += `<button class="collapsible" float:left;>${obj.situation}</button><button class="gotoMarker" type="button" onclick="gotoMarker('${obj.id}');">Go to</button>`;
