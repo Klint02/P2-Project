@@ -186,7 +186,7 @@ function randomNumberOfInjured() {
   return string;
 }
 function addressFormatFixer(rawData) {
-  if (rawData.address != "" && rawData.address.search("/([0-9]{4})") == -1) {
+  if (rawData.address != "" && rawData.address.search("([0-9]{4})") == -1) {
     rawData.address += ", 9000 Aalborg";
   }
 }
