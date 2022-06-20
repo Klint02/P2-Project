@@ -142,7 +142,7 @@ function link(id, sidebar) {
             body: `{"objID": \"${id}\", "curentObjID" : \"${current_object.id}\"}`,
         }).then(() => {
             //clearForm();
-            getCurrentEmergencies(map, path, emergency_marker, true);
+            getCurrentEmergencies(map, path, emergency_marker, false);
         });
     }
 }

@@ -27,6 +27,8 @@ function getCurrentEmergencies(mapname, path, emergency_marker, update) {
             let links = [];
             let extraIndex = 0;
             //Goes through ALL emergencies current or not
+            plotLines(true);
+            lines = [];
             for (let i = 0; i < calls.length; i++) {
                 if (calls[i].answered === true && calls[i].active === true && calls[i].answering === true) {
                     //Everything in this scope is considered current
@@ -57,11 +59,14 @@ function getCurrentEmergencies(mapname, path, emergency_marker, update) {
                     }
                 }
             }
+            console.log(lines);
+            plotLines(false);
             //Populates the side bar
             populateSideBar(calls);
         });
 }
 
+var lines = []
 //Adds links between markers
 function addLinks(obj, calls, links, update) {
     //Goes through link in the passed object
@@ -111,10 +116,22 @@ function addLinks(obj, calls, links, update) {
                     strokeOpacity: 1.0,
                     strokeWeight: 2
                 });
-                line.setMap(map);
+                lines.push(line)
             }
         }
     }
+}
+
+function plotLines(remove) {
+    console.log(lines);
+    lines.forEach(line => {
+        /*if (remove) {
+            line.setMap(null);
+        } else {
+            line.setMap(map);
+        }*/
+        remove ? line.setMap(null) : line.setMap(map);
+    });
 }
 
 /*Checks if array of latlngObj have the same location as a latlngObj*/
