@@ -59,7 +59,6 @@ function getCurrentEmergencies(mapname, path, emergency_marker, update) {
                     }
                 }
             }
-            console.log(lines);
             plotLines(false);
             //Populates the side bar
             populateSideBar(calls);
@@ -123,7 +122,6 @@ function addLinks(obj, calls, links, update) {
 }
 
 function plotLines(remove) {
-    console.log(lines);
     lines.forEach(line => {
         /*if (remove) {
             line.setMap(null);

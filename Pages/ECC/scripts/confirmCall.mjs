@@ -38,7 +38,6 @@ document.querySelector('#eccForm').addEventListener('submit', function (event) {
                 if (latLngObj == "Unknown address") return 1;
                 obj.location.lat = latLngObj.lat;
                 obj.location.lng = latLngObj.lng;
-                console.log(obj);
                 sendData(obj);
             })
             .catch(err => {
@@ -58,8 +57,6 @@ function sendData(obj) {
     })
         .then(response => response.json())
         .then(call => {
-            console.log(call);
-            console.log(call);
             populateSideBar(undefined, call);
             createMarker(call, emergency_marker, map, last_marker, object_to_change)
             //reloads the page
